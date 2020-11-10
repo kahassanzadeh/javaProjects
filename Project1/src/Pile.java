@@ -4,6 +4,7 @@ public class Pile {
     private ArrayList<Military> pile;
 
     public Pile(String teamName,String militaryType){
+        pile = new ArrayList<>();
         if(teamName.equals("Axis")){
             axisPileGenerator(militaryType);
         }
@@ -41,6 +42,18 @@ public class Pile {
                 pile.add(new Artillery("A" + i));
             }
         }
+    }
+
+    public ArrayList<Military> getPile() {
+        return pile;
+    }
+
+    private void movePile(){
+
+    }
+
+    private void attackPile(){
+
     }
 
 }

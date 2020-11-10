@@ -3,10 +3,9 @@ import java.util.Random;
 
 public class Cards {
 
-    private static HashMap<CardTypes,Integer> allCards;
+    private static HashMap<CardTypes,Integer> allCards = new HashMap<>();;
 
     public Cards(){
-        allCards = new HashMap<>();
         allCards.put(CardTypes.TYPE1,6);
         allCards.put(CardTypes.TYPE2,13);
         allCards.put(CardTypes.TYPE3,10);
@@ -14,7 +13,7 @@ public class Cards {
         allCards.put(CardTypes.TYPE5,5);
     }
 
-    public CardTypes randomCardGenerator(){
+    public static CardTypes randomCardGenerator(){
         Random random = new Random();
         String temp;
         do{
@@ -27,7 +26,7 @@ public class Cards {
         }while(true);
     }
 
-    private void checkAndRenewAllCards(){
+    private static void checkAndRenewAllCards(){
         if(allCards.get(CardTypes.TYPE1) == 0 && allCards.get(CardTypes.TYPE2) == 0 && allCards.get(CardTypes.TYPE3) == 0 && allCards.get(CardTypes.TYPE4) == 0 && allCards.get(CardTypes.TYPE5) == 0){
             allCards.put(CardTypes.TYPE1,6);
             allCards.put(CardTypes.TYPE2,13);
