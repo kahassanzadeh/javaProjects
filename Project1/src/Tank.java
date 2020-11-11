@@ -15,4 +15,8 @@ public class Tank extends Military{
     public boolean attack() {
         return false;
     }
+    @Override
+    public String toString() {
+        return "T";
+    }
 }

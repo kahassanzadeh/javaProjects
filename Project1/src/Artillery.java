@@ -14,4 +14,8 @@ public class Artillery extends Military{
     public boolean attack() {
         return false;
     }
+    @Override
+    public String toString() {
+        return "A";
+    }
 }

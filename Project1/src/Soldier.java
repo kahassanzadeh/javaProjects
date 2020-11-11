@@ -15,5 +15,8 @@ public class Soldier extends Military {
         return false;
     }
 
-
+    @Override
+    public String toString() {
+        return "S";
+    }
 }

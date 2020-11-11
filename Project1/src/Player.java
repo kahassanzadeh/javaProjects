@@ -61,4 +61,8 @@ public class Player {
         forces.put(MilitaryTypes.TANK,temp);
 
     }
+
+    public HashMap<MilitaryTypes, ArrayList<Pile>> getForces() {
+        return forces;
+    }
 }
