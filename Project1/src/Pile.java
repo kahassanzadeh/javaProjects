@@ -8,11 +8,13 @@ public class Pile {
 
     private String name;
 
-    private int[] locations;
+    private int[] location;
+
+    private boolean canAttack;
 
     public Pile(String teamName,String militaryType){
         pile = new ArrayList<>();
-        locations = new int[2];
+        location = new int[2];
         if(teamName.equals("Axis")){
             axisPileGenerator(militaryType);
         }
@@ -64,8 +66,8 @@ public class Pile {
     }
 
     public void setLocations(int x,int y) {
-        this.locations[0] = y;
-        this.locations[1] = x;
+        this.location[1] = y;
+        this.location[0] = x;
         GameManager.setGameLocations(pile.size() + this.name ,x,y);
     }
 
@@ -73,12 +75,39 @@ public class Pile {
         return name;
     }
 
-    private void movePile(){
-
+    public boolean movePile(int[] loc,int sum){
+        if(this.name.contains("So")){
+            if(sum > 2){return false;}
+            else if(sum == 2){canAttack = false;return changeLocation(loc[0],loc[1]);}
+            else if(sum == 1){canAttack = true;return changeLocation(loc[0],loc[1]);}
+        }
+        else if(this.name.contains("Ta")){
+            if(sum > 3){return false;}
+            else{
+                canAttack = true;
+                return changeLocation(loc[0],loc[1]);
+            }
+        }
+        else if(this.name.contains("Ar")){
+            if(sum == 1){canAttack = false;return changeLocation(loc[0],loc[1]);}
+        }
+        return false;
     }
 
     private void attackPile(){
 
     }
 
+    private boolean changeLocation(int x,int y){
+        if(GameManager.getGameLocations()[y][x] == null){
+            GameManager.setGameLocations(null,this.location[0],this.location[1]);
+            this.setLocations(x,y);
+            return true;
+        }
+        else{return false;}
+    }
+
+    public int[] getLocation() {
+        return location;
+    }
 }

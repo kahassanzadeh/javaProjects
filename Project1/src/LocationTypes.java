@@ -1,3 +1,5 @@
+import java.util.Arrays;
+
 public class LocationTypes {
     public enum Locations{
         NO,
@@ -6,7 +8,9 @@ public class LocationTypes {
         RV,
         BR,
         CC,
-        SH
+        SH,
+        AL,
+        AX
     }
     private Locations locationType;
 
@@ -15,9 +19,13 @@ public class LocationTypes {
     public LocationTypes(String locationType,int x , int y){
         this.locationType = Locations.valueOf(locationType);
         this.location = new int[2];
-        this.location[0] = y;
-        this.location[1] = x;
-        GameManager.setGameLocations(this.locationType.toString(),x,y);
+        this.location[0] = x;
+        this.location[1] = y;
+        GameManager.setLocationTypesArray(this.locationType.toString(),x,y);
     }
 
+    @Override
+    public String toString() {
+        return this.locationType.toString();
+    }
 }

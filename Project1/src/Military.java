@@ -4,12 +4,10 @@ public abstract class Military {
 
     private boolean isAlive;
 
-    private boolean canAttack;
 
     public Military(String name){
         this.name = name;
         isAlive = true;
-        canAttack = false;
     }
 
     public abstract boolean move();

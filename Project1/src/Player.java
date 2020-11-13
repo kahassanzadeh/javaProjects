@@ -65,4 +65,10 @@ public class Player {
     public HashMap<MilitaryTypes, ArrayList<Pile>> getForces() {
         return forces;
     }
+
+    private void showingCardInfo(){
+        for(CardTypes ct : cards){
+            Cards.printCardsInfo(ct);
+        }
+    }
 }

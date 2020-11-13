@@ -35,4 +35,54 @@ public class Cards {
             allCards.put(CardTypes.TYPE5,5);
         }
     }
+
+
+    public static void printCardsInfo(CardTypes ct){
+        if(ct == CardTypes.TYPE1){
+            System.out.println(
+                    "****************\n" +
+                    "*              *\n" +
+                    "* order 1 unit *\n" +
+                    "*              *\n" +
+                    "****************");
+
+        }
+        else if(ct == CardTypes.TYPE2){
+            System.out.println(
+                    "*****************\n" +
+                    "*               *\n" +
+                    "* order 2 units *\n" +
+                    "*               *\n" +
+                    "*****************");
+
+        }
+        else if(ct == CardTypes.TYPE3){
+            System.out.println(
+                    "*****************\n" +
+                    "*               *\n" +
+                    "* order 3 units *\n" +
+                    "*               *\n" +
+                    "*****************");
+
+        }
+        else if(ct == CardTypes.TYPE4){
+            System.out.println(
+                    "*****************\n" +
+                    "*               *\n" +
+                    "* order 4 units *\n" +
+                    "*               *\n" +
+                    "*****************");
+
+        }
+        else if(ct == CardTypes.TYPE5){
+            System.out.println(
+                    "*****************\n" +
+                    "* order 3 units *\n" +
+                    "*  with a same  *\n" +
+                    "* military type *\n" +
+                    "*****************");
+
+        }
+    }
+
 }
