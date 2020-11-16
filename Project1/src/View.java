@@ -1,3 +1,6 @@
+import java.util.ArrayList;
+import java.util.HashMap;
+
 public class View {
 
     public static void viewingTheMap(){
@@ -24,4 +27,5 @@ public class View {
                              "       **    " + ((elementLocations[i + 1][0] != null) ? elementLocations[i + 1][0] : "      ")+"    **    " + ((elementLocations[i + 1][1] != null) ? elementLocations[i + 1][1] : "      ")+"    **    " + ((elementLocations[i + 1][2] != null) ? elementLocations[i + 1][2] : "      ")+"    **    " + ((elementLocations[i + 1][3] != null) ? elementLocations[i + 1][3] : "      ")+"    **    " + ((elementLocations[i + 1][4] != null) ? elementLocations[i + 1][4] : "      ")+"    **    " + ((elementLocations[i + 1][5] != null) ? elementLocations[i + 1][5] : "      ")+"    **    " + ((elementLocations[i + 1][6] != null) ? elementLocations[i + 1][6] : "      ")+"    **    "+ ((elementLocations[i + 1][7] != null) ? elementLocations[i + 1][7] : "      ")+"    **    "+ ((elementLocations[i + 1][8] != null) ? elementLocations[i + 1][8] : "      ")+"    **    "+ ((elementLocations[i + 1][9] != null) ? elementLocations[i + 1][9] : "      ")+"    **    "+ ((elementLocations[i + 1][10] != null) ? elementLocations[i + 1][10] : "      ")+"    **    "+ ((elementLocations[i + 1][11] != null) ? elementLocations[i + 1][11] : "      ")+"    **         \n");
         }
     }
+
 }

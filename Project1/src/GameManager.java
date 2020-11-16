@@ -1,8 +1,7 @@
-import java.util.ArrayList;
-import java.util.Random;
-import java.util.Scanner;
+import java.util.*;
 
 public class GameManager {
+
 
     private Player axisPlayer;
 
@@ -14,6 +13,7 @@ public class GameManager {
 
 
     public GameManager(String axisPLayer, String alliedPlayer) {
+        Cards card = new Cards();
         this.axisPlayer = new Player(axisPLayer, "Axis");
         this.alliedPlayer = new Player(alliedPlayer, "Allied");
         gameLocations = new String[9][13];
@@ -28,6 +28,7 @@ public class GameManager {
     public static void setLocationTypesArray(String name, int x, int y) {
         locationTypes[y][x] = name;
     }
+
 
     public void setLocations(String teamName) {
         if (teamName.equals("Axis")) {
@@ -142,19 +143,16 @@ public class GameManager {
         return gameLocations;
     }
 
-    private int randomNumberGenerator() {
-        Random random = new Random();
-        return random.nextInt(5) + 1;
-    }
+
 
     public static String[][] getLocationTypes() {
         return locationTypes;
     }
 
-    public void movePile(String team) {
+    public Pile movePile(String team) {
         Scanner input = new Scanner(System.in);
         System.out.print("Please Enter the name of the force that you want to move : ");
-        String tempName = input.next();
+        String tempName = input.nextLine();
         if (team.equals("Axis")) {
             if (tempName.contains("So")) {
                 for (Pile pl : axisPlayer.getForces().get(MilitaryTypes.SOLDIER)) {
@@ -165,14 +163,12 @@ public class GameManager {
                         }
                         do {
                             System.out.print("Please enter the directions that you want to move : ");
-                            input.nextLine();
                             String tempMove = input.nextLine();
                             int[] temp = checkDirectionAndStringToNumber(tempMove,pl);
                             int tempCounterOfMove = countingMoves(tempMove);
-                            if(pl.movePile(temp,tempCounterOfMove)){break;}
+                            if(pl.movePile(temp,tempCounterOfMove)){return pl;}
                             else{System.out.println("Error PLease try another location");}
                         }while(true);
-
                     }
                 }
             }
@@ -185,11 +181,10 @@ public class GameManager {
                         }
                         do {
                             System.out.print("Please enter the directions that you want to move : ");
-                            input.nextLine();
                             String tempMove = input.nextLine();
                             int[] temp = checkDirectionAndStringToNumber(tempMove,pl);
                             int tempCounterOfMove = countingMoves(tempMove);
-                            if(pl.movePile(temp,tempCounterOfMove)){break;}
+                            if(pl.movePile(temp,tempCounterOfMove)){return pl;}
                             else{System.out.println("Error PLease try another location");}
                         }while(true);
                     }
@@ -206,11 +201,11 @@ public class GameManager {
                         }
                         do {
                             System.out.print("Please enter the directions that you want to move : ");
-                            input.nextLine();
                             String tempMove = input.nextLine();
+                            input.next();
                             int[] temp = checkDirectionAndStringToNumber(tempMove,pl);
                             int tempCounterOfMove = countingMoves(tempMove);
-                            if(pl.movePile(temp,tempCounterOfMove)){break;}
+                            if(pl.movePile(temp,tempCounterOfMove)){return pl;}
                             else{System.out.println("Error PLease try another location");}
                         }while(true);
 
@@ -226,11 +221,11 @@ public class GameManager {
                         }
                         do {
                             System.out.print("Please enter the directions that you want to move : ");
-                            input.nextLine();
                             String tempMove = input.nextLine();
+                            input.next();
                             int[] temp = checkDirectionAndStringToNumber(tempMove,pl);
                             int tempCounterOfMove = countingMoves(tempMove);
-                            if(pl.movePile(temp,tempCounterOfMove)){break;}
+                            if(pl.movePile(temp,tempCounterOfMove)){return pl;}
                             else{System.out.println("Error PLease try another location");}
                         }while(true);
                     }
@@ -245,18 +240,18 @@ public class GameManager {
                         }
                         do {
                             System.out.print("Please enter the directions that you want to move : ");
-                            input.nextLine();
                             String tempMove = input.nextLine();
+                            input.next();
                             int[] temp = checkDirectionAndStringToNumber(tempMove,pl);
                             int tempCounterOfMove = countingMoves(tempMove);
-                            if(pl.movePile(temp,tempCounterOfMove)){break;}
+                            if(pl.movePile(temp,tempCounterOfMove)){return pl;}
                             else{System.out.println("Error PLease try another location");}
                         }while(true);
                     }
                 }
             }
         }
-        View.viewingTheMap();
+        return null;
     }
 
     private int countingMoves(String tempMove) {
@@ -428,13 +423,12 @@ public class GameManager {
         }
         return tempPileLocation;
     }
-
     public void defaultLocationsAxis(){
         axisPlayer.getForces().get(MilitaryTypes.SOLDIER).get(0).setLocations(0,0);
         axisPlayer.getForces().get(MilitaryTypes.SOLDIER).get(1).setLocations(1,0);
         axisPlayer.getForces().get(MilitaryTypes.SOLDIER).get(2).setLocations(2,0);
         axisPlayer.getForces().get(MilitaryTypes.SOLDIER).get(3).setLocations(3,0);
-        axisPlayer.getForces().get(MilitaryTypes.SOLDIER).get(4).setLocations(4,0);
+        axisPlayer.getForces().get(MilitaryTypes.SOLDIER).get(4).setLocations(4,4);
         axisPlayer.getForces().get(MilitaryTypes.SOLDIER).get(5).setLocations(5,0);
         axisPlayer.getForces().get(MilitaryTypes.SOLDIER).get(6).setLocations(6,0);
         axisPlayer.getForces().get(MilitaryTypes.TANK).get(0).setLocations(8,0);
@@ -461,4 +455,180 @@ public class GameManager {
 
     }
 
+
+    private int distance(Pile pl1,Pile pl2){
+        int[] tempLocation = new int[2];
+        int counter = 0;
+        tempLocation[1] = pl1.getLocation()[1];
+        tempLocation[0] = pl1.getLocation()[0];
+        /*if(pl1.getLocation()[1] < pl2.getLocation()[1]){
+            tempLocation[1] = pl1.getLocation()[1];
+            tempLocation[0] = pl1.getLocation()[0];
+        }
+        else{
+            tempLocation[1] = pl2.getLocation()[1];
+            tempLocation[0] = pl2.getLocation()[0];
+        }*/
+        while(pl2.getLocation()[0] != tempLocation[0] || pl2.getLocation()[1] != tempLocation[1]){
+            if(tempLocation[1] % 2 == 0){
+                if(tempLocation[0] > pl2.getLocation()[0] && tempLocation[1] > pl2.getLocation()[1]){
+                    tempLocation[0]--;
+                    tempLocation[1]--;
+                    counter++;
+                }
+                else if(tempLocation[0] < pl2.getLocation()[0] && tempLocation[1] > pl2.getLocation()[1]){
+                    tempLocation[1]--;
+                    counter++;
+                }
+                else if(tempLocation[0] < pl2.getLocation()[0] && tempLocation[1] < pl2.getLocation()[1]){
+                    tempLocation[1]--;
+                    counter++;
+                }
+                else if(tempLocation[0] > pl2.getLocation()[0] && tempLocation[1] < pl2.getLocation()[1]){
+                    tempLocation[0]--;
+                    tempLocation[1]++;
+                    counter++;
+                }
+                else if(tempLocation[1] == pl2.getLocation()[1]){
+                    if(tempLocation[0] < pl2.getLocation()[0]){
+                        tempLocation[0]++;
+                    }
+                    else{
+                        tempLocation[0]--;
+                    }
+                    counter++;
+                }
+                else if(tempLocation[0] == pl2.getLocation()[0]){
+                    if(tempLocation[1] < pl2.getLocation()[1]){
+                        tempLocation[1]++;
+                    }
+                    else{
+                        tempLocation[1]--;
+                    }
+                    counter++;
+                }
+            }
+            else if(tempLocation[1] % 2 == 1){
+                if(tempLocation[0] > pl2.getLocation()[0] && tempLocation[1] > pl2.getLocation()[1]){
+                    tempLocation[1]--;
+                    counter++;
+                }
+                else if(tempLocation[0] < pl2.getLocation()[0] && tempLocation[1] > pl2.getLocation()[1]){
+                    tempLocation[0]++;
+                    tempLocation[1]--;
+                    counter++;
+                }
+                else if(tempLocation[0] < pl2.getLocation()[0] && tempLocation[1] < pl2.getLocation()[1]){
+                    tempLocation[0]++;
+                    tempLocation[1]++;
+                    counter++;
+                }
+                else if(tempLocation[0] > pl2.getLocation()[0] && tempLocation[1] < pl2.getLocation()[1]){
+                    tempLocation[1]++;
+                    counter++;
+                }
+                else if(tempLocation[1] == pl2.getLocation()[1]){
+                    if(tempLocation[0] < pl2.getLocation()[0]){
+                        tempLocation[0]++;
+                    }
+                    else{
+                        tempLocation[0]--;
+                    }
+                    counter++;
+                }
+                else if(tempLocation[0] == pl2.getLocation()[0]){
+                    if(tempLocation[1] < pl2.getLocation()[1]){
+                        tempLocation[1]++;
+                    }
+                    else{
+                        tempLocation[1]--;
+                    }
+                    counter++;
+                }
+            }
+        }
+        return counter;
+    }
+
+    public void attack(Pile pl,String attacker){
+        System.out.println("Please enter the name of the force that you want to attack with " + pl.getName() + " : ");
+        Scanner input = new Scanner(System.in);
+        String defender = null;
+        Pile tempDefender = null;
+        String tempForceToAttackName = input.nextLine();
+        Iterator<MilitaryTypes> it = axisPlayer.getForces().keySet().iterator();
+        if(attacker.equals("Axis")){defender = "Allied";}
+        if(attacker.equals("Allied")){defender = "Axis";}
+        if(defender.equals("Axis") && pl.getName().contains("Al") && pl.canAttack()){
+            while(it.hasNext()){
+                for(Pile pi : axisPlayer.getForces().get(it.next())){
+                    if(pi.getName().equals(tempForceToAttackName)){
+                        tempDefender = pi;
+                        break;
+                    }
+                }
+            }
+            pl.attackPile(tempDefender,distance(pl,tempDefender));
+        }
+        if(defender.equals("Allied") && pl.getName().contains("Ax") && pl.canAttack()){
+            while(it.hasNext()){
+                for(Pile pi : alliedPlayer.getForces().get(it.next())){
+                    if(pi.getName().equals(tempForceToAttackName)){
+                        tempDefender = pi;
+                        break;
+                    }
+                }
+            }
+            int dis = distance(pl,tempDefender);
+            pl.attackPile(tempDefender,dis);
+            renewMap();
+        }
+    }
+
+    public void renewMap(){
+        for (MilitaryTypes militaryTypes : axisPlayer.getForces().keySet()) {
+            for (Pile pi : axisPlayer.getForces().get(militaryTypes)) {
+                gameLocations[pi.getLocation()[1]][pi.getLocation()[0]] = pi.getPileFullName();
+            }
+        }
+        for (MilitaryTypes militaryTypes : alliedPlayer.getForces().keySet()) {
+            for (Pile pi : alliedPlayer.getForces().get(militaryTypes)) {
+                gameLocations[pi.getLocation()[1]][pi.getLocation()[0]] = pi.getPileFullName();
+            }
+        }
+    }
+
+    public void mapShow(){
+        View view = new View();
+        view.viewingTheMap();
+    }
+
+    public String checkEndOfTheGame(){
+        if(axisPlayer.getMedals() == 6){
+             return axisPlayer.getName();
+        }
+        else if(alliedPlayer.getMedals() == 6){
+            return alliedPlayer.getName();
+        }
+        else{
+            return null;
+        }
+    }
+
+    public int choosingCard(String teamName){
+        Scanner input = new Scanner(System.in);
+        if(teamName.equals("Axis")){
+            axisPlayer.showingCardInfo();
+            System.out.print("Please enter the card name : ");
+            String tempCardName = input.nextLine();
+            return axisPlayer.removeAndAddCard(tempCardName);
+        }
+        else if(teamName.equals("Allied")){
+            axisPlayer.showingCardInfo();
+            System.out.print("Please enter the card name : ");
+            String tempCardName = input.nextLine();
+            return axisPlayer.removeAndAddCard(tempCardName);
+        }
+        return 0;
+    }
 }

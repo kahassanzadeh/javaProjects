@@ -1,9 +1,12 @@
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 
 public class Player {
 
     private String name;
+
+    private int medals;
 
     private String teamName;
 
@@ -30,7 +33,7 @@ public class Player {
         cards.add(Cards.randomCardGenerator());
         cards.add(Cards.randomCardGenerator());
         cards.add(Cards.randomCardGenerator());
-        for(int i = 0 ; i < 8; i ++ ){
+        for(int i = 0 ; i < 9; i ++ ){
             temp.add(new Pile(teamName,"SOLDIER"));
         }
         forces.put(MilitaryTypes.SOLDIER,temp);
@@ -66,9 +69,49 @@ public class Player {
         return forces;
     }
 
-    private void showingCardInfo(){
+    public void showingCardInfo(){
         for(CardTypes ct : cards){
             Cards.printCardsInfo(ct);
         }
+    }
+
+    public void renewCanAttack(){
+        for (MilitaryTypes militaryTypes : this.getForces().keySet()) {
+            for (Pile pi : this.getForces().get(militaryTypes)) {
+                pi.setCanAttack(true);
+            }
+        }
+    }
+
+    public int getMedals() {
+        return medals;
+    }
+
+    public void setMedals(int medals) {
+        this.medals = medals;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public int removeAndAddCard(String ct){
+        CardTypes tempCt = null;
+        if(ct.equals("order 1 unit")){tempCt = CardTypes.TYPE1;}
+        else if(ct.equals("order 2 units")){tempCt = CardTypes.TYPE2;}
+        else if(ct.equals("order 3 units")){tempCt = CardTypes.TYPE3;}
+        else if(ct.equals("order 4 units")){tempCt = CardTypes.TYPE4;}
+        else if(ct.equals("order 3 units with a same military type")){tempCt = CardTypes.TYPE5;}
+        Iterator<CardTypes> it = cards.iterator();
+        int temp = 0;
+        while(it.hasNext()){
+            if(it.next().equals(tempCt)){
+                temp = Integer.parseInt(tempCt.toString().substring(4,5));
+                it.remove();
+                cards.add(Cards.randomCardGenerator());
+                break;
+            }
+        }
+        return temp;
     }
 }
