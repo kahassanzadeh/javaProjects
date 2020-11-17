@@ -7,9 +7,15 @@ public class GameManager {
 
     private Player alliedPlayer;
 
+    private static int axisPlayerMedals;
+
+    private static int alliedPlayerMedals;
+
     private static String[][] gameLocations;
 
     private static String[][] locationTypes;
+
+
 
 
     public GameManager(String axisPLayer, String alliedPlayer) {
@@ -151,19 +157,16 @@ public class GameManager {
 
     public Pile movePile(String team) {
         Scanner input = new Scanner(System.in);
-        System.out.print("Please Enter the name of the force that you want to move : ");
+        System.out.print("Please Enter the name of the force that you want to move or attack: ");
         String tempName = input.nextLine();
         if (team.equals("Axis")) {
-            if (tempName.contains("So")) {
+            if (tempName.substring(2,4).equals("So")) {
                 for (Pile pl : axisPlayer.getForces().get(MilitaryTypes.SOLDIER)) {
                     if (pl.getName().equals(tempName)) {
-                        if(locationTypes[pl.getLocation()[1]][pl.getLocation()[0]].equals("JG") || locationTypes[pl.getLocation()[1]][pl.getLocation()[0]].equals("CC")){
-                            System.out.println("you can't move this force");
-                            break;
-                        }
                         do {
-                            System.out.print("Please enter the directions that you want to move : ");
+                            System.out.print("Please enter the directions that you want to move (0 for not moving): ");
                             String tempMove = input.nextLine();
+                            if(tempMove.equals("0")){return pl;}
                             int[] temp = checkDirectionAndStringToNumber(tempMove,pl);
                             int tempCounterOfMove = countingMoves(tempMove);
                             if(pl.movePile(temp,tempCounterOfMove)){return pl;}
@@ -172,16 +175,13 @@ public class GameManager {
                     }
                 }
             }
-            if (tempName.contains("Ta")) {
+            if (tempName.substring(2,4).equals("Ta")) {
                 for (Pile pl : axisPlayer.getForces().get(MilitaryTypes.TANK)) {
                     if (pl.getName().equals(tempName)) {
-                        if(locationTypes[pl.getLocation()[1]][pl.getLocation()[0]].equals("JG") || locationTypes[pl.getLocation()[1]][pl.getLocation()[0]].equals("CC")){
-                            System.out.println("you can't move this force");
-                            break;
-                        }
                         do {
-                            System.out.print("Please enter the directions that you want to move : ");
+                            System.out.print("Please enter the directions that you want to move (0 for not moving): ");
                             String tempMove = input.nextLine();
+                            if(tempMove.equals("0")){return pl;}
                             int[] temp = checkDirectionAndStringToNumber(tempMove,pl);
                             int tempCounterOfMove = countingMoves(tempMove);
                             if(pl.movePile(temp,tempCounterOfMove)){return pl;}
@@ -192,17 +192,13 @@ public class GameManager {
             }
         }
         else if (team.equals("Allied")) {
-            if (tempName.contains("So")) {
+            if (tempName.substring(2,4).equals("So")) {
                 for (Pile pl : alliedPlayer.getForces().get(MilitaryTypes.SOLDIER)) {
                     if (pl.getName().equals(tempName)) {
-                        if(locationTypes[pl.getLocation()[1]][pl.getLocation()[0]].equals("JG") || locationTypes[pl.getLocation()[1]][pl.getLocation()[0]].equals("CC")){
-                            System.out.println("you can't move this force");
-                            break;
-                        }
                         do {
-                            System.out.print("Please enter the directions that you want to move : ");
+                            System.out.print("Please enter the directions that you want to move (0 for not moving): ");
                             String tempMove = input.nextLine();
-                            input.next();
+                            if(tempMove.equals("0")){return pl;}
                             int[] temp = checkDirectionAndStringToNumber(tempMove,pl);
                             int tempCounterOfMove = countingMoves(tempMove);
                             if(pl.movePile(temp,tempCounterOfMove)){return pl;}
@@ -212,17 +208,13 @@ public class GameManager {
                     }
                 }
             }
-            if (tempName.contains("Ta")) {
+            if (tempName.substring(2,4).equals("Ta")) {
                 for (Pile pl : alliedPlayer.getForces().get(MilitaryTypes.TANK)) {
                     if (pl.getName().equals(tempName)) {
-                        if(locationTypes[pl.getLocation()[1]][pl.getLocation()[0]].equals("JG") || locationTypes[pl.getLocation()[1]][pl.getLocation()[0]].equals("CC")){
-                            System.out.println("you can't move this force");
-                            break;
-                        }
                         do {
-                            System.out.print("Please enter the directions that you want to move : ");
+                            System.out.print("Please enter the directions that you want to move (0 for not moving): ");
                             String tempMove = input.nextLine();
-                            input.next();
+                            if(tempMove.equals("0")){return pl;}
                             int[] temp = checkDirectionAndStringToNumber(tempMove,pl);
                             int tempCounterOfMove = countingMoves(tempMove);
                             if(pl.movePile(temp,tempCounterOfMove)){return pl;}
@@ -231,17 +223,13 @@ public class GameManager {
                     }
                 }
             }
-            if (tempName.contains("Ar")) {
+            if (tempName.substring(2,4).equals("Ar")) {
                 for (Pile pl : alliedPlayer.getForces().get(MilitaryTypes.ARTILLERY)) {
                     if (pl.getName().equals(tempName)) {
-                        if(locationTypes[pl.getLocation()[1]][pl.getLocation()[0]].equals("JG") || locationTypes[pl.getLocation()[1]][pl.getLocation()[0]].equals("CC")){
-                            System.out.println("you can't move this force");
-                            break;
-                        }
                         do {
-                            System.out.print("Please enter the directions that you want to move : ");
+                            System.out.print("Please enter the directions that you want to move (0 for not moving): ");
                             String tempMove = input.nextLine();
-                            input.next();
+                            if(tempMove.equals("0")){return pl;}
                             int[] temp = checkDirectionAndStringToNumber(tempMove,pl);
                             int tempCounterOfMove = countingMoves(tempMove);
                             if(pl.movePile(temp,tempCounterOfMove)){return pl;}
@@ -273,12 +261,15 @@ public class GameManager {
                 for (int i = 0; i < Integer.parseInt(st.substring(0,1)); i++) {
                     tempPileLocation[0] += 1;
                     if (locationTypes[tempPileLocation[1]][tempPileLocation[0]].equals("JG") || locationTypes[tempPileLocation[1]][tempPileLocation[0]].equals("CC")) {
+                        System.out.println("you can't move any more");
                         return tempPileLocation;
                     } else if (locationTypes[tempPileLocation[1]][tempPileLocation[0]].equals("RV")) {
                         tempPileLocation[0] -= 1;
+                        System.out.println("you can't move any more");
                         return tempPileLocation;
                     } else if (locationTypes[tempPileLocation[1]][tempPileLocation[0]].equals("SH") && (pl.getName().contains("Ta") || pl.getName().contains("Ar"))) {
                         tempPileLocation[0] -= 1;
+                        System.out.println("you can't move any more");
                         return tempPileLocation;
                     }
                 }
@@ -287,12 +278,15 @@ public class GameManager {
                 for (int i = 0; i < Integer.parseInt(st.substring(0,1)); i++) {
                     tempPileLocation[0] -= 1;
                     if (locationTypes[tempPileLocation[1]][tempPileLocation[0]].equals("JG") || locationTypes[tempPileLocation[1]][tempPileLocation[0]].equals("CC")) {
+                        System.out.println("you can't move any more");
                         return tempPileLocation;
                     } else if (locationTypes[tempPileLocation[1]][tempPileLocation[0]].equals("RV")) {
                         tempPileLocation[0] += 1;
+                        System.out.println("you can't move any more");
                         return tempPileLocation;
                     } else if (locationTypes[tempPileLocation[1]][tempPileLocation[0]].equals("SH") && (pl.getName().contains("Ta") || pl.getName().contains("Ar"))) {
                         tempPileLocation[0] += 1;
+                        System.out.println("you can't move any more");
                         return tempPileLocation;
                     }
                 }
@@ -303,26 +297,32 @@ public class GameManager {
                         tempPileLocation[1] -= 1;
                         tempPileLocation[0] += 1;
                         if (locationTypes[tempPileLocation[1]][tempPileLocation[0]].equals("JG") || locationTypes[tempPileLocation[1]][tempPileLocation[0]].equals("CC")) {
+                            System.out.println("you can't move any more");
                             return tempPileLocation;
                         } else if (locationTypes[tempPileLocation[1]][tempPileLocation[0]].equals("RV")) {
                             tempPileLocation[1] += 1;
                             tempPileLocation[0] -= 1;
+                            System.out.println("you can't move any more");
                             return tempPileLocation;
                         } else if (locationTypes[tempPileLocation[1]][tempPileLocation[0]].equals("SH") && (pl.getName().contains("Ta") || pl.getName().contains("Ar"))) {
                             tempPileLocation[1] += 1;
                             tempPileLocation[0] -= 1;
+                            System.out.println("you can't move any more");
                             return tempPileLocation;
                         }
                     }
                     else{
                         tempPileLocation[1] -= 1;
                         if (locationTypes[tempPileLocation[1]][tempPileLocation[0]].equals("JG") || locationTypes[tempPileLocation[1]][tempPileLocation[0]].equals("CC")) {
+                            System.out.println("you can't move any more");
                             return tempPileLocation;
                         } else if (locationTypes[tempPileLocation[1]][tempPileLocation[0]].equals("RV")) {
                             tempPileLocation[1] += 1;
+                            System.out.println("you can't move any more");
                             return tempPileLocation;
                         } else if (locationTypes[tempPileLocation[1]][tempPileLocation[0]].equals("SH") && (pl.getName().contains("Ta") || pl.getName().contains("Ar"))) {
                             tempPileLocation[1] += 1;
+                            System.out.println("you can't move any more");
                             return tempPileLocation;
                         }
                     }
@@ -334,26 +334,32 @@ public class GameManager {
                         tempPileLocation[1] -= 1;
                         tempPileLocation[0] -= 1;
                         if (locationTypes[tempPileLocation[1]][tempPileLocation[0]].equals("JG") || locationTypes[tempPileLocation[1]][tempPileLocation[0]].equals("CC")) {
+                            System.out.println("you can't move any more");
                             return tempPileLocation;
                         } else if (locationTypes[tempPileLocation[1]][tempPileLocation[0]].equals("RV")) {
                             tempPileLocation[1] += 1;
                             tempPileLocation[0] += 1;
+                            System.out.println("you can't move any more");
                             return tempPileLocation;
                         } else if (locationTypes[tempPileLocation[1]][tempPileLocation[0]].equals("SH") && (pl.getName().contains("Ta") || pl.getName().contains("Ar"))) {
                             tempPileLocation[1] += 1;
                             tempPileLocation[0] += 1;
+                            System.out.println("you can't move any more");
                             return tempPileLocation;
                         }
                     }
                     else{
                         tempPileLocation[1] -= 1;
                         if (locationTypes[tempPileLocation[1]][tempPileLocation[0]].equals("JG") || locationTypes[tempPileLocation[1]][tempPileLocation[0]].equals("CC")) {
+                            System.out.println("you can't move any more");
                             return tempPileLocation;
                         } else if (locationTypes[tempPileLocation[1]][tempPileLocation[0]].equals("RV")) {
                             tempPileLocation[1] += 1;
+                            System.out.println("you can't move any more");
                             return tempPileLocation;
                         } else if (locationTypes[tempPileLocation[1]][tempPileLocation[0]].equals("SH") && (pl.getName().contains("Ta") || pl.getName().contains("Ar"))) {
                             tempPileLocation[1] += 1;
+                            System.out.println("you can't move any more");
                             return tempPileLocation;
                         }
                     }
@@ -364,26 +370,32 @@ public class GameManager {
                         tempPileLocation[1] += 1;
                         tempPileLocation[0] += 1;
                         if (locationTypes[tempPileLocation[1]][tempPileLocation[0]].equals("JG") || locationTypes[tempPileLocation[1]][tempPileLocation[0]].equals("CC")) {
+                            System.out.println("you can't move any more");
                             return tempPileLocation;
                         } else if (locationTypes[tempPileLocation[1]][tempPileLocation[0]].equals("RV")) {
                             tempPileLocation[1] -= 1;
                             tempPileLocation[0] -= 1;
+                            System.out.println("you can't move any more");
                             return tempPileLocation;
                         } else if (locationTypes[tempPileLocation[1]][tempPileLocation[0]].equals("SH") && (pl.getName().contains("Ta") || pl.getName().contains("Ar"))) {
                             tempPileLocation[1] -= 1;
                             tempPileLocation[0] -= 1;
+                            System.out.println("you can't move any more");
                             return tempPileLocation;
                         }
                     }
                     else{
                         tempPileLocation[1] += 1;
                         if (locationTypes[tempPileLocation[1]][tempPileLocation[0]].equals("JG") || locationTypes[tempPileLocation[1]][tempPileLocation[0]].equals("CC")) {
+                            System.out.println("you can't move any more");
                             return tempPileLocation;
                         } else if (locationTypes[tempPileLocation[1]][tempPileLocation[0]].equals("RV")) {
+                            System.out.println("you can't move any more");
                             tempPileLocation[1] -= 1;
                             return tempPileLocation;
                         } else if (locationTypes[tempPileLocation[1]][tempPileLocation[0]].equals("SH") && (pl.getName().contains("Ta") || pl.getName().contains("Ar"))) {
                             tempPileLocation[1] -= 1;
+                            System.out.println("you can't move any more");
                             return tempPileLocation;
                         }
                     }
@@ -395,26 +407,32 @@ public class GameManager {
                         tempPileLocation[1] += 1;
                         tempPileLocation[0] -= 1;
                         if (locationTypes[tempPileLocation[1]][tempPileLocation[0]].equals("JG") || locationTypes[tempPileLocation[1]][tempPileLocation[0]].equals("CC")) {
+                            System.out.println("you can't move any more");
                             return tempPileLocation;
                         } else if (locationTypes[tempPileLocation[1]][tempPileLocation[0]].equals("RV")) {
+                            System.out.println("you can't move any more");
                             tempPileLocation[1] -= 1;
                             tempPileLocation[0] += 1;
                             return tempPileLocation;
                         } else if (locationTypes[tempPileLocation[1]][tempPileLocation[0]].equals("SH") && (pl.getName().contains("Ta") || pl.getName().contains("Ar"))) {
                             tempPileLocation[1] -= 1;
                             tempPileLocation[0] += 1;
+                            System.out.println("you can't move any more");
                             return tempPileLocation;
                         }
                     }
                     else{
                         tempPileLocation[1] += 1;
                         if (locationTypes[tempPileLocation[1]][tempPileLocation[0]].equals("JG") || locationTypes[tempPileLocation[1]][tempPileLocation[0]].equals("CC")) {
+                            System.out.println("you can't move any more");
                             return tempPileLocation;
                         } else if (locationTypes[tempPileLocation[1]][tempPileLocation[0]].equals("RV")) {
                             tempPileLocation[1] -= 1;
+                            System.out.println("you can't move any more");
                             return tempPileLocation;
                         } else if (locationTypes[tempPileLocation[1]][tempPileLocation[0]].equals("SH") && (pl.getName().contains("Ta") || pl.getName().contains("Ar"))) {
                             tempPileLocation[1] -= 1;
+                            System.out.println("you can't move any more");
                             return tempPileLocation;
                         }
                     }
@@ -423,6 +441,7 @@ public class GameManager {
         }
         return tempPileLocation;
     }
+
     public void defaultLocationsAxis(){
         axisPlayer.getForces().get(MilitaryTypes.SOLDIER).get(0).setLocations(0,0);
         axisPlayer.getForces().get(MilitaryTypes.SOLDIER).get(1).setLocations(1,0);
@@ -438,6 +457,7 @@ public class GameManager {
         axisPlayer.getForces().get(MilitaryTypes.TANK).get(4).setLocations(12,0);
         axisPlayer.getForces().get(MilitaryTypes.TANK).get(5).setLocations(6,1);
     }
+
     public void defaultLocationAllied(){
         alliedPlayer.getForces().get(MilitaryTypes.SOLDIER).get(0).setLocations(1,6);
         alliedPlayer.getForces().get(MilitaryTypes.SOLDIER).get(1).setLocations(2,6);
@@ -455,20 +475,11 @@ public class GameManager {
 
     }
 
-
     private int distance(Pile pl1,Pile pl2){
         int[] tempLocation = new int[2];
         int counter = 0;
         tempLocation[1] = pl1.getLocation()[1];
         tempLocation[0] = pl1.getLocation()[0];
-        /*if(pl1.getLocation()[1] < pl2.getLocation()[1]){
-            tempLocation[1] = pl1.getLocation()[1];
-            tempLocation[0] = pl1.getLocation()[0];
-        }
-        else{
-            tempLocation[1] = pl2.getLocation()[1];
-            tempLocation[0] = pl2.getLocation()[0];
-        }*/
         while(pl2.getLocation()[0] != tempLocation[0] || pl2.getLocation()[1] != tempLocation[1]){
             if(tempLocation[1] % 2 == 0){
                 if(tempLocation[0] > pl2.getLocation()[0] && tempLocation[1] > pl2.getLocation()[1]){
@@ -551,15 +562,18 @@ public class GameManager {
     }
 
     public void attack(Pile pl,String attacker){
-        System.out.println("Please enter the name of the force that you want to attack with " + pl.getName() + " : ");
+        System.out.println("Please enter the name of the force that you want to attack with " + pl.getName() + " (0 for not attacking): ");
         Scanner input = new Scanner(System.in);
         String defender = null;
         Pile tempDefender = null;
         String tempForceToAttackName = input.nextLine();
+        if(tempForceToAttackName.equals("0")){
+            return;
+        }
         Iterator<MilitaryTypes> it = axisPlayer.getForces().keySet().iterator();
         if(attacker.equals("Axis")){defender = "Allied";}
         if(attacker.equals("Allied")){defender = "Axis";}
-        if(defender.equals("Axis") && pl.getName().contains("Al") && pl.canAttack()){
+        if(defender.equals("Axis") && pl.getName().contains("Al")){
             while(it.hasNext()){
                 for(Pile pi : axisPlayer.getForces().get(it.next())){
                     if(pi.getName().equals(tempForceToAttackName)){
@@ -568,9 +582,15 @@ public class GameManager {
                     }
                 }
             }
-            pl.attackPile(tempDefender,distance(pl,tempDefender));
+            if(!pl.getCanAttack()){
+                System.out.println("You can't attack with this Pile ");
+                return;
+            }
+            int dis = distance(pl,tempDefender);
+            pl.attackPile(tempDefender,dis);
+            renewMap();
         }
-        if(defender.equals("Allied") && pl.getName().contains("Ax") && pl.canAttack()){
+        if(defender.equals("Allied") && pl.getName().contains("Ax")){
             while(it.hasNext()){
                 for(Pile pi : alliedPlayer.getForces().get(it.next())){
                     if(pi.getName().equals(tempForceToAttackName)){
@@ -578,6 +598,10 @@ public class GameManager {
                         break;
                     }
                 }
+            }
+            if(!pl.getCanAttack()){
+                System.out.println("You can't attack with this Pile ");
+                return;
             }
             int dis = distance(pl,tempDefender);
             pl.attackPile(tempDefender,dis);
@@ -588,12 +612,22 @@ public class GameManager {
     public void renewMap(){
         for (MilitaryTypes militaryTypes : axisPlayer.getForces().keySet()) {
             for (Pile pi : axisPlayer.getForces().get(militaryTypes)) {
-                gameLocations[pi.getLocation()[1]][pi.getLocation()[0]] = pi.getPileFullName();
+                if(pi.getPile().size() == 0){
+                    gameLocations[pi.getLocation()[1]][pi.getLocation()[0]] = null;
+                }
+                else {
+                    gameLocations[pi.getLocation()[1]][pi.getLocation()[0]] = pi.getPileFullName();
+                }
             }
         }
         for (MilitaryTypes militaryTypes : alliedPlayer.getForces().keySet()) {
             for (Pile pi : alliedPlayer.getForces().get(militaryTypes)) {
-                gameLocations[pi.getLocation()[1]][pi.getLocation()[0]] = pi.getPileFullName();
+                if(pi.getPile().size() == 0){
+                    gameLocations[pi.getLocation()[1]][pi.getLocation()[0]] = null;
+                }
+                else {
+                    gameLocations[pi.getLocation()[1]][pi.getLocation()[0]] = pi.getPileFullName();
+                }
             }
         }
     }
@@ -604,11 +638,11 @@ public class GameManager {
     }
 
     public String checkEndOfTheGame(){
-        if(axisPlayer.getMedals() == 6){
-             return axisPlayer.getName();
+        if(alliedPlayerMedals == 6){
+             return alliedPlayer.getName();
         }
-        else if(alliedPlayer.getMedals() == 6){
-            return alliedPlayer.getName();
+        else if(axisPlayerMedals == 6){
+            return axisPlayer.getName();
         }
         else{
             return null;
@@ -624,11 +658,44 @@ public class GameManager {
             return axisPlayer.removeAndAddCard(tempCardName);
         }
         else if(teamName.equals("Allied")){
-            axisPlayer.showingCardInfo();
+            alliedPlayer.showingCardInfo();
             System.out.print("Please enter the card name : ");
             String tempCardName = input.nextLine();
-            return axisPlayer.removeAndAddCard(tempCardName);
+            return alliedPlayer.removeAndAddCard(tempCardName);
         }
         return 0;
+    }
+
+    public static void increaseMedals(String name){
+        if(name.equals("Al")){alliedPlayerMedals += 1;}
+        else if(name.equals("Ax")){axisPlayerMedals += 1;}
+    }
+    public void renewCanAttack(){
+        for (MilitaryTypes militaryTypes : axisPlayer.getForces().keySet()) {
+            for (Pile pi : axisPlayer.getForces().get(militaryTypes)) {
+                pi.setCanAttack(true);
+            }
+        }
+        for (MilitaryTypes militaryTypes : alliedPlayer.getForces().keySet()) {
+            for (Pile pi : alliedPlayer.getForces().get(militaryTypes)) {
+                pi.setCanAttack(true);
+            }
+        }
+    }
+
+    public static int getAlliedPlayerMedals() {
+        return alliedPlayerMedals;
+    }
+
+    public static int getAxisPlayerMedals() {
+        return axisPlayerMedals;
+    }
+
+    public Player getAlliedPlayer() {
+        return alliedPlayer;
+    }
+
+    public Player getAxisPlayer() {
+        return axisPlayer;
     }
 }

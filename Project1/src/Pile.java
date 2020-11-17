@@ -88,18 +88,32 @@ public class Pile {
     public boolean movePile(int[] loc,int sum){
         if(this.name.contains("So")){
             if(sum > 2){return false;}
-            else if(sum == 2){canAttack = false;return changeLocation(loc[0],loc[1]);}
-            else if(sum == 1){canAttack = true;return changeLocation(loc[0],loc[1]);}
+            else if(sum == 2){
+                canAttack = false;
+                return changeLocation(loc[0],loc[1]);
+            }
+            else if(sum == 1){
+                if(GameManager.getLocationTypes()[loc[1]][loc[0]].equals("JG") || GameManager.getLocationTypes()[loc[1]][loc[0]].equals("CC")){
+                    canAttack = false;
+                }
+                return changeLocation(loc[0],loc[1]);
+            }
         }
         else if(this.name.contains("Ta")){
             if(sum > 3){return false;}
             else{
-                canAttack = true;
+                if(GameManager.getLocationTypes()[loc[1]][loc[0]].equals("JG") || GameManager.getLocationTypes()[loc[1]][loc[0]].equals("CC")){
+                    canAttack = false;
+                }
                 return changeLocation(loc[0],loc[1]);
             }
         }
         else if(this.name.contains("Ar")){
-            if(sum == 1){canAttack = false;return changeLocation(loc[0],loc[1]);}
+            if(sum == 1){
+                canAttack = false;
+                return changeLocation(loc[0],loc[1]);
+            }
+
         }
         return false;
     }
@@ -107,28 +121,45 @@ public class Pile {
     public void attackPile(Pile defender,int distance){
         int counterOfDices = dicesCounter(distance);
         counterOfDices = checkLocation(defender,counterOfDices);
+        if(counterOfDices <= 0){
+            System.out.println("You can't attack with this Pile ");
+            return;
+        }
+
         System.out.println("You can just have " + counterOfDices + " dice / dices");
         int randomNumber = 0;
-        for(int i = 0; i < counterOfDices ; i++){
+        for(int i = 0; i < counterOfDices; i++){
+            if((defender.getPile().size() == 0)){
+                return;
+            }
             randomNumber = randomNumberGenerator();
             if((randomNumber == 1 || randomNumber == 6) && defender.getName().substring(2,4).equals("So")){
                 defender.getPile().remove(defender.getPile().size() - 1);
-                System.out.println( i+1 + ".dice : " + randomNumber + " \n"+
+                System.out.println(i + 1 + ".dice : " + randomNumber + " \n" +
                         "your attack was successful \n" +
                         "Attack info : From " + this.getName() + " To " + defender.getName());
+                if(defender.getPile().size() == 0){
+                    GameManager.increaseMedals(this.name.substring(0,2));
+                }
 
             }
             else if((randomNumber == 2) && defender.getName().substring(2,4).equals("Ta")){
                 defender.getPile().remove(defender.getPile().size() - 1);
-                System.out.println( i+1 + ".dice : " + randomNumber + " \n"+
+                System.out.println(i + 1 + ".dice : " + randomNumber + " \n" +
                         "your attack was successful \n" +
                         "Attack info : From " + this.getName() + " To " + defender.getName());
+                if(defender.getPile().size() == 0){
+                    GameManager.increaseMedals(this.name.substring(0,2));
+                }
             }
             else if((randomNumber == 5)){
                 defender.getPile().remove(defender.getPile().size() - 1);
-                System.out.println( i+1 + ".dice : " + randomNumber + " \n"+
+                System.out.println(i + 1 + ".dice : " + randomNumber + " \n" +
                         "your attack was successful \n" +
                         "Attack info : From " + this.getName() + " To " + defender.getName());
+                if(defender.getPile().size() == 0){
+                    GameManager.increaseMedals(this.name.substring(0,2));
+                }
             }
             else if(randomNumber == 3 || randomNumber == 4){
                 System.out.println( i + 1 + ".dice : " + randomNumber + " \n" + "You can't attack");
@@ -143,6 +174,12 @@ public class Pile {
         if(GameManager.getGameLocations()[y][x] == null){
             GameManager.setGameLocations(null,this.location[0],this.location[1]);
             this.setLocations(x,y);
+            if(this.name.substring(0,2).equals("Ax") && GameManager.getLocationTypes()[this.location[1]][this.location[0]].equals("AL")){
+                GameManager.increaseMedals("Ax");
+            }
+            if(this.name.substring(0,2).equals("Al") && GameManager.getLocationTypes()[this.location[1]][this.location[0]].equals("AX")){
+                GameManager.increaseMedals("Al");
+            }
             return true;
         }
         else{return false;}
@@ -171,7 +208,8 @@ public class Pile {
                     return 0;
                 }
             case "Ta":
-                return 3;
+                if(distance <= 3){return 3;}
+                else {return 0;}
             case "Ar":
                 if (distance == 5 || distance == 6) {
                     return 1;
@@ -187,6 +225,9 @@ public class Pile {
     }
     public void setCanAttack(boolean status){
         canAttack = status;
+    }
+    public boolean getCanAttack(){
+        return canAttack;
     }
 
     private int checkLocation(Pile defender , int dices){

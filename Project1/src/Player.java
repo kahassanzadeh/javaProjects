@@ -6,8 +6,6 @@ public class Player {
 
     private String name;
 
-    private int medals;
-
     private String teamName;
 
     private ArrayList<CardTypes> cards;
@@ -75,21 +73,6 @@ public class Player {
         }
     }
 
-    public void renewCanAttack(){
-        for (MilitaryTypes militaryTypes : this.getForces().keySet()) {
-            for (Pile pi : this.getForces().get(militaryTypes)) {
-                pi.setCanAttack(true);
-            }
-        }
-    }
-
-    public int getMedals() {
-        return medals;
-    }
-
-    public void setMedals(int medals) {
-        this.medals = medals;
-    }
 
     public String getName() {
         return name;
