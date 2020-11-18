@@ -1,17 +1,28 @@
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
-
+/**
+ * this method is created for the player status and operations
+ *
+ * @author Mohammadreza Hassanzadeh
+ * @since 18 Nov 2020
+ * @version 1.0
+ */
 public class Player {
-
+    //name of the player
     private String name;
-
+    //name of the team axis or allied
     private String teamName;
-
+    //saving the cards
     private ArrayList<CardTypes> cards;
-
+    //saving the whole forces that a player has
     private HashMap<MilitaryTypes,ArrayList<Pile>> forces;
 
+    /**
+     * this method will generate the player and its forces
+     * @param name name of the player
+     * @param teamName nam eof the team axis or allied
+     */
     public Player(String name,String teamName){
         this.name = name;
         this.teamName = teamName.substring(0, 1).toUpperCase() + teamName.substring(1).toLowerCase();
@@ -25,6 +36,9 @@ public class Player {
         }
     }
 
+    /**
+     * this method will generate the allied sources
+     */
     private void alliedCardsAndMilitary() {
         ArrayList<Pile> temp = new ArrayList<>();
         cards.add(Cards.randomCardGenerator());
@@ -47,6 +61,9 @@ public class Player {
         forces.put(MilitaryTypes.ARTILLERY,temp);
     }
 
+    /**
+     * this method will generate the axis sources
+     */
     private void axisCardsAndMilitary() {
         ArrayList<Pile> temp = new ArrayList<>();
         cards.add(Cards.randomCardGenerator());
@@ -63,21 +80,36 @@ public class Player {
 
     }
 
+    /**
+     * getter for the forces
+     * @return
+     */
     public HashMap<MilitaryTypes, ArrayList<Pile>> getForces() {
         return forces;
     }
 
+    /**
+     * printing cards information
+     */
     public void showingCardInfo(){
         for(CardTypes ct : cards){
             Cards.printCardsInfo(ct);
         }
     }
 
-
+    /**
+     * getter for the name of the player
+     * @return
+     */
     public String getName() {
         return name;
     }
 
+    /**
+     * this method will make a new card and delete it from the last piles
+     * @param ct name of the card
+     * @return number of the card types
+     */
     public int removeAndAddCard(String ct){
         CardTypes tempCt = null;
         if(ct.equals("order 1 unit")){tempCt = CardTypes.TYPE1;}

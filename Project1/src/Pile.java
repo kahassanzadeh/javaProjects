@@ -1,18 +1,30 @@
 import java.util.ArrayList;
 import java.util.Random;
+/**
+ * this class is for generating the piles and managing them
+ *
+ * @author Mohammadreza Hassanzadeh
+ * @since 18 Nov 2020
+ * @version 1.0
+ */
 
 public class Pile {
-
+    //array list of the forces
     private ArrayList<Military> pile;
-
+    //counter of the forces
     private static int counterOfPiles = 1;
-
+    //name of this pile
     private String name;
-
+    //location of the pile
     private int[] location;
-
+    //attacking status of a pile
     private boolean canAttack;
 
+    /**
+     * constructor for the this class
+     * @param teamName nam eof the team that we want to make pile for
+     * @param militaryType type of the military
+     */
     public Pile(String teamName,String militaryType){
         pile = new ArrayList<>();
         location = new int[2];
@@ -25,10 +37,10 @@ public class Pile {
         canAttack = true;
     }
 
-    public boolean canAttack() {
-        return canAttack;
-    }
-
+    /**
+     * generating piles for axis
+     * @param militaryType type of the force
+     */
     private void axisPileGenerator(String militaryType){
         if(MilitaryTypes.valueOf(militaryType.toUpperCase()) == MilitaryTypes.SOLDIER){
             for(int i = 1; i <= 4;i++){
@@ -45,6 +57,10 @@ public class Pile {
         counterOfPiles++;
     }
 
+    /**
+     * generating piles for  allied
+     * @param militaryType type of the force
+     */
     private void alliedPileGenerator(String militaryType){
         if(MilitaryTypes.valueOf(militaryType.toUpperCase()) == MilitaryTypes.SOLDIER){
             for(int i = 1; i <= 4;i++){
@@ -67,24 +83,46 @@ public class Pile {
         counterOfPiles++;
     }
 
+    /**
+     * getter for the pile
+     * @return array list of the force types
+     */
     public ArrayList<Military> getPile() {
         return pile;
     }
 
+    /**
+     * setting locations for the piles
+     * @param x x of the pile
+     * @param y y of the pile
+     */
     public void setLocations(int x,int y) {
         this.location[1] = y;
         this.location[0] = x;
         GameManager.setGameLocations(pile.size() + this.name ,x,y);
     }
 
+    /**
+     * getting the name of the pile with its numbers
+     * @return full name of the pile
+     */
     public String getPileFullName(){
         return(pile.size() + this.name );
     }
-
+    /**
+     * getting the name of the pile
+     * @return name of the pile
+     */
     public String getName() {
         return name;
     }
 
+    /**
+     * this method will move the pile and change the locations
+     * @param loc location that we want to move
+     * @param sum sum of the moves
+     * @return true if we can move it
+     */
     public boolean movePile(int[] loc,int sum){
         if(this.name.contains("So")){
             if(sum > 2){return false;}
@@ -118,6 +156,11 @@ public class Pile {
         return false;
     }
 
+    /**
+     * this method will make the attacking process for a pile
+     * @param defender pile that should defends
+     * @param distance distant between these piles
+     */
     public void attackPile(Pile defender,int distance){
         int counterOfDices = dicesCounter(distance);
         counterOfDices = checkLocation(defender,counterOfDices);
@@ -170,7 +213,13 @@ public class Pile {
         }
     }
 
-    private boolean changeLocation(int x,int y){
+    /**
+     * changing the location of the pile
+     * @param x x of the pile
+     * @param y y of the pile
+     * @return true if it can moved
+     */
+    private boolean changeLocation(int x, int y){
         if(GameManager.getGameLocations()[y][x] == null){
             GameManager.setGameLocations(null,this.location[0],this.location[1]);
             this.setLocations(x,y);
@@ -185,15 +234,28 @@ public class Pile {
         else{return false;}
     }
 
+    /**
+     * getting the location of the ile
+     * @return
+     */
     public int[] getLocation() {
         return location;
     }
 
+    /**
+     * generating random number between 1 to 6
+     * @return random number
+     */
     private int randomNumberGenerator() {
         Random random = new Random();
         return random.nextInt(5) + 1;
     }
 
+    /**
+     * this method will counts the dices that we should use in the attack method
+     * @param distance distant between 2 piles
+     * @return number of dices that we can use
+     */
     private int dicesCounter(int distance){
         String force = this.name.substring(2,4);
         switch (force) {
@@ -223,13 +285,29 @@ public class Pile {
         }
         return 0;
     }
+
+    /**
+     * setting the attack status for the pile
+     * @param status true or false
+     */
     public void setCanAttack(boolean status){
         canAttack = status;
     }
+
+    /**
+     * getting the attack pile status
+     * @return true if we can attack
+     */
     public boolean getCanAttack(){
         return canAttack;
     }
 
+    /**
+     * checking if the land type making any differences for the dices
+     * @param defender pile that should defend
+     * @param dices the whole dices that had been counted in counterOfDices method
+     * @return number of dices
+     */
     private int checkLocation(Pile defender , int dices){
         if(GameManager.getLocationTypes()[defender.getLocation()[1]][defender.getLocation()[0]].equals("HL")){
             return dices - 1;

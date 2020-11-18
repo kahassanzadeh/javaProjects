@@ -21,9 +21,9 @@ public class Main {
         }
         else{
             System.out.println("Axis set locations");
-            gm.setLocations("Axis");
+            gm.setLocationsByUser("Axis");
             System.out.println("Allied set locations");
-            gm.setLocations("Allied");
+            gm.setLocationsByUser("Allied");
         }
         gm.mapShow();
         int counter = 0;
@@ -46,13 +46,20 @@ public class Main {
                 System.out.println("notice that the first type you entered as the first force. \n" +
                         "you should enter the same type as the first force");
                 for(int i = 0; i < 3; i++ ){
-                    tempPile.add(gm.movePile(turn));
-                    if(i > 1 && !tempPile.get(tempPile.size() - 1).getName().substring(2,4).equals(tempPile.get(tempPile.size() - 2).getName().substring(2,4)) ){
-                        tempPile.remove(tempPile.size() - 1);
-                        System.out.println("Please enter the same type that you used as first force");
+                    if(i == 0){
                         tempPile.add(gm.movePile(turn));
-                        i--;
-                        continue;
+                    }
+                    if(i >= 1 ){
+                        System.out.print("Please Enter the name of the force that you want to move or attack: ");
+                        String tempName = input.nextLine();
+                        if(!tempName.substring(2,4).equals(tempPile.get(tempPile.size() - 1).getName().substring(2,4))){
+                            System.out.println("Please enter the same type that you used as first force");
+                            i--;
+                            continue;
+                        }
+                        else{
+                            tempPile.add(gm.movePile(turn,tempName));
+                        }
                     }
                     gm.mapShow();
                 }
