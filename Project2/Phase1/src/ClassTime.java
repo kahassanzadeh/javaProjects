@@ -15,3 +15,4 @@ public enum ClassTime {
     Wed2,
     Wed3
 }
+

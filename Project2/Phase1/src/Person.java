@@ -1,14 +1,16 @@
-
+import java.util.ArrayList;
 
 public class Person {
-    String name;
-    String userName;
-    String password;
+    private String name;
+    private String userName;
+    private String password;
+    private ArrayList<Food> reservedFoods;
 
     public Person(String name,String userName,String password){
         this.name = name;
         this.userName = userName;
         this.password = password;
+        reservedFoods = new ArrayList<>();
     }
 
     public Person(String name){
@@ -33,5 +35,13 @@ public class Person {
 
     public String getName() {
         return name;
+    }
+
+    public void setReservedFoods(Food reservedFoods) {
+        this.reservedFoods.add(reservedFoods);
+    }
+
+    public ArrayList<Food> getReservedFoods() {
+        return reservedFoods;
     }
 }

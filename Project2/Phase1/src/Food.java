@@ -4,6 +4,12 @@ public class Food {
     private int cost;
     private String distributionDay;
 
+    public Food(String name,int cost,String distributionDay){
+        this.name = name;
+        this.cost = cost;
+        this.distributionDay = distributionDay;
+    }
+
     public void setName(String name) {
         this.name = name;
     }
@@ -26,5 +32,10 @@ public class Food {
 
     public String getDistributionDay() {
         return distributionDay;
+    }
+
+    @Override
+    public String toString() {
+        return name + " " + cost;
     }
 }
