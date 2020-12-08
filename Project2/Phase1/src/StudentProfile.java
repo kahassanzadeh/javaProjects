@@ -15,6 +15,7 @@ public class StudentProfile {
     private JPanel studentOperations;
     private JLabel balance;
     private JPanel courseSelection;
+    JButton updateInfo;
 
     public StudentProfile(Student registeredStudent) throws IOException {
 
@@ -26,100 +27,9 @@ public class StudentProfile {
 
         settingStudentProfileInfo(registeredStudent);
         setReservingForm(registeredStudent);
-
-        courseSelection = new JPanel(new BorderLayout());
-
-        JPanel studentInfo = new JPanel(new GridLayout(3,1,5,5));
-        studentInfo.setSize(400,300);
-        studentInfo.setOpaque(true);
-
-        ImagePanel image = new ImagePanel("E:\\university\\5th term\\AP\\Projects\\Project2\\Phase1\\Student.png",50,10,100,100);
-        JLabel firstName = new JLabel(registeredStudent.getName().split("\\s+")[0]);
-        firstName.setHorizontalAlignment(SwingConstants.CENTER);
-        firstName.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(EtchedBorder.LOWERED),"First name"));
-        firstName.setFont(new Font("Times New Roman",Font.PLAIN,20));
-        firstName.setBackground(Color.white);
-        firstName.setOpaque(true);
-
-        JLabel lastName = new JLabel(registeredStudent.getName().split("\\s+")[1]);
-        lastName.setHorizontalAlignment(SwingConstants.CENTER);
-        lastName.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(EtchedBorder.LOWERED),"Last name"));
-        lastName.setFont(new Font("Times New Roman",Font.PLAIN,25));
-        lastName.setBackground(Color.white);
-        lastName.setOpaque(true);
-
-        JLabel average = new JLabel(String.valueOf(registeredStudent.getAverage()));
-        average.setHorizontalAlignment(SwingConstants.CENTER);
-        average.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(EtchedBorder.LOWERED),"Average"));
-        average.setFont(new Font("Times New Roman",Font.PLAIN,20));
-        average.setBackground(Color.white);
-        average.setOpaque(true);
+        setCourseSelection(registeredStudent);
 
 
-        JLabel passedCredits = new JLabel(String.valueOf(registeredStudent.getPassedCredits()));
-        passedCredits.setHorizontalAlignment(SwingConstants.CENTER);
-        passedCredits.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(EtchedBorder.LOWERED),"Passed Credits"));
-        passedCredits.setFont(new Font("Times New Roman",Font.PLAIN,20));
-        passedCredits.setBackground(Color.white);
-        passedCredits.setOpaque(true);
-
-        JLabel currentCredits = new JLabel(String.valueOf(registeredStudent.getCurrentCredits()));
-        currentCredits.setHorizontalAlignment(SwingConstants.CENTER);
-        currentCredits.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(EtchedBorder.LOWERED),"Current Credits"));
-        currentCredits.setFont(new Font("Times New Roman",Font.PLAIN,20));
-        currentCredits.setBackground(Color.white);
-        currentCredits.setOpaque(true);
-
-        studentInfo.add(image);
-        studentInfo.add(new JLabel());
-        studentInfo.add(lastName);
-
-
-        JPanel studentInfo2 = new JPanel(new GridLayout(4,1,5,5));
-        studentInfo2.add(firstName);
-        studentInfo2.add(average);
-        studentInfo2.add(currentCredits);
-        studentInfo2.add(passedCredits);
-
-
-        JPanel studentInfoSection = new JPanel(new GridLayout(2,1,5,5));
-        studentInfoSection.add(studentInfo);
-        studentInfoSection.add(studentInfo2);
-        studentInfoSection.setPreferredSize(new Dimension(200,300));
-
-        JPanel courses = new JPanel(new BorderLayout());
-
-        JPanel courseListMenu = new JPanel(new GridLayout(SystemManagement.getClassNumbers() + 1,1));
-        //ArrayList<JCheckBox>  courseList = new ArrayList<>();
-        String infoTemp = "Class Name";
-        JLabel info = new JLabel(String.format("%-65s",infoTemp) + "Credits" + "        " + "Day of the class" + "     " + "Time of the class" + "       " + "Capacity");
-        info.setFont(new Font("Times New Roman",Font.PLAIN,15));
-        info.setBackground(Color.white);
-        info.setBorder(BorderFactory.createLineBorder(Color.gray,2));
-        info.setOpaque(true);
-        courseListMenu.add(info);
-        for(Class cl : SystemManagement.getClasses()){
-            JCheckBox temp = new JCheckBox(cl.toString());
-            temp.setBackground(Color.white);
-            temp.setBorder(BorderFactory.createLineBorder(Color.gray,5));
-            courseListMenu.add(temp);
-            temp.setOpaque(true);
-            temp.setFont(new Font("Times New Roman",Font.PLAIN,15));
-        }
-
-        JScrollPane courseListScrolled = new JScrollPane(courseListMenu);
-        courseListScrolled.setPreferredSize(new Dimension(200,300));
-        courses.add(courseListScrolled,BorderLayout.CENTER);
-
-        JLabel title= new JLabel();
-        title.setText("Courses");
-        title.setFont(new Font("Times New Roman",Font.BOLD,30));
-        title.setPreferredSize(new Dimension(200,100));
-        courses.add(title,BorderLayout.NORTH);
-
-
-        courseSelection.add(studentInfoSection,BorderLayout.WEST);
-        courseSelection.add(courses,BorderLayout.CENTER);
 
 
 
@@ -203,34 +113,38 @@ public class StudentProfile {
 
 
         JPanel studentClasses = new JPanel(new GridLayout(6,4));
-        JLabel[] labelsOfClassTable = new JLabel[24];
-        for(int i = 0;  i < 24 ; i++){
-            labelsOfClassTable[i] = new JLabel();
-            labelsOfClassTable[i].setBackground(Color.white);
-            labelsOfClassTable[i].setOpaque(true);
-            labelsOfClassTable[i].setHorizontalAlignment(SwingConstants.CENTER);
-            labelsOfClassTable[i].setBorder(BorderFactory.createLineBorder(Color.gray,2));
-            studentClasses.add(labelsOfClassTable[i]);
+        JLabel[][] labelsOfClassTable = new JLabel[6][4];
+        for(int i = 0;  i < 6 ; i++){
+            for(int j = 0;  j < 4 ; j++){
+                labelsOfClassTable[i][j] = new JLabel();
+                labelsOfClassTable[i][j].setBackground(Color.white);
+                labelsOfClassTable[i][j].setOpaque(true);
+                labelsOfClassTable[i][j].setHorizontalAlignment(SwingConstants.CENTER);
+                labelsOfClassTable[i][j].setBorder(BorderFactory.createLineBorder(Color.gray,2));
+                labelsOfClassTable[i][j].setText(" ");
+                labelsOfClassTable[i][j].setFont(new Font("Times New Roman",Font.PLAIN,17));
+            }
         }
-        labelsOfClassTable[0].setText("Days / Times");
-        labelsOfClassTable[0].setFont(new Font("Times new Roman",Font.BOLD,20));
-        labelsOfClassTable[1].setText("8 to 10");
-        labelsOfClassTable[1].setFont(new Font("Times new Roman",Font.BOLD,20));
-        labelsOfClassTable[2].setText("10 to 12");
-        labelsOfClassTable[2].setFont(new Font("Times new Roman",Font.BOLD,20));
-        labelsOfClassTable[3].setText("14 to 16");
-        labelsOfClassTable[3].setFont(new Font("Times new Roman",Font.BOLD,20));
-        labelsOfClassTable[4].setText("Saturday");
-        labelsOfClassTable[4].setFont(new Font("Times new Roman",Font.BOLD,20));
-        labelsOfClassTable[8].setText("Sunday");
-        labelsOfClassTable[8].setFont(new Font("Times new Roman",Font.BOLD,20));
-        labelsOfClassTable[12].setText("Monday");
-        labelsOfClassTable[12].setFont(new Font("Times new Roman",Font.BOLD,20));
-        labelsOfClassTable[16].setText("Tuesday");
-        labelsOfClassTable[16].setFont(new Font("Times new Roman",Font.BOLD,20));
-        labelsOfClassTable[20].setText("Wednesday");
-        labelsOfClassTable[20].setFont(new Font("Times new Roman",Font.BOLD,20));
+        labelsOfClassTable[0][0].setText("Days / Times");
+        labelsOfClassTable[0][0].setFont(new Font("Times new Roman",Font.BOLD,20));
+        labelsOfClassTable[0][1].setText("8 to 10");
+        labelsOfClassTable[0][1].setFont(new Font("Times new Roman",Font.BOLD,20));
+        labelsOfClassTable[0][2].setText("10 to 12");
+        labelsOfClassTable[0][2].setFont(new Font("Times new Roman",Font.BOLD,20));
+        labelsOfClassTable[0][3].setText("14 to 16");
+        labelsOfClassTable[0][3].setFont(new Font("Times new Roman",Font.BOLD,20));
+        labelsOfClassTable[1][0].setText("Saturday");
+        labelsOfClassTable[1][0].setFont(new Font("Times new Roman",Font.BOLD,20));
+        labelsOfClassTable[2][0].setText("Sunday");
+        labelsOfClassTable[2][0].setFont(new Font("Times new Roman",Font.BOLD,20));
+        labelsOfClassTable[3][0].setText("Monday");
+        labelsOfClassTable[3][0].setFont(new Font("Times new Roman",Font.BOLD,20));
+        labelsOfClassTable[4][0].setText("Tuesday");
+        labelsOfClassTable[4][0].setFont(new Font("Times new Roman",Font.BOLD,20));
+        labelsOfClassTable[5][0].setText("Wednesday");
+        labelsOfClassTable[5][0].setFont(new Font("Times new Roman",Font.BOLD,20));
 
+        updatingClassTable(registeredStudent,labelsOfClassTable,studentClasses);
 
         JPanel studentClassesComplete = new JPanel(new BorderLayout());
 
@@ -240,7 +154,14 @@ public class StudentProfile {
         studentClassesComplete.add(studentClasses,BorderLayout.CENTER);
         title.setPreferredSize(new Dimension(200,100));
         studentClassesComplete.add(title,BorderLayout.NORTH);
-        studentClassesComplete.add(new JPanel(),BorderLayout.SOUTH);
+        updateInfo = new JButton("Update the schedules");
+        updateInfo.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                updatingClassTable(registeredStudent,labelsOfClassTable,studentClasses);
+            }
+        });
+        studentClassesComplete.add(new JLabel(),BorderLayout.SOUTH);
         studentClassesComplete.add(new JLabel("         "),BorderLayout.WEST);
 
         studentInfoSection.setPreferredSize(new Dimension(200,300));
@@ -248,6 +169,7 @@ public class StudentProfile {
 
         studentProfile.add(studentInfoSection,BorderLayout.WEST);
         studentProfile.add(studentClassesComplete,BorderLayout.CENTER);
+
     }
 
     private class IncreasingBalanceForm{
@@ -548,4 +470,167 @@ public class StudentProfile {
         }
     }
 
+    public void setCourseSelection(Student registeredStudent){
+        courseSelection = new JPanel(new BorderLayout());
+
+        JPanel studentInfo = new JPanel(new GridLayout(3,1,5,5));
+        studentInfo.setSize(400,300);
+        studentInfo.setOpaque(true);
+
+        ImagePanel image = new ImagePanel("E:\\university\\5th term\\AP\\Projects\\Project2\\Phase1\\Student.png",50,10,100,100);
+        JLabel firstName = new JLabel(registeredStudent.getName().split("\\s+")[0]);
+        firstName.setHorizontalAlignment(SwingConstants.CENTER);
+        firstName.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(EtchedBorder.LOWERED),"First name"));
+        firstName.setFont(new Font("Times New Roman",Font.PLAIN,20));
+        firstName.setBackground(Color.white);
+        firstName.setOpaque(true);
+
+        JLabel lastName = new JLabel(registeredStudent.getName().split("\\s+")[1]);
+        lastName.setHorizontalAlignment(SwingConstants.CENTER);
+        lastName.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(EtchedBorder.LOWERED),"Last name"));
+        lastName.setFont(new Font("Times New Roman",Font.PLAIN,25));
+        lastName.setBackground(Color.white);
+        lastName.setOpaque(true);
+
+        JLabel average = new JLabel(String.valueOf(registeredStudent.getAverage()));
+        average.setHorizontalAlignment(SwingConstants.CENTER);
+        average.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(EtchedBorder.LOWERED),"Average"));
+        average.setFont(new Font("Times New Roman",Font.PLAIN,20));
+        average.setBackground(Color.white);
+        average.setOpaque(true);
+
+
+        JLabel passedCredits = new JLabel(String.valueOf(registeredStudent.getPassedCredits()));
+        passedCredits.setHorizontalAlignment(SwingConstants.CENTER);
+        passedCredits.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(EtchedBorder.LOWERED),"Passed Credits"));
+        passedCredits.setFont(new Font("Times New Roman",Font.PLAIN,20));
+        passedCredits.setBackground(Color.white);
+        passedCredits.setOpaque(true);
+
+        JLabel currentCredits = new JLabel(String.valueOf(registeredStudent.getCurrentCredits()));
+        currentCredits.setHorizontalAlignment(SwingConstants.CENTER);
+        currentCredits.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(EtchedBorder.LOWERED),"Current Credits"));
+        currentCredits.setFont(new Font("Times New Roman",Font.PLAIN,20));
+        currentCredits.setBackground(Color.white);
+        currentCredits.setOpaque(true);
+
+        studentInfo.add(image);
+        studentInfo.add(new JLabel());
+        studentInfo.add(lastName);
+
+
+        JPanel studentInfo2 = new JPanel(new GridLayout(4,1,5,5));
+        studentInfo2.add(firstName);
+        studentInfo2.add(average);
+        studentInfo2.add(currentCredits);
+        studentInfo2.add(passedCredits);
+
+
+        JPanel studentInfoSection = new JPanel(new GridLayout(2,1,5,5));
+        studentInfoSection.add(studentInfo);
+        studentInfoSection.add(studentInfo2);
+        studentInfoSection.setPreferredSize(new Dimension(200,300));
+
+        JPanel courses = new JPanel(new BorderLayout());
+
+        JPanel courseListMenu = new JPanel(new GridLayout(SystemManagement.getClassNumbers() + 1,1));
+        //ArrayList<JCheckBox>  courseList = new ArrayList<>();
+        String infoTemp = "Class Name";
+        String teacherInfo = "Teachers Name";
+        JLabel info = new JLabel(String.format("%-40s",infoTemp) + String.format("%-20s",teacherInfo)+ "        " +"Credits" + "        " + "Day of the class" + "     " + "Time of the class" + "       " + "Capacity");
+        info.setFont(new Font("Times New Roman",Font.PLAIN,15));
+        info.setBackground(Color.white);
+        info.setBorder(BorderFactory.createLineBorder(Color.gray,2));
+        info.setOpaque(true);
+        courseListMenu.add(info);
+
+        ArrayList<JCheckBox> checkboxes = new ArrayList<>();
+        for(Class cl : SystemManagement.getClasses()){
+            checkboxes.add( new JCheckBox(cl.toString()));
+        }
+        for (JCheckBox checkbox : checkboxes) {
+            checkbox.setBackground(Color.white);
+            checkbox.setBorder(BorderFactory.createLineBorder(Color.gray, 5));
+            checkbox.setOpaque(true);
+            checkbox.setFont(new Font("Times New Roman", Font.PLAIN, 15));
+            courseListMenu.add(checkbox);
+        }
+        for(Class cl : registeredStudent.getClasses()){
+            for(JCheckBox jcb : checkboxes){
+                if(cl.toString().equals(jcb.getText())){
+                    jcb.setBackground(Color.pink);
+                    break;
+                }
+            }
+        }
+
+
+
+        JScrollPane courseListScrolled = new JScrollPane(courseListMenu);
+        courseListScrolled.setPreferredSize(new Dimension(200,300));
+        courses.add(courseListScrolled,BorderLayout.CENTER);
+
+        JLabel title= new JLabel();
+        title.setText("Courses");
+        title.setFont(new Font("Times New Roman",Font.BOLD,30));
+        title.setPreferredSize(new Dimension(200,100));
+        courses.add(title,BorderLayout.NORTH);
+
+        ArrayList<Class> checkedClasses = new ArrayList<>();
+        JButton addingCourseButton = new JButton("add courses");
+        addingCourseButton.setFont(new Font("Times New Roman",Font.BOLD,20));
+        addingCourseButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                for(JCheckBox jcb : checkboxes){
+                    Class temp = SystemManagement.searchingClassString(jcb.getText());
+                    try {
+                        if(jcb.isSelected()){
+                            if(SystemManagement.checkEnrollment(registeredStudent,temp)){
+                                registeredStudent.setClasses(temp);
+                                jcb.setText(temp.toString());
+                                jcb.setSelected(false);
+                                jcb.setBackground(Color.pink);
+                            }
+                        }
+                    } catch (Exception exception) {
+                        JOptionPane.showMessageDialog(frame,exception.getMessage(),"Error",JOptionPane.ERROR_MESSAGE);
+                        jcb.setSelected(false);
+                        break;
+                    }
+                }
+                updateInfo.doClick();
+                registeredStudent.setCurrentCredits();
+                currentCredits.setText(String.valueOf(registeredStudent.getCurrentCredits()));
+            }
+        });
+        courses.add(courseListScrolled,BorderLayout.CENTER);
+        courses.add(addingCourseButton,BorderLayout.SOUTH);
+        courseSelection.add(studentInfoSection,BorderLayout.WEST);
+        courseSelection.add(courses,BorderLayout.CENTER);
+    }
+
+    public void updatingClassTable(Student registeredStudent,JLabel[][] labelsOfClassTable,JPanel studentClasses){
+        ArrayList<Class> classes = registeredStudent.getClasses();
+        int i = 0;
+        int j = 0;
+        for(Class cl : classes){
+            if(cl.getTIME_OF_THE_CLASS().toString().substring(0,3).equals("Sat")){i = 1;}
+            else if(cl.getTIME_OF_THE_CLASS().toString().substring(0,3).equals("Sun")){i = 2;}
+            else if(cl.getTIME_OF_THE_CLASS().toString().substring(0,3).equals("Mon")){i = 3;}
+            else if(cl.getTIME_OF_THE_CLASS().toString().substring(0,3).equals("Tue")){i = 4;}
+            else if(cl.getTIME_OF_THE_CLASS().toString().substring(0,3).equals("Wed")){i = 5;}
+
+            if(cl.getTIME_OF_THE_CLASS().toString().charAt(3) == '1'){j = 1;}
+            else if(cl.getTIME_OF_THE_CLASS().toString().charAt(3) == '2'){j = 2;}
+            else if(cl.getTIME_OF_THE_CLASS().toString().charAt(3) == '3'){j = 3;}
+            labelsOfClassTable[i][j].setText(cl.getName() + "  " + cl.getTeacherName());
+            labelsOfClassTable[i][j].setBackground(Color.pink);
+        }
+        for (int a = 0; a < 6; a++){
+            for (int b = 0; b < 4; b++){
+                studentClasses.add(labelsOfClassTable[a][b]);
+            }
+        }
+    }
 }

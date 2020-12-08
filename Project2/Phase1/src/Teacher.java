@@ -3,10 +3,12 @@ import java.util.HashMap;
 
 public class Teacher extends Person implements Commons{
 
-    HashMap<Class, ArrayList<Student>> students;
+    private HashMap<Class, ArrayList<Student>> students;
+    private String faculty;
 
-    public Teacher(String name, String userName, String password) {
+    public Teacher(String name, String userName, String password,String faculty) {
         super(name, userName, password);
+        this.faculty = faculty;
     }
 
     public Teacher(String name){
@@ -36,5 +38,10 @@ public class Teacher extends Person implements Commons{
 
     public HashMap<Class, ArrayList<Student>> getStudents() {
         return students;
+    }
+
+    @Override
+    public String toString() {
+        return String.format("%-60s",String.format("%-40s",this.getName()) + String.format("%-20s",this.getUserName()));
     }
 }

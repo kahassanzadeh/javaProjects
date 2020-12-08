@@ -29,4 +29,8 @@ public class Admin extends Person implements Commons{
         super.setUserName(userName);
     }
 
+    @Override
+    public String toString() {
+        return String.format("%-60s",String.format("%-40s",this.getName()) + String.format("%-20s",this.getUserName()));
+    }
 }

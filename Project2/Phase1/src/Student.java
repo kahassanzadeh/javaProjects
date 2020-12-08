@@ -54,6 +54,7 @@ public class Student extends Person implements Commons {
 
     public void setClasses(Class classes) {
         this.classes.add(classes);
+        //classes.enroll();
     }
 
     public ArrayList<Class> getClasses() {
@@ -61,6 +62,7 @@ public class Student extends Person implements Commons {
     }
 
     public void setCurrentCredits() {
+        this.currentCredits = 0;
         for(Class cl : classes){
             currentCredits += cl.getCREDITS();
         }
@@ -92,5 +94,10 @@ public class Student extends Person implements Commons {
     @Override
     public ArrayList<Food> getReservedFoods() {
         return super.getReservedFoods();
+    }
+
+    @Override
+    public String toString() {
+        return String.format("%-60s",String.format("%-40s",this.getName()) + String.format("%-20s",this.getUserName()));
     }
 }

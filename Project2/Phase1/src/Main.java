@@ -9,48 +9,39 @@ public class Main {
 	    System.out.println(UIManager.getSystemLookAndFeelClassName());
 		UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
 		UIManager.setLookAndFeel("javax.swing.plaf.nimbus.NimbusLookAndFeel");
-        LoginForm l = new LoginForm("Login Page");
-
-        ArrayList<Person> p = new ArrayList<>();
-        Student s = new Student("Kamyar Hassanzadeh","9739021","0022919678");
-        p.add(s);
-        /*SystemManagement.systemList.put("Student",p);
-        l.showLoginForm();*/
-        Food fd = new Food("gheyme",2000,"Tuesday");
-        SystemManagement.setFoodsSchedules(fd);
-        fd = new Food("zereshkpolo",3000,"Monday");
-        SystemManagement.setFoodsSchedules(fd);
-        fd = new Food("adasi",1000,"Saturday");
-        SystemManagement.setFoodsSchedules(fd);
-        fd = new Food("albalopolo",3000,"Sunday");
-        SystemManagement.setFoodsSchedules(fd);
-        fd = new Food("ghorme sabzi",5000,"Sunday");
-        SystemManagement.setFoodsSchedules(fd);
-        fd = new Food("makaroni",3000,"Wednesday");
-        SystemManagement.setFoodsSchedules(fd);
-        s.setReservedFoods(new Food("makaroni",3000,"Wednesday"));
-
-        Class temp = new Class("AP",30,3,"Sat3");
-        SystemManagement.setClasses(temp);
-        temp = new Class("Discrete",50,2,"Sat1");
-        SystemManagement.setClasses(temp);
-        temp = new Class("Casting",15,3,"Tue2");
-        SystemManagement.setClasses(temp);
-        temp = new Class("ECW",30,1,"Wed3");
-        SystemManagement.setClasses(temp);
-        temp = new Class("Solidification",25,2,"Wed2");
-        SystemManagement.setClasses(temp);
-        temp = new Class("Algorithm",50,3,"Mon2");
-        SystemManagement.setClasses(temp);
-
-        temp = new Class("Math1",110,3,"Tue3");
-        SystemManagement.setClasses(temp);
 
 
+        Admin admin = new Admin("Kamyar Hassanzadeh","admin","admin");
+        Teacher t1 = new Teacher("alireza rezaii","8678987","123456","Omran");
+        Teacher t2 = new Teacher("hossein hosseini","4556654","123456","Mavad");
 
+        Student st1 = new Student("ali mahmoodi","9739001","123456");
+        Student st2 = new Student("mohammad alighorbani","9739005","123456");
+        Student st3 = new Student("fereshteh akhgar","9739021","123456");
+        Student st4 = new Student("reza eshtiaghi","9923012","123456");
 
-        StudentProfile st = new StudentProfile(s);
-        st.showingStudentsProfile();
+        Class cl1 = new Class("mohasebat",20,3,"Sat2",t1);
+        Class cl2 = new Class("Azmayeshgah",50,1,"Tue2",t2);
+
+        SystemManagement.setClasses(cl1);
+        SystemManagement.setClasses(cl2);
+        ArrayList<Person> a = new ArrayList<>();
+        a.add(admin);
+        ArrayList<Person> s = new ArrayList<>();
+        s.add(st1);
+        s.add(st2);
+        s.add(st3);
+        s.add(st4);
+        ArrayList<Person> t = new ArrayList<>();
+        t.add(t1);
+        t.add(t2);
+        SystemManagement.getSystemList().put("Admin",a);
+        SystemManagement.getSystemList().put("Student",s);
+        SystemManagement.getSystemList().put("Teacher",t);
+
+        AdminProfile l = new AdminProfile(admin);
+        l.showingAdminProfile();
+
 
 
     }

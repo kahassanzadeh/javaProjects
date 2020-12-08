@@ -89,13 +89,24 @@ public class LoginForm {
                     setRegisteredPerson(SystemManagement.searchPerson(userNameField.getText(),String.valueOf(passwordField.getPassword())));
                     loginForm.setVisible(false);
                     if(registeredPerson != null ){
-                        StudentProfile profile = null;
+                        StudentProfile profileS = null;
+                        AdminProfile profileA = null;
                         try {
-                            profile = new StudentProfile((Student)registeredPerson);
+                            if(registeredPerson instanceof Student){
+                                profileS = new StudentProfile((Student)registeredPerson);
+                            }
+                            else if(registeredPerson instanceof Admin){
+                                profileA = new AdminProfile((Admin) registeredPerson);
+                            }
                         } catch (IOException ioException) {
                             ioException.printStackTrace();
                         }
-                        profile.showingStudentsProfile();
+                        if( profileS != null){
+                            profileS.showingStudentsProfile();
+                        }
+                        else if(profileA != null){
+                            profileA.showingAdminProfile();
+                        }
                     }
                 }
                 else{
