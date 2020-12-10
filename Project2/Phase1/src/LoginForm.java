@@ -86,7 +86,7 @@ public class LoginForm {
         public void actionPerformed(ActionEvent e) {
             if(e.getSource().equals(loginButton)){
                 if(SystemManagement.checkLogin(userNameField.getText(), String.valueOf(passwordField.getPassword()))){
-                    setRegisteredPerson(SystemManagement.searchPerson(userNameField.getText(),String.valueOf(passwordField.getPassword())));
+                    setRegisteredPerson(SystemManagement.searchPersonForLogin(userNameField.getText(),String.valueOf(passwordField.getPassword())));
                     loginForm.setVisible(false);
                     if(registeredPerson != null ){
                         StudentProfile profileS = null;

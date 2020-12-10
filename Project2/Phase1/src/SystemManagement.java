@@ -9,7 +9,10 @@ public class SystemManagement {
     private static ArrayList<Class> classes = new ArrayList<>();
 
 
-    public static Person searchPerson(String userName,String password){
+    public static void addClass(Class cl){
+        classes.add(cl);
+    }
+    public static Person searchPersonForLogin(String userName,String password){
         for(String st : systemList.keySet()){
             for(Person ps : systemList.get(st)){
                 if(ps.getUserName().equals(userName) && ps.getPassword().equals(password)){
@@ -21,7 +24,11 @@ public class SystemManagement {
 
     }
 
-
+    public static void checkPassword(Person person,String password) throws Exception {
+        if(!person.getPassword().equals(password)){
+            throw new Exception("Incorrect Password");
+        }
+    }
     public static boolean checkLogin(String userName,String password){
 
         for(String st : systemList.keySet()){
@@ -36,6 +43,11 @@ public class SystemManagement {
 
     public static ArrayList<Food> getFoodsSchedules() {
         return foodsSchedules;
+    }
+
+    public static void removeClassFromTeachersList(Class cl,Teacher teacher){
+        teacher.removeClass(cl);
+
     }
 
     public static void setFoodsSchedules(Food foodsSchedule) {
@@ -117,9 +129,6 @@ public class SystemManagement {
         return classes;
     }
 
-    public static void setClasses(Class classes) {
-        SystemManagement.classes.add(classes);
-    }
 
     public static Class searchingClassString(String classInfo){
         for(Class cl  : classes){
@@ -130,6 +139,15 @@ public class SystemManagement {
         return null;
     }
 
+    public static Class searchClass(String name,String timeOfTheClass) throws Exception {
+        for(Class cl : classes){
+            if(cl.getName().equals(name) && cl.getTIME_OF_THE_CLASS().toString().equals(timeOfTheClass))
+            {
+                return cl;
+            }
+        }
+        throw new Exception("class is not exists");
+    }
     public static boolean checkEnrollment(Student registeredStudent, Class temp) throws Exception {
 
         for(Class cl : registeredStudent.getClasses()){
@@ -149,18 +167,47 @@ public class SystemManagement {
     public static HashMap<String, ArrayList<Person>> getSystemList() {
         return systemList;
     }
+    public static Person searchPerson(String userName,String name){
+        for(String st : SystemManagement.systemList.keySet()){
+            for(Person pr : SystemManagement.systemList.get(st)){
+                if(pr.getName().equals(name) && pr.getUserName().equals(userName)){
+                    return pr;
+                }
+            }
+        }
+        return null;
+    }
 
+    public static Student searchStudent(String userName,String name){
+        for(Person st : SystemManagement.systemList.get("Student")){
+            if(st.getName().equals(name) && st.getUserName().equals(userName)){
+                return (Student)st;
+            }
+        }
+        return null;
+    }
 
     public static void addStudent(Student temp) throws Exception {
-        if(searchPerson(temp.getUserName(),temp.getPassword()) != null){
-            throw new Exception("this student has been added");
+        if(searchPerson(temp.getUserName(),temp.getName()) != null){
+            throw new Exception("this user has been added");
         }
-        systemList.get("Student").add(temp);
+        else{
+            systemList.get("Student").add(temp);
+        }
+    }
+
+    public static Teacher searchTeacher(String userName,String name){
+        for(Person st : SystemManagement.systemList.get("Teacher")){
+            if(st.getName().equals(name) && st.getUserName().equals(userName)){
+                return (Teacher) st;
+            }
+        }
+        return null;
     }
 
     public static void addTeacher(Teacher temp) throws Exception {
-        if(searchPerson(temp.getUserName(),temp.getPassword()) != null){
-            throw new Exception("this teacher has been added");
+        if(searchPerson(temp.getUserName(),temp.getName()) != null){
+            throw new Exception("this user has been added");
         }
         systemList.get("Teacher").add(temp);
     }

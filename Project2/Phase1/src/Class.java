@@ -8,6 +8,7 @@ public class Class {
     private String name;
     private final int CREDITS;
     private final ClassTime TIME_OF_THE_CLASS;
+    private boolean status;
 
     Class(String name,int capacity,int credits,String classTime,Teacher teacher){
         this.name = name;
@@ -16,7 +17,9 @@ public class Class {
         this.TIME_OF_THE_CLASS = ClassTime.valueOf(classTime);
         this.students = new ArrayList<>();
         this.teacher = teacher;
-
+        SystemManagement.addClass(this);
+        teacher.addClass(this);
+        status = true;
     }
 
     public int getCREDITS() {
@@ -73,5 +76,17 @@ public class Class {
     @Override
     public int hashCode() {
         return Objects.hash(students, teacher, capacity, name, CREDITS, TIME_OF_THE_CLASS);
+    }
+
+    public ArrayList<Student> getStudents() {
+        return students;
+    }
+
+    public void setStatus(boolean status) {
+        this.status = status;
+    }
+
+    public boolean getStatus() {
+        return status;
     }
 }

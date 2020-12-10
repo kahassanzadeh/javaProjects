@@ -11,17 +11,18 @@ public class Main {
 		UIManager.setLookAndFeel("javax.swing.plaf.nimbus.NimbusLookAndFeel");
 
 
-        Admin admin = new Admin("Kamyar Hassanzadeh","admin","admin");
+        //Admin admin = new Admin("Kamyar Hassanzadeh","admin","admin");
         Teacher t1 = new Teacher("alireza rezaii","8678987","123456","Omran");
-        Teacher t2 = new Teacher("hossein hosseini","4556654","123456","Mavad");
+        Class cl1 = new Class("mohasebat",20,3,"Sat2",t1);
+        Class cl2 = new Class("Azmayeshgah",50,1,"Tue2",t1);
+        //Teacher t2 = new Teacher("hossein hosseini","4556654","123456","Mavad");
 
-        Student st1 = new Student("ali mahmoodi","9739001","123456");
+        /*Student st1 = new Student("ali mahmoodi","9739001","123456");
         Student st2 = new Student("mohammad alighorbani","9739005","123456");
         Student st3 = new Student("fereshteh akhgar","9739021","123456");
         Student st4 = new Student("reza eshtiaghi","9923012","123456");
 
-        Class cl1 = new Class("mohasebat",20,3,"Sat2",t1);
-        Class cl2 = new Class("Azmayeshgah",50,1,"Tue2",t2);
+
 
         SystemManagement.setClasses(cl1);
         SystemManagement.setClasses(cl2);
@@ -40,8 +41,10 @@ public class Main {
         SystemManagement.getSystemList().put("Teacher",t);
 
         AdminProfile l = new AdminProfile(admin);
-        l.showingAdminProfile();
+        l.showingAdminProfile();*/
 
+        TeachersProfile tp = new TeachersProfile(t1);
+        tp.showTeacherProfile();
 
 
     }

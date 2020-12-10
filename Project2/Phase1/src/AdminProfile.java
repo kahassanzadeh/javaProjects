@@ -11,6 +11,7 @@ public class AdminProfile {
     private JPanel adminProfile ;
     private JPanel adminSystemManaging;
 
+
     public AdminProfile(Admin admin){
         frame = new JFrame("Student Profile");
         frame.setLocation(100,100);
@@ -19,11 +20,17 @@ public class AdminProfile {
 
         setAdminProfile(admin);
         setAdminFoodSchedule(admin);
+        setAdminSystemManagingMenu(admin);
 
+        JTabbedPane tabs = new JTabbedPane();
+        tabs.addTab("Profile And Food Management",adminProfile);
+        tabs.addTab("System Managing",adminSystemManaging);
+        frame.setContentPane(tabs);
+    }
+    public void setAdminSystemManagingMenu(Admin admin){
         adminSystemManaging = new JPanel(new BorderLayout());
         JPanel adminInfo = new JPanel(new GridLayout(5,1,5,5));
         adminInfo.setSize(400,300);
-        adminInfo.setOpaque(true);
 
         ImagePanel image = new ImagePanel("E:\\university\\5th term\\AP\\Projects\\Project2\\Phase1\\Admin.png",50,10,100,100);
         JLabel firstName = new JLabel(admin.getName().split("\\s+")[0]);
@@ -133,11 +140,12 @@ public class AdminProfile {
                 Student temp = new Student(studentName.getText(),studentID.getText(),studentPass.getText());
                 try{
                     SystemManagement.addStudent(temp);
+                    setNewStudentOrTeacher(list,scrollPane);
                     studentName.setText("");
                     studentID.setText("");
                     studentPass.setText("");
                 } catch (Exception exception) {
-                    JOptionPane.showMessageDialog(frame,"Had been added","Error",JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(frame,exception.getMessage(),"Error",JOptionPane.ERROR_MESSAGE);
                     studentName.setText("");
                     studentID.setText("");
                     studentPass.setText("");
@@ -189,18 +197,19 @@ public class AdminProfile {
         tempt.setPreferredSize(new Dimension(50,300));
 
         JButton addingTeacherButton = new JButton("add");
-        addingStudentButton.addActionListener(new ActionListener() {
+        addingTeacherButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 Teacher temp = new Teacher(teacherName.getText(),teacherID.getText(),teacherPass.getText(),teacherFaculty.getText());
                 try{
                     SystemManagement.addTeacher(temp);
+                    setNewStudentOrTeacher(list,scrollPane);
                     teacherName.setText("");
                     teacherID.setText("");
                     teacherPass.setText("");
                     teacherFaculty.setText("");
                 } catch (Exception exception) {
-                    JOptionPane.showMessageDialog(frame,"Had been added","Error",JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(frame,exception.getMessage(),"Error",JOptionPane.ERROR_MESSAGE);
                     teacherName.setText("");
                     teacherID.setText("");
                     teacherPass.setText("");
@@ -221,15 +230,38 @@ public class AdminProfile {
         toolsPanel.setPreferredSize(new Dimension(300,200));
         information.add(toolsPanel,BorderLayout.SOUTH);
 
-        JTabbedPane tabs = new JTabbedPane();
-        tabs.addTab("Profile And Food Management",adminProfile);
-        tabs.addTab("System Managing",adminSystemManaging);
-        frame.setContentPane(tabs);
     }
-
     public void showingAdminProfile() {
         frame.pack();
         frame.setVisible(true);
+    }
+    private void setNewStudentOrTeacher(JTextArea list,JScrollPane scrollPane){
+        list.setText("");
+        list.append("Admins \n");
+        for(Person pr :  SystemManagement.getSystemList().get("Admin")){
+            Admin adminTemp = (Admin) pr;
+            list.append(adminTemp.toString()+ "\n");
+        }
+        list.append("\nTeachers \n");
+        for(Person pr :  SystemManagement.getSystemList().get("Teacher")){
+            Teacher teacher = (Teacher) pr;
+            list.append(teacher.toString()+ "\n");
+        }
+
+        list.append("\nStudents \n");
+        for(Person pr :  SystemManagement.getSystemList().get("Student")){
+            Student student = (Student) pr;
+            list.append(student.toString()+ "\n");
+        }
+        list.append("\nClasses \n");
+        for(Class cl :  SystemManagement.getClasses()){
+            list.append(cl.toString()+ "\n");
+        }
+
+
+        list.setEditable(false);
+        list.setFont(new Font("Times New Roman",Font.PLAIN,15));
+        scrollPane.setPreferredSize(new Dimension(100,300));
     }
     public void setAdminFoodSchedule(Admin admin){
         JPanel foodPanel = new JPanel(new BorderLayout(10,10));

@@ -15,7 +15,7 @@ public class StudentProfile {
     private JPanel studentOperations;
     private JLabel balance;
     private JPanel courseSelection;
-    JButton updateInfo;
+    private JButton updateInfo;
 
     public StudentProfile(Student registeredStudent) throws IOException {
 
