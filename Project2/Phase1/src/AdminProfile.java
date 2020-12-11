@@ -194,7 +194,7 @@ public class AdminProfile {
         tempt.add(teacherPass);
         tempt.add(tFaculty);
         tempt.add(teacherFaculty);
-        tempt.setPreferredSize(new Dimension(50,300));
+        tempt.setPreferredSize(new   Dimension(50,300));
 
         JButton addingTeacherButton = new JButton("add");
         addingTeacherButton.addActionListener(new ActionListener() {

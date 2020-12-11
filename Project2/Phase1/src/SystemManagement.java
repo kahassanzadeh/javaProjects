@@ -1,4 +1,3 @@
-import javax.swing.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -139,14 +138,28 @@ public class SystemManagement {
         return null;
     }
 
-    public static Class searchClass(String name,String timeOfTheClass) throws Exception {
+    public static Class searchClass(String name,String timeOfTheClass,String dayTime2) throws Exception {
         for(Class cl : classes){
-            if(cl.getName().equals(name) && cl.getTIME_OF_THE_CLASS().toString().equals(timeOfTheClass))
+            if(cl.getName().equals(name) && cl.getTIME_OF_THE_CLASS1().toString().equals(timeOfTheClass) )
             {
-                return cl;
+                if(cl.getTIME_OF_THE_CLASS2()!= null && cl.getTIME_OF_THE_CLASS2().toString().equals(dayTime2)){
+                    return cl;
+                }
+                else{
+                    return cl;
+                }
             }
         }
         throw new Exception("class is not exists");
+    }
+
+    public static ArrayList<Student> searchClassStudents(String className,Teacher registeredTeacher) throws Exception {
+        for(Class cl : registeredTeacher.getClasses()){
+            if(cl.getName().equals(className)){
+                return cl.getStudents();
+            }
+        }
+        return null;
     }
     public static boolean checkEnrollment(Student registeredStudent, Class temp) throws Exception {
 
@@ -154,7 +167,16 @@ public class SystemManagement {
             if(cl.equals(temp)){
                 throw new Exception("This course had been selected");
             }
-            if(cl.getTIME_OF_THE_CLASS().equals(temp.getTIME_OF_THE_CLASS())){
+            if(cl.getTIME_OF_THE_CLASS1().equals(temp.getTIME_OF_THE_CLASS1())){
+                throw new Exception("Time Interference with " + cl.getName());
+            }
+            if(cl.getTIME_OF_THE_CLASS2()!= null && cl.getTIME_OF_THE_CLASS2().equals(temp.getTIME_OF_THE_CLASS1())){
+                throw new Exception("Time Interference with " + cl.getName());
+            }
+            if(cl.getTIME_OF_THE_CLASS1().equals(temp.getTIME_OF_THE_CLASS2())){
+                throw new Exception("Time Interference with " + cl.getName());
+            }
+            if(cl.getTIME_OF_THE_CLASS2()!= null && cl.getTIME_OF_THE_CLASS2().equals(temp.getTIME_OF_THE_CLASS2())){
                 throw new Exception("Time Interference with " + cl.getName());
             }
         }
@@ -178,13 +200,13 @@ public class SystemManagement {
         return null;
     }
 
-    public static Student searchStudent(String userName,String name){
+    public static Student searchStudent(String userName) throws Exception {
         for(Person st : SystemManagement.systemList.get("Student")){
-            if(st.getName().equals(name) && st.getUserName().equals(userName)){
+            if(st.getUserName().equals(userName)){
                 return (Student)st;
             }
         }
-        return null;
+        throw new Exception("Student Id is Incorrect");
     }
 
     public static void addStudent(Student temp) throws Exception {
@@ -210,5 +232,24 @@ public class SystemManagement {
             throw new Exception("this user has been added");
         }
         systemList.get("Teacher").add(temp);
+    }
+
+
+
+    public static void addStudentToClass(Student student, Class temp) {
+        temp.addStudent(student);
+    }
+
+    public static ArrayList<Student> getClassList(Class cla) {
+        return cla.getStudents();
+    }
+
+    public static void setScore(Student st, String clName,Double score) {
+        for(Class cl : st.getClasses()){
+            if(cl.getName().equals(clName)){
+                st.getEducationalReport().replace(cl.getName(),score);
+                st.setAverage();
+            }
+        }
     }
 }

@@ -588,6 +588,7 @@ public class StudentProfile {
                         if(jcb.isSelected()){
                             if(SystemManagement.checkEnrollment(registeredStudent,temp)){
                                 registeredStudent.setClasses(temp);
+                                temp.addStudent(registeredStudent);
                                 jcb.setText(temp.toString());
                                 jcb.setSelected(false);
                                 jcb.setBackground(Color.pink);
@@ -615,15 +616,33 @@ public class StudentProfile {
         int i = 0;
         int j = 0;
         for(Class cl : classes){
-            if(cl.getTIME_OF_THE_CLASS().toString().substring(0,3).equals("Sat")){i = 1;}
-            else if(cl.getTIME_OF_THE_CLASS().toString().substring(0,3).equals("Sun")){i = 2;}
-            else if(cl.getTIME_OF_THE_CLASS().toString().substring(0,3).equals("Mon")){i = 3;}
-            else if(cl.getTIME_OF_THE_CLASS().toString().substring(0,3).equals("Tue")){i = 4;}
-            else if(cl.getTIME_OF_THE_CLASS().toString().substring(0,3).equals("Wed")){i = 5;}
+            if(cl.getTIME_OF_THE_CLASS1().toString().substring(0,3).equals("Sat")){i = 1;}
+            else if(cl.getTIME_OF_THE_CLASS1().toString().substring(0,3).equals("Sun")){i = 2;}
+            else if(cl.getTIME_OF_THE_CLASS1().toString().substring(0,3).equals("Mon")){i = 3;}
+            else if(cl.getTIME_OF_THE_CLASS1().toString().substring(0,3).equals("Tue")){i = 4;}
+            else if(cl.getTIME_OF_THE_CLASS1().toString().substring(0,3).equals("Wed")){i = 5;}
 
-            if(cl.getTIME_OF_THE_CLASS().toString().charAt(3) == '1'){j = 1;}
-            else if(cl.getTIME_OF_THE_CLASS().toString().charAt(3) == '2'){j = 2;}
-            else if(cl.getTIME_OF_THE_CLASS().toString().charAt(3) == '3'){j = 3;}
+            if(cl.getTIME_OF_THE_CLASS1().toString().charAt(3) == '1'){j = 1;}
+            else if(cl.getTIME_OF_THE_CLASS1().toString().charAt(3) == '2'){j = 2;}
+            else if(cl.getTIME_OF_THE_CLASS1().toString().charAt(3) == '3'){j = 3;}
+            labelsOfClassTable[i][j].setText(cl.getName() + "  " + cl.getTeacherName());
+            labelsOfClassTable[i][j].setBackground(Color.pink);
+        }
+        i = 0;
+        j = 0;
+        for(Class cl : classes){
+            if(cl.getTIME_OF_THE_CLASS2() == null){
+                continue;
+            }
+            if(cl.getTIME_OF_THE_CLASS2().toString().substring(0,3).equals("Sat")){i = 1;}
+            else if(cl.getTIME_OF_THE_CLASS2().toString().substring(0,3).equals("Sun")){i = 2;}
+            else if(cl.getTIME_OF_THE_CLASS2().toString().substring(0,3).equals("Mon")){i = 3;}
+            else if(cl.getTIME_OF_THE_CLASS2().toString().substring(0,3).equals("Tue")){i = 4;}
+            else if(cl.getTIME_OF_THE_CLASS2().toString().substring(0,3).equals("Wed")){i = 5;}
+
+            if(cl.getTIME_OF_THE_CLASS2().toString().charAt(3) == '1'){j = 1;}
+            else if(cl.getTIME_OF_THE_CLASS2().toString().charAt(3) == '2'){j = 2;}
+            else if(cl.getTIME_OF_THE_CLASS2().toString().charAt(3) == '3'){j = 3;}
             labelsOfClassTable[i][j].setText(cl.getName() + "  " + cl.getTeacherName());
             labelsOfClassTable[i][j].setBackground(Color.pink);
         }
