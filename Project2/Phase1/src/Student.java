@@ -1,7 +1,8 @@
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-public class Student extends Person implements Commons {
+public class Student extends Person implements Commons , Serializable {
     private long balance;
     private float average;
     private int passedCredits;

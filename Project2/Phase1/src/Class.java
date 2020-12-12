@@ -1,7 +1,8 @@
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Objects;
 
-public class Class {
+public class Class implements Serializable {
     private ArrayList<Student> students;
     private Teacher teacher;
     private int capacity;

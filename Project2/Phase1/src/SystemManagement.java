@@ -1,3 +1,4 @@
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -6,6 +7,20 @@ public class SystemManagement {
     private static HashMap<String, ArrayList<Person>> systemList = new HashMap<>();
     private static ArrayList<Food> foodsSchedules = new ArrayList<>();
     private static ArrayList<Class> classes = new ArrayList<>();
+
+
+    public static void renew() throws IOException {
+        FileManager flManager = new FileManager();
+        systemList = flManager.totalPersonInfoReading();
+        foodsSchedules = flManager.readFoods();
+        classes = flManager.readClass();
+    }
+    public static void save(){
+        FileManager flManager = new FileManager();
+        flManager.totalPersonInfoWriting(systemList);
+        flManager.writeClass(classes);
+        flManager.writeFoods(foodsSchedules);
+    }
 
 
     public static void addClass(Class cl){
@@ -40,7 +55,10 @@ public class SystemManagement {
         return false;
     }
 
-    public static ArrayList<Food> getFoodsSchedules() {
+    public static ArrayList<Food> getFoodsSchedules() throws Exception {
+        if(foodsSchedules == null){
+            throw new Exception("food not created");
+        }
         return foodsSchedules;
     }
 

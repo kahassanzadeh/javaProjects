@@ -14,17 +14,21 @@ public class LoginForm {
 
     private Person registeredPerson;
 
-    public LoginForm(String title){
+    public LoginForm(String title) throws IOException {
         loginForm = new JFrame(title);
         loginForm.setLocation(500,300);
         loginForm.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-
+        loginForm.setPreferredSize(new Dimension(400,200));
+        SystemManagement.renew();
         JPanel panel = new JPanel(new BorderLayout(10,10));
         loginForm.setContentPane(panel);
 
         JLabel label = new JLabel("Please enter your username and password");
+        label.setPreferredSize(new Dimension(150, 50));
         label.setBackground(Color.lightGray);
         label.setBorder(BorderFactory.createLineBorder(Color.BLACK,2));
+        label.setHorizontalAlignment(SwingConstants.CENTER);
+        label.setFont(new Font("Calibri",Font.BOLD,17));
 
         ButtonHandler buttonHandler = new ButtonHandler();
         MouseHandler mouseHandler = new MouseHandler();
@@ -33,9 +37,11 @@ public class LoginForm {
         userNameField = new JTextField("Enter your User Name...");
         userNameField.setForeground(Color.lightGray);
         userNameField.addMouseListener(mouseHandler);
+        userNameLabel.setHorizontalAlignment(SwingConstants.CENTER);
 
 
         JLabel passwordLabel = new JLabel("Password : ");
+        passwordLabel.setHorizontalAlignment(SwingConstants.CENTER);
         passwordField = new JPasswordField();
 
 
@@ -91,12 +97,16 @@ public class LoginForm {
                     if(registeredPerson != null ){
                         StudentProfile profileS = null;
                         AdminProfile profileA = null;
+                        TeachersProfile profileT = null;
                         try {
                             if(registeredPerson instanceof Student){
                                 profileS = new StudentProfile((Student)registeredPerson);
                             }
                             else if(registeredPerson instanceof Admin){
                                 profileA = new AdminProfile((Admin) registeredPerson);
+                            }
+                            else if( registeredPerson instanceof Teacher){
+                                profileT = new TeachersProfile((Teacher) registeredPerson);
                             }
                         } catch (IOException ioException) {
                             ioException.printStackTrace();
@@ -107,10 +117,15 @@ public class LoginForm {
                         else if(profileA != null){
                             profileA.showingAdminProfile();
                         }
+                        else if(profileT != null){
+                            profileT.showTeacherProfile();
+                        }
                     }
                 }
                 else{
                     JOptionPane.showMessageDialog(loginForm,"Invalid password or user name","Error",JOptionPane.ERROR_MESSAGE);
+                    passwordField.setText("");
+                    userNameField.setText("");
                     setRegisteredPerson(null);
                 }
             }

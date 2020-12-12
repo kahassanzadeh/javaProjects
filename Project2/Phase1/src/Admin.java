@@ -1,4 +1,6 @@
-public class Admin extends Person implements Commons{
+import java.io.Serializable;
+
+public class Admin extends Person implements Commons, Serializable {
 
 
     public Admin(String name, String userName, String password) {

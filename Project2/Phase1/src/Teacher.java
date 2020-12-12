@@ -1,8 +1,9 @@
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Set;
 
-public class Teacher extends Person implements Commons{
+public class Teacher extends Person implements Commons, Serializable {
 
     private ArrayList<Class> classes;
     private String faculty;

@@ -13,7 +13,7 @@ public class Main {
 
 
         Admin admin = new Admin("Kamyar Hassanzadeh","admin","admin");
-        Teacher t1 = new Teacher("alireza rezaii","8678987","123456","Omran");
+        /*Teacher t1 = new Teacher("alireza rezaii","8678987","123456","Omran");
         Class cl1 = new Class("mohasebat",20,3,"Sat2",t1);
         Class cl2 = new Class("Azmayeshgah",50,1,"Tue2","Sun2",t1);
         Teacher t2 = new Teacher("hossein hosseini","4556654","123456","Mavad");
@@ -46,18 +46,23 @@ public class Main {
         t.add(t2);
         SystemManagement.getSystemList().put("Admin",a);
         SystemManagement.getSystemList().put("Student",s);
-        SystemManagement.getSystemList().put("Teacher",t);
+        SystemManagement.getSystemList().put("Teacher",t);*/
+        //SystemManagement.save();
 
-        AdminProfile l = new AdminProfile(admin);
+        LoginForm login = new LoginForm("Login Form");
+
+        login.showLoginForm();
+
+        //AdminProfile l = new AdminProfile(admin);
         //l.showingAdminProfile();
 
-        TeachersProfile tp = new TeachersProfile(t1);
-        tp.showTeacherProfile();
+        //TeachersProfile tp = new TeachersProfile(t1);
+        //tp.showTeacherProfile();
 
-        StudentProfile m = new StudentProfile(st1);
+        //StudentProfile m = new StudentProfile(st1);
         //m.showingStudentsProfile();
 
-        m = new StudentProfile(st2);
+        //m = new StudentProfile(st2);
         //m.showingStudentsProfile();
 
         /*HashMap<String,ArrayList<String>> map = new HashMap<>();

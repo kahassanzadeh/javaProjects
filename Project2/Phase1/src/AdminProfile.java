@@ -3,6 +3,8 @@ import javax.swing.border.EtchedBorder;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.util.ArrayList;
 
 public class AdminProfile {
@@ -15,8 +17,15 @@ public class AdminProfile {
     public AdminProfile(Admin admin){
         frame = new JFrame("Student Profile");
         frame.setLocation(100,100);
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
         frame.setSize(600,800);
+        frame.addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent e) {
+                SystemManagement.save();
+                System.exit(0);
+            }
+        });
 
         setAdminProfile(admin);
         setAdminFoodSchedule(admin);
@@ -295,47 +304,51 @@ public class AdminProfile {
         foodTable[6].setFont(new Font("Times New Roman",Font.BOLD,15));
         foodTable[12].setText("Type 2 ");
         foodTable[12].setFont(new Font("Times New Roman",Font.BOLD,15));
-        for(Food fd : SystemManagement.getFoodsSchedules()) {
-            switch (fd.getDistributionDay()) {
-                case "Saturday":
-                    if (!foodTable[7].getText().equals("")) {
-                        foodTable[13].setText(fd.toString());
-                    } else {
-                        foodTable[7].setText(fd.toString());
-                    }
-                    break;
-                case "Sunday":
-                    if (!foodTable[8].getText().equals("")) {
-                        foodTable[14].setText(fd.toString());
-                    } else {
-                        foodTable[8].setText(fd.toString());
-                    }
-                    break;
-                case "Monday":
-                    if (!foodTable[9].getText().equals("")) {
-                        foodTable[15].setText(fd.toString());
-                    } else {
-                        foodTable[9].setText(fd.toString());
-                    }
-                    break;
-                case "Tuesday":
-                    if (!foodTable[10].getText().equals("")) {
-                        foodTable[16].setText(fd.toString());
-                    } else {
-                        foodTable[10].setText(fd.toString());
-                    }
-                    break;
-                case "Wednesday":
-                    if (!foodTable[11].getText().equals("")) {
-                        foodTable[17].setText(fd.toString());
-                    } else {
-                        foodTable[11].setText(fd.toString());
-                    }
-                    break;
+        try{
+            for(Food fd : SystemManagement.getFoodsSchedules()) {
+                switch (fd.getDistributionDay()) {
+                    case "Saturday":
+                        if (!foodTable[7].getText().equals("")) {
+                            foodTable[13].setText(fd.toString());
+                        } else {
+                            foodTable[7].setText(fd.toString());
+                        }
+                        break;
+                    case "Sunday":
+                        if (!foodTable[8].getText().equals("")) {
+                            foodTable[14].setText(fd.toString());
+                        } else {
+                            foodTable[8].setText(fd.toString());
+                        }
+                        break;
+                    case "Monday":
+                        if (!foodTable[9].getText().equals("")) {
+                            foodTable[15].setText(fd.toString());
+                        } else {
+                            foodTable[9].setText(fd.toString());
+                        }
+                        break;
+                    case "Tuesday":
+                        if (!foodTable[10].getText().equals("")) {
+                            foodTable[16].setText(fd.toString());
+                        } else {
+                            foodTable[10].setText(fd.toString());
+                        }
+                        break;
+                    case "Wednesday":
+                        if (!foodTable[11].getText().equals("")) {
+                            foodTable[17].setText(fd.toString());
+                        } else {
+                            foodTable[11].setText(fd.toString());
+                        }
+                        break;
+                }
+
             }
 
-        }
+        } catch (Exception exception) {
 
+        }
 
 
         JLabel title= new JLabel();
@@ -376,7 +389,7 @@ public class AdminProfile {
             public void actionPerformed(ActionEvent e) {
                 try{
                     SystemManagement.addingFood(nameOfTheFoodTextfield.getText(),costOfTheFoodTextfield.getText(),distributionDayOfTheFoodTextfield.getText());
-                    renewReservedFoods(foodTable,SystemManagement.getFoodsSchedules());
+                    renewReservedFoods(foodTable,SystemManagement.getFoodsSchedules(),foodStatus);
                     nameOfTheFoodTextfield.setText("");
                     costOfTheFoodTextfield.setText("");
                     distributionDayOfTheFoodTextfield.setText("");
@@ -438,46 +451,77 @@ public class AdminProfile {
         foodPanel.add(foodReservingMenu,BorderLayout.SOUTH);
         adminProfile.add(foodPanel);
     }
-    public void renewReservedFoods(JLabel[] table, ArrayList<Food> reserveFoods){
-        for(Food fd : SystemManagement.getFoodsSchedules()) {
-            switch (fd.getDistributionDay()) {
-                case "Saturday":
-                    if (!table[7].getText().equals("")) {
-                        table[13].setText(fd.toString());
-                    } else {
-                        table[7].setText(fd.toString());
-                    }
-                    break;
-                case "Sunday":
-                    if (!table[8].getText().equals("")) {
-                        table[14].setText(fd.toString());
-                    } else {
-                        table[8].setText(fd.toString());
-                    }
-                    break;
-                case "Monday":
-                    if (!table[9].getText().equals("")) {
-                        table[15].setText(fd.toString());
-                    } else {
-                        table[9].setText(fd.toString());
-                    }
-                    break;
-                case "Tuesday":
-                    if (!table[10].getText().equals("")) {
-                        table[16].setText(fd.toString());
-                    } else {
-                        table[10].setText(fd.toString());
-                    }
-                    break;
-                case "Wednesday":
-                    if (!table[11].getText().equals("")) {
-                        table[17].setText(fd.toString());
-                    } else {
-                        table[11].setText(fd.toString());
-                    }
-                    break;
+    public void renewReservedFoods(JLabel[] table, ArrayList<Food> reserveFoods,JPanel foodStatus){
+        foodStatus.removeAll();
+        for(int i = 0; i < 18 ; i++){
+            table[i] = new JLabel();
+            table[i].setBackground(Color.white);
+            table[i].setOpaque(true);
+            table[i].setHorizontalAlignment(SwingConstants.CENTER);
+            table[i].setFont(new Font("Times New Roman",Font.PLAIN,13));
+            table[i].setBorder(BorderFactory.createLineBorder(Color.gray,2));
+            foodStatus.add(table[i]);
+        }
+        table[0].setText("Type / Day");
+        table[0].setFont(new Font("Times New Roman",Font.BOLD,15));
+        table[1].setText("Saturday");
+        table[1].setFont(new Font("Times New Roman",Font.BOLD,15));
+        table[2].setText("Sunday");
+        table[2].setFont(new Font("Times New Roman",Font.BOLD,15));
+        table[3].setText("Monday");
+        table[3].setFont(new Font("Times New Roman",Font.BOLD,15));
+        table[4].setText("Tuesday");
+        table[4].setFont(new Font("Times New Roman",Font.BOLD,15));
+        table[5].setText("Wednesday");
+        table[5].setFont(new Font("Times New Roman",Font.BOLD,15));
+        table[6].setText("Type 1 ");
+        table[6].setFont(new Font("Times New Roman",Font.BOLD,15));
+        table[12].setText("Type 2 ");
+        table[12].setFont(new Font("Times New Roman",Font.BOLD,15));
+        try{
+            for(Food fd : SystemManagement.getFoodsSchedules()) {
+                switch (fd.getDistributionDay()) {
+                    case "Saturday":
+                        if (!table[7].getText().equals("")) {
+                            table[13].setText(fd.toString());
+                        } else {
+                            table[7].setText(fd.toString());
+                        }
+                        break;
+                    case "Sunday":
+                        if (!table[8].getText().equals("")) {
+                            table[14].setText(fd.toString());
+                        } else {
+                            table[8].setText(fd.toString());
+                        }
+                        break;
+                    case "Monday":
+                        if (!table[9].getText().equals("")) {
+                            table[15].setText(fd.toString());
+                        } else {
+                            table[9].setText(fd.toString());
+                        }
+                        break;
+                    case "Tuesday":
+                        if (!table[10].getText().equals("")) {
+                            table[16].setText(fd.toString());
+                        } else {
+                            table[10].setText(fd.toString());
+                        }
+                        break;
+                    case "Wednesday":
+                        if (!table[11].getText().equals("")) {
+                            table[17].setText(fd.toString());
+                        } else {
+                            table[11].setText(fd.toString());
+                        }
+                        break;
+                }
+
             }
 
+        } catch (Exception exception) {
+            exception.printStackTrace();
         }
     }
 
