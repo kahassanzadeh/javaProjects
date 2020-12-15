@@ -2,6 +2,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.io.IOException;
+import java.util.ArrayList;
 
 public class LoginForm {
 
@@ -91,6 +92,13 @@ public class LoginForm {
         @Override
         public void actionPerformed(ActionEvent e) {
             if(e.getSource().equals(loginButton)){
+                if(SystemManagement.getSystemList().get("Admin").size() == 0){
+                    Admin admin = new Admin("Kamyar Hassanzadeh","admin","admin");
+                    ArrayList<Person> a = new ArrayList<>();
+                    a.add(admin);
+                    SystemManagement.getSystemList().put("Admin",a);
+                    SystemManagement.saveAdmin();
+                }
                 if(SystemManagement.checkLogin(userNameField.getText(), String.valueOf(passwordField.getPassword()))){
                     setRegisteredPerson(SystemManagement.searchPersonForLogin(userNameField.getText(),String.valueOf(passwordField.getPassword())));
                     loginForm.setVisible(false);

@@ -94,7 +94,7 @@ public class Class implements Serializable {
         Class aClass = (Class) o;
         return  CREDITS == aClass.CREDITS &&
                 Objects.equals(name, aClass.name) &&
-                TIME_OF_THE_CLASS1 == aClass.TIME_OF_THE_CLASS1;
+                TIME_OF_THE_CLASS1 == aClass.TIME_OF_THE_CLASS1 && teacher.getName().equals(aClass.getTeacherName());
     }
 
     @Override
@@ -116,5 +116,17 @@ public class Class implements Serializable {
 
     public void addStudent(Student student){
         students.add(student);
+    }
+
+    public Teacher getTeacher() {
+        return teacher;
+    }
+
+    public void removeClassFromStudentList() throws Exception {
+        SystemManagement.renewStudentClassList(this.students,this);
+        for(Student st : students){
+            st.getClasses().remove(this);
+        }
+        this.status = false;
     }
 }

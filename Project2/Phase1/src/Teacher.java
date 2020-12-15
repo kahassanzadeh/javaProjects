@@ -19,15 +19,6 @@ public class Teacher extends Person implements Commons, Serializable {
     }
 
 
-    @Override
-    public void changingUserName(String oldUser, String newUser, String password) {
-
-    }
-
-    @Override
-    public void changingPassword(String User, String oldPass, String newPassword) {
-
-    }
 
     @Override
     public void setUserName(String userName) {
@@ -81,7 +72,7 @@ public class Teacher extends Person implements Commons, Serializable {
     public void removeClass(Class cl){
         classes.remove(cl);
     }
-    private Class searchClass(String name){
+    public  Class searchClass(String name){
         for(Class cl : classes){
             if(cl.getName().equals(name)){
                 return cl;

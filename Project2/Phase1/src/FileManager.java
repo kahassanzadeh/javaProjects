@@ -35,6 +35,9 @@ public class FileManager {
             } catch (IOException e1) {
                 System.out.println("error in closing file!");
             }
+            catch(NullPointerException e2){
+
+            }
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -51,6 +54,9 @@ public class FileManager {
             } catch (IOException e1) {
                 System.out.println("error in closing file!");
             }
+            catch(NullPointerException e2){
+
+            }
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -66,6 +72,9 @@ public class FileManager {
                 readAdmins.closeConnection();
             } catch (IOException e1) {
                 System.out.println("error in closing file!");
+            }
+            catch (NullPointerException e2){
+
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -94,6 +103,8 @@ public class FileManager {
                 readFood.closeConnection();
             } catch (IOException e1) {
                 System.out.println("error in closing file!");
+            }catch (NullPointerException e2){
+
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -118,6 +129,8 @@ public class FileManager {
                 readClasses.closeConnection();
             } catch (IOException e1) {
                 System.out.println("error in closing file!");
+            }catch(NullPointerException e2){
+
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -127,17 +140,51 @@ public class FileManager {
     }
 
 
-    public void totalPersonInfoWriting(HashMap<String , ArrayList<Person>> systemPersonInfo){
-        WriteObjectToFile writeStudents = null;
+    /*public void totalPersonInfoWriting(HashMap<String , ArrayList<Person>> systemPersonInfo){
+
         WriteObjectToFile writeTeacher = null;
         WriteObjectToFile writeAdmin = null;
 
-        File studentsFile = new File(STUDENT_FILE_ADDRESS);
 
-        ArrayList<Person> students = systemPersonInfo.get("Student");
         ArrayList<Person> teachers = systemPersonInfo.get("Teacher");
         ArrayList<Person> admins = systemPersonInfo.get("Admin");
 
+
+        try{
+            writeTeacher = new WriteObjectToFile(TEACHER_FILE_ADDRESS);
+            for(Person pr : teachers){
+                writeTeacher.writeToFile(pr);
+            }
+            writeTeacher.closeConnection();
+
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }catch(NullPointerException e2){
+
+        }
+
+        try{
+            writeAdmin = new WriteObjectToFile(ADMIN_FILE_ADDRESS);
+            for(Person pr : admins){
+                writeAdmin.writeToFile(pr);
+            }
+            writeAdmin.closeConnection();
+
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }catch(NullPointerException e2){
+            return;
+        }
+    }*/
+
+    public void studentWritingToFile(HashMap<String , ArrayList<Person>> systemPersonInfo){
+        File studentsFile = new File(STUDENT_FILE_ADDRESS);
+        /*WriteObjectToFile writeStudents = null;
+        ArrayList<Person> students = systemPersonInfo.get("Student");
 
         if(studentsFile.exists()){
             studentsFile.delete();
@@ -153,35 +200,38 @@ public class FileManager {
             e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
+        }catch(NullPointerException e2){
+
+        }*/
+        writeToFile(systemPersonInfo.get("Student"),studentsFile);
+
+    }
+    public void teacherWriteToFile(HashMap<String , ArrayList<Person>> systemPersonInfo){
+        File teacherFile = new File(TEACHER_FILE_ADDRESS);
+        writeToFile(systemPersonInfo.get("Teacher"),teacherFile);
+    }
+    public void adminWriteToFile(HashMap<String , ArrayList<Person>> systemPersonInfo){
+        File adminFile = new File(ADMIN_FILE_ADDRESS);
+        writeToFile(systemPersonInfo.get("Admin"),adminFile);
+    }
+    public void writeToFile(ArrayList<Person> students, File fileAddress){
+        if(fileAddress.exists()){
+            fileAddress.delete();
         }
-
         try{
-            writeTeacher = new WriteObjectToFile(TEACHER_FILE_ADDRESS);
-            for(Person pr : teachers){
-                writeTeacher.writeToFile(pr);
+            WriteObjectToFile write = new WriteObjectToFile(fileAddress.getAbsolutePath());
+            for(Person pr : students){
+                write.writeToFile(pr);
             }
-            writeTeacher.closeConnection();
-
-        } catch (FileNotFoundException e) {
+            write.closeConnection();
+        }catch (FileNotFoundException e) {
             e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
-        }
+        }catch(NullPointerException e2){
 
-        try{
-            writeAdmin = new WriteObjectToFile(ADMIN_FILE_ADDRESS);
-            for(Person pr : admins){
-                writeAdmin.writeToFile(pr);
-            }
-            writeAdmin.closeConnection();
-
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
         }
     }
-
     public void writeFoods(ArrayList<Food> food){
         WriteObjectToFile foodWriter = null;
         File foodFl = new File(FOOD_FILE_ADDRESS);
@@ -222,6 +272,8 @@ public class FileManager {
             e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
+        }catch(NullPointerException e2){
+            return;
         }
 
     }

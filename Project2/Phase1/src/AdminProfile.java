@@ -7,7 +7,7 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.util.ArrayList;
 
-public class AdminProfile {
+public class AdminProfile extends GUI{
 
     private JFrame frame;
     private JPanel adminProfile ;
@@ -30,6 +30,40 @@ public class AdminProfile {
         setAdminProfile(admin);
         setAdminFoodSchedule(admin);
         setAdminSystemManagingMenu(admin);
+
+        JMenuBar menuBar = new JMenuBar();
+        menuBar.setToolTipText("Menu");
+        JMenu menu = new JMenu("Score and exit");
+        JMenuItem exit = new JMenuItem("Exit");
+
+
+        exit.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                System.exit(0);
+            }
+        });
+
+        JMenuItem changingUserID = new JMenuItem("changing Id");
+        changingUserID.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                changingID(admin);
+            }
+        });
+
+        JMenuItem changingPass = new JMenuItem("changing pass");
+        changingPass.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                changePass(admin);
+            }
+        });
+        menu.add(changingUserID);
+        menu.add(changingPass);
+        menu.add(exit);
+        menuBar.add(menu);
+        frame.setJMenuBar(menuBar);
 
         JTabbedPane tabs = new JTabbedPane();
         tabs.addTab("Profile And Food Management",adminProfile);
@@ -148,6 +182,7 @@ public class AdminProfile {
             public void actionPerformed(ActionEvent e) {
                 Student temp = new Student(studentName.getText(),studentID.getText(),studentPass.getText());
                 try{
+                    SystemManagement.checkIDAndPass(temp);
                     SystemManagement.addStudent(temp);
                     setNewStudentOrTeacher(list,scrollPane);
                     studentName.setText("");
@@ -211,6 +246,7 @@ public class AdminProfile {
             public void actionPerformed(ActionEvent e) {
                 Teacher temp = new Teacher(teacherName.getText(),teacherID.getText(),teacherPass.getText(),teacherFaculty.getText());
                 try{
+                    SystemManagement.checkIDAndPass(temp);
                     SystemManagement.addTeacher(temp);
                     setNewStudentOrTeacher(list,scrollPane);
                     teacherName.setText("");
@@ -307,35 +343,35 @@ public class AdminProfile {
         try{
             for(Food fd : SystemManagement.getFoodsSchedules()) {
                 switch (fd.getDistributionDay()) {
-                    case "Saturday":
+                    case "Sat":
                         if (!foodTable[7].getText().equals("")) {
                             foodTable[13].setText(fd.toString());
                         } else {
                             foodTable[7].setText(fd.toString());
                         }
                         break;
-                    case "Sunday":
+                    case "Sun":
                         if (!foodTable[8].getText().equals("")) {
                             foodTable[14].setText(fd.toString());
                         } else {
                             foodTable[8].setText(fd.toString());
                         }
                         break;
-                    case "Monday":
+                    case "Mon":
                         if (!foodTable[9].getText().equals("")) {
                             foodTable[15].setText(fd.toString());
                         } else {
                             foodTable[9].setText(fd.toString());
                         }
                         break;
-                    case "Tuesday":
+                    case "Tue":
                         if (!foodTable[10].getText().equals("")) {
                             foodTable[16].setText(fd.toString());
                         } else {
                             foodTable[10].setText(fd.toString());
                         }
                         break;
-                    case "Wednesday":
+                    case "Wed":
                         if (!foodTable[11].getText().equals("")) {
                             foodTable[17].setText(fd.toString());
                         } else {
@@ -379,7 +415,7 @@ public class AdminProfile {
         JLabel labelForDistributionDay = new JLabel("Distribution day of the food : ");
         labelForDistributionDay.setFont(new Font("Times New Roman",Font.BOLD,15));
         labelForDistributionDay.setHorizontalAlignment(SwingConstants.CENTER);
-        JTextField distributionDayOfTheFoodTextfield = new JTextField();
+        JComboBox distributionDayOfTheFoodTextfield = new JComboBox(SystemManagement.getValidDays(0));
 
         JButton confirmingTheFood = new JButton("add");
         confirmingTheFood.setFont(new Font("Times New Roman",Font.BOLD,15));
@@ -388,28 +424,24 @@ public class AdminProfile {
             @Override
             public void actionPerformed(ActionEvent e) {
                 try{
-                    SystemManagement.addingFood(nameOfTheFoodTextfield.getText(),costOfTheFoodTextfield.getText(),distributionDayOfTheFoodTextfield.getText());
+                    SystemManagement.addingFood(nameOfTheFoodTextfield.getText(),costOfTheFoodTextfield.getText(),distributionDayOfTheFoodTextfield.getItemAt(distributionDayOfTheFoodTextfield.getSelectedIndex()).toString());
                     renewReservedFoods(foodTable,SystemManagement.getFoodsSchedules(),foodStatus);
                     nameOfTheFoodTextfield.setText("");
                     costOfTheFoodTextfield.setText("");
-                    distributionDayOfTheFoodTextfield.setText("");
                 }
                 catch (Exception exception){
                     if(exception.getMessage().equals("Had been added")){
                         JOptionPane.showMessageDialog(frame,"Had been added","Error",JOptionPane.ERROR_MESSAGE);
                         nameOfTheFoodTextfield.setText("");
                         costOfTheFoodTextfield.setText("");
-                        distributionDayOfTheFoodTextfield.setText("");
                     }
                     else if(exception.getMessage().equals("more than 2 Foods are added. You can add 2 foods in a day")){
                         JOptionPane.showMessageDialog(frame,"more than 2 Foods are added. You can add 2 foods in a day","Error",JOptionPane.ERROR_MESSAGE);
                         nameOfTheFoodTextfield.setText("");
                         costOfTheFoodTextfield.setText("");
-                        distributionDayOfTheFoodTextfield.setText("");
                     }
                     else if(exception.getMessage().equals("invalid day")){
                         JOptionPane.showMessageDialog(frame,"invalid day","Error",JOptionPane.ERROR_MESSAGE);
-                        distributionDayOfTheFoodTextfield.setText("");
                     }
                     else if(exception.getMessage().equals("invalid cost")){
                         JOptionPane.showMessageDialog(frame,"invalid cost","Error",JOptionPane.ERROR_MESSAGE);
@@ -481,35 +513,35 @@ public class AdminProfile {
         try{
             for(Food fd : SystemManagement.getFoodsSchedules()) {
                 switch (fd.getDistributionDay()) {
-                    case "Saturday":
+                    case "Sat":
                         if (!table[7].getText().equals("")) {
                             table[13].setText(fd.toString());
                         } else {
                             table[7].setText(fd.toString());
                         }
                         break;
-                    case "Sunday":
+                    case "Sun":
                         if (!table[8].getText().equals("")) {
                             table[14].setText(fd.toString());
                         } else {
                             table[8].setText(fd.toString());
                         }
                         break;
-                    case "Monday":
+                    case "Mon":
                         if (!table[9].getText().equals("")) {
                             table[15].setText(fd.toString());
                         } else {
                             table[9].setText(fd.toString());
                         }
                         break;
-                    case "Tuesday":
+                    case "Tues":
                         if (!table[10].getText().equals("")) {
                             table[16].setText(fd.toString());
                         } else {
                             table[10].setText(fd.toString());
                         }
                         break;
-                    case "Wednesday":
+                    case "Wed":
                         if (!table[11].getText().equals("")) {
                             table[17].setText(fd.toString());
                         } else {

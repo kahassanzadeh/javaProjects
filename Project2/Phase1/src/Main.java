@@ -12,7 +12,10 @@ public class Main {
 		UIManager.setLookAndFeel("javax.swing.plaf.nimbus.NimbusLookAndFeel");
 
 
-        Admin admin = new Admin("Kamyar Hassanzadeh","admin","admin");
+
+        LoginForm login = new LoginForm("Login Form");
+        login.showLoginForm();
+
         /*Teacher t1 = new Teacher("alireza rezaii","8678987","123456","Omran");
         Class cl1 = new Class("mohasebat",20,3,"Sat2",t1);
         Class cl2 = new Class("Azmayeshgah",50,1,"Tue2","Sun2",t1);
@@ -34,8 +37,7 @@ public class Main {
 
 
 
-        ArrayList<Person> a = new ArrayList<>();
-        a.add(admin);
+
         ArrayList<Person> s = new ArrayList<>();
         s.add(st1);
         s.add(st2);
@@ -44,14 +46,10 @@ public class Main {
         ArrayList<Person> t = new ArrayList<>();
         t.add(t1);
         t.add(t2);
-        SystemManagement.getSystemList().put("Admin",a);
+
         SystemManagement.getSystemList().put("Student",s);
         SystemManagement.getSystemList().put("Teacher",t);*/
-        //SystemManagement.save();
 
-        LoginForm login = new LoginForm("Login Form");
-
-        login.showLoginForm();
 
         //AdminProfile l = new AdminProfile(admin);
         //l.showingAdminProfile();

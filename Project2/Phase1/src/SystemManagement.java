@@ -1,5 +1,6 @@
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 
 public class SystemManagement {
@@ -17,9 +18,15 @@ public class SystemManagement {
     }
     public static void save(){
         FileManager flManager = new FileManager();
-        flManager.totalPersonInfoWriting(systemList);
+        flManager.adminWriteToFile(systemList);
+        flManager.teacherWriteToFile(systemList);
+        flManager.studentWritingToFile(systemList);
         flManager.writeClass(classes);
         flManager.writeFoods(foodsSchedules);
+    }
+    public static void saveAdmin(){
+        FileManager flManager = new FileManager();
+        flManager.adminWriteToFile(systemList);
     }
 
 
@@ -122,7 +129,7 @@ public class SystemManagement {
         foodsSchedules.add(temp);
     }
     private static boolean validDay(String day){
-        return day.equals("Sunday") || day.equals("Monday") || day.equals("Tuesday") || day.equals("Wednesday") || day.equals("Saturday");
+        return day.equals("Sun") || day.equals("Mon") || day.equals("Tues") || day.equals("Wed") || day.equals("Sat");
     }
     private static int countingFoodsInOneDay(String day){
         int counter = 0;
@@ -201,6 +208,9 @@ public class SystemManagement {
         if(registeredStudent.getCurrentCredits() + temp.getCREDITS() > 20 && registeredStudent.getAverage() < 17){
             throw new Exception("Can't get the course");
         }
+        if(registeredStudent.getEducationalReport().containsKey(temp.getName())){
+            throw new Exception("You have passed this course");
+        }
         return true;
     }
 
@@ -268,6 +278,172 @@ public class SystemManagement {
                 st.getEducationalReport().replace(cl.getName(),score);
                 st.setAverage();
             }
+        }
+    }
+
+    public static void updateTeacherList(Class temp) {
+        Teacher t = searchTeacher(temp.getTeacher().getUserName(), temp.getTeacher().getName());
+        int counter = 0;
+        for (Class cl : t.getClasses()) {
+            if (cl.equals(temp)) {
+                t.getClasses().set(counter, temp);
+            }
+            counter++;
+        }
+    }
+
+    //public static void updateStudentList()
+
+    public static void updateClassList(Student st, String s) {
+        Class temp = st.searchClass(s);
+        int counter = 0;
+        for(Class cl : classes){
+            if(cl.equals(temp)){
+                for(Student stt : cl.getStudents()){
+                    if(stt.getUserName().equals(st.getUserName())){
+                        cl.getStudents().set(counter,st);
+                        break;
+                    }
+                    counter++;
+                }
+            }
+        }
+    }
+
+    public static void updateTeacherList(Student st, Class temp) {
+        Teacher t = searchTeacher(temp.getTeacher().getUserName(), temp.getTeacher().getName());
+        int counter = 0;
+        Class tempt = t.searchClass(temp.getName());
+        for(Student student: tempt.getStudents()){
+            if(student.getUserName().equals(st.getUserName())){
+                tempt.getStudents().set(counter,st);
+            }
+            counter++;
+        }
+        /*for (Class cl : t.getClasses()) {
+            if (cl.equals(temp)) {
+                for(Student student : cl.getStudents()){
+                    if(student.getUserName().equals(st.getUserName()))
+                    {
+                        cl.getStudents().set(counter,st);
+                        return;
+                    }
+                }
+                counter++;
+            }
+        }*/
+    }
+
+    public static void updateStudentClassList(Student registeredStudent) {
+        int counter = 0;
+        for(Class cl : registeredStudent.getClasses()){
+            for(Class sysCl : classes){
+                if(cl.equals(sysCl)){
+                    registeredStudent.getClasses().set(counter,sysCl);
+                    counter++;
+                }
+            }
+        }
+    }
+
+    public static String[] getValidDays(int n) {
+        String[] temp = new String[5];
+        if(n == 0){
+            temp[0] = "Sat";
+            temp[1] = "Sun";
+            temp[2] = "Mon";
+            temp[3] = "Tue";
+            temp[4] = "Wed";
+        }
+        else{
+            temp = new String[6];
+            temp[0] = "---";
+            temp[1] = "Sat";
+            temp[2] = "Sun";
+            temp[3] = "Mon";
+            temp[4] = "Tue";
+            temp[5] = "Wed";
+        }
+        return temp;
+    }
+
+    public static String[] getValidTime() {
+        String[] temp = new String[3];
+        temp[0] = "8 to 10";
+        temp[1] = "10 to 12";
+        temp[2] = "14 to 16";
+        return  temp;
+
+    }
+
+    public static void changeID(String oldUserID, String newUserID, char[] password, Person registeredPerson) throws Exception {
+        if(!registeredPerson.getUserName().equals(oldUserID)){
+            throw new Exception("your old User ID is Wrong");
+        }
+        for(String st : systemList.keySet()){
+            for(Person pr : systemList.get(st)){
+                if(pr.getUserName().equals(newUserID)){
+                    throw new Exception("This User ID had been added");
+                }
+            }
+        }
+        String tempPass ="";
+        for (char c : password) {
+            tempPass += c;
+        }
+        if(!tempPass.equals(registeredPerson.getPassword())){
+            throw new Exception("Password not Correct");
+        }
+        registeredPerson.changeUserID(newUserID);
+
+    }
+
+    public static void changePass(String userID, char[] oldPass, char[] newPass, char[] newPassConfirm, Person person) throws Exception {
+        String tempOldPass = "";
+        String tempNewPass = "";
+        String tempNewPassConfirm = "";
+        for (char value : oldPass) {
+            tempOldPass += value;
+        }
+        for (char pass : newPass) {
+            tempNewPass += pass;
+        }
+        for (char c : newPassConfirm) {
+            tempNewPassConfirm += c;
+        }
+        if(!tempNewPass.equals(tempNewPassConfirm)){
+            throw new Exception("check your passwords again,new pass and confirmations doesn't match");
+        }
+        if(!tempOldPass.equals(person.getPassword())){
+            throw new Exception("your old Password is incorrect");
+        }
+        if(tempNewPass.length() < 8){
+            throw new Exception("Password characters must be at least 8 characters");
+        }
+        if(!userID.equals(person.getUserName())){
+            throw new Exception("your userID is incorrect");
+        }
+
+        person.changePass(tempNewPass);
+
+    }
+
+    public static void renewStudentClassList(ArrayList<Student> st, Class aClass) throws Exception {
+        for(Student student : st){
+            searchStudent(student.getUserName()).removeClass(aClass);
+        }
+    }
+
+    public static void checkIDAndPass(Person temp) throws Exception {
+        for(String st : systemList.keySet()){
+            for(Person pr : systemList.get(st)){
+                if(pr.getUserName().equals(temp.getUserName())){
+                    throw new Exception("This User ID had been added");
+                }
+            }
+        }
+        if(temp.getPassword().length() < 8){
+            throw new Exception("Password Must Have At Least 8 Characters");
         }
     }
 }

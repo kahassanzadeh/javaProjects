@@ -22,15 +22,6 @@ public class Student extends Person implements Commons , Serializable {
         super(name);
     }
 
-    @Override
-    public void changingUserName(String oldUser, String newUser, String password) {
-
-    }
-
-    @Override
-    public void changingPassword(String User, String oldPass, String newPassword) {
-
-    }
 
     public void setPassedCredits(int passedCredits) {
         this.passedCredits = passedCredits;
@@ -52,14 +43,6 @@ public class Student extends Person implements Commons , Serializable {
         this.average = sum/creditCounter;
     }
 
-    private Class searchClass(String name){
-        for(Class cl : classes){
-            if(cl.getName().equals(name)){
-                return cl;
-            }
-        }
-        return null;
-    }
     public float getAverage() {
         return average;
     }
@@ -123,7 +106,7 @@ public class Student extends Person implements Commons , Serializable {
     }
 
     public String fullInfo() {
-        return String.format("%-60s",String.format("%-40s",this.getName()) + String.format("%-20s",this.getUserName()) + "   " + String.format("%-10.2f",this.getAverage()) + "   " + String.format("%-20d",this.getCurrentCredits()));
+        return String.format("%-60s",String.format("%-40s",this.getName()) + String.format("%-20s",this.getUserName()) + "   ");
     }
 
     public HashMap<String, Double> getEducationalReport() {
@@ -132,5 +115,33 @@ public class Student extends Person implements Commons , Serializable {
 
     public Double getScore(Class cl){
         return educationalReport.get(cl);
+    }
+
+    public Class searchClass(String className){
+        for(Class cl : classes)
+        {
+            if(cl.getName().equals(className)){
+                return cl;
+            }
+        }
+        return null;
+    }
+
+    public void removeClass(Class aClass) {
+        for(Class cl : classes){
+            if(cl.equals(aClass)){
+                classes.remove(cl);
+                return;
+            }
+        }
+    }
+
+    public void setPassedCredits(){
+        this.passedCredits = 0;
+        for(String st : educationalReport.keySet()){
+            if(educationalReport.get(st) > 10.0){
+                this.passedCredits += searchClass(st).getCREDITS();
+            }
+        }
     }
 }

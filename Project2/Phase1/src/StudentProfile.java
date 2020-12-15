@@ -7,9 +7,12 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
 
-public class StudentProfile {
+public class StudentProfile extends GUI {
 
     private JFrame frame;
     private BufferedImage image;
@@ -29,7 +32,9 @@ public class StudentProfile {
         frame.addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosing(WindowEvent e) {
+                SystemManagement.updateStudentClassList(registeredStudent);
                 SystemManagement.save();
+                System.exit(0);
             }
         });
 
@@ -37,6 +42,59 @@ public class StudentProfile {
         setReservingForm(registeredStudent);
         setCourseSelection(registeredStudent);
 
+        JMenuBar menuBar = new JMenuBar();
+        menuBar.setToolTipText("Menu");
+        JMenu menu = new JMenu("Score and exit");
+        JMenuItem exit = new JMenuItem("Exit");
+
+
+        exit.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                SystemManagement.updateStudentClassList(registeredStudent);
+                SystemManagement.save();
+                System.exit(0);
+            }
+        });
+
+        JMenuItem wholeScore = new JMenuItem("Educational report");
+        wholeScore.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                setScoreList(registeredStudent.getEducationalReport());
+            }
+        });
+
+        JMenuItem thisTermScore = new JMenuItem("Semester Scores");
+        thisTermScore.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                setThisTermScoreList(registeredStudent.getClasses(),registeredStudent.getEducationalReport());
+            }
+        });
+
+        JMenuItem changingUserID = new JMenuItem("changing Id");
+        changingUserID.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                changingID(registeredStudent);
+            }
+        });
+
+        JMenuItem changingPass = new JMenuItem("changing pass");
+        changingPass.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                changePass(registeredStudent);
+            }
+        });
+        menu.add(wholeScore);
+        menu.add(thisTermScore);
+        menu.add(changingUserID);
+        menu.add(changingPass);
+        menu.add(exit);
+        menuBar.add(menu);
+        frame.setJMenuBar(menuBar);
 
 
 
@@ -55,8 +113,47 @@ public class StudentProfile {
         frame.pack();
         frame.setVisible(true);
     }
-    public void setClassesSchedule(){
 
+    public void setScoreList(HashMap<String,Double> wholeEducationalReport){
+        JFrame scoreList = new JFrame("Score List");
+        scoreList.setLocation(100,100);
+        scoreList.setSize(300,500);
+        scoreList.addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent e) {
+                scoreList.setVisible(false);
+            }
+        });
+
+        JTextArea textArea = new JTextArea();
+        textArea.setEditable(false);
+        for(String st : wholeEducationalReport.keySet() ){
+            textArea.append(st + "      " + String.format("%.2f",wholeEducationalReport.get(st)) + "\n");
+        }
+        JScrollPane scrollPane = new JScrollPane(textArea);
+        scoreList.add(scrollPane);
+        scoreList.setVisible(true);
+    }
+
+    public void setThisTermScoreList(ArrayList<Class> classes,HashMap<String,Double> wholeEducationalReport){
+        JFrame scoreList = new JFrame("Score List");
+        scoreList.setLocation(100,100);
+        scoreList.setSize(300,500);
+        scoreList.addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent e) {
+                scoreList.setVisible(false);
+            }
+        });
+
+        JTextArea textArea = new JTextArea();
+        textArea.setEditable(false);
+        for(Class cl : classes){
+            textArea.append(cl.getName() + "      " + String.format("%.2f",wholeEducationalReport.get(cl.getName())) + "\n");
+        }
+        JScrollPane scrollPane = new JScrollPane(textArea);
+        scoreList.add(scrollPane);
+        scoreList.setVisible(true);
     }
     public void settingStudentProfileInfo(Student registeredStudent){
 
@@ -93,6 +190,7 @@ public class StudentProfile {
         passedCredits.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(EtchedBorder.LOWERED),"Passed Credits"));
         passedCredits.setFont(new Font("Times New Roman",Font.PLAIN,20));
         passedCredits.setBackground(Color.white);
+        registeredStudent.setPassedCredits();
         passedCredits.setOpaque(true);
 
         balance = new JLabel(String.valueOf(registeredStudent.getBalance()) + " Tomans");
@@ -342,35 +440,35 @@ public class StudentProfile {
         try{
             for(Food fd : SystemManagement.getFoodsSchedules()) {
                 switch (fd.getDistributionDay()) {
-                    case "Saturday":
+                    case "Sat":
                         if (!foodTable[7].getText().equals("")) {
                             foodTable[13].setText(fd.toString());
                         } else {
                             foodTable[7].setText(fd.toString());
                         }
                         break;
-                    case "Sunday":
+                    case "Sun":
                         if (!foodTable[8].getText().equals("")) {
                             foodTable[14].setText(fd.toString());
                         } else {
                             foodTable[8].setText(fd.toString());
                         }
                         break;
-                    case "Monday":
+                    case "Mon":
                         if (!foodTable[9].getText().equals("")) {
                             foodTable[15].setText(fd.toString());
                         } else {
                             foodTable[9].setText(fd.toString());
                         }
                         break;
-                    case "Tuesday":
+                    case "Tues":
                         if (!foodTable[10].getText().equals("")) {
                             foodTable[16].setText(fd.toString());
                         } else {
                             foodTable[10].setText(fd.toString());
                         }
                         break;
-                    case "Wednesday":
+                    case "Wed":
                         if (!foodTable[11].getText().equals("")) {
                             foodTable[17].setText(fd.toString());
                         } else {
@@ -384,7 +482,7 @@ public class StudentProfile {
         } catch (Exception exception) {
             exception.printStackTrace();
         }
-
+        paintingReservedFoods(foodTable,registeredStudent.getReservedFoods());
 
         JLabel title= new JLabel();
         title.setText("Food Schedules");
@@ -406,7 +504,7 @@ public class StudentProfile {
         dayLabel.setHorizontalAlignment(SwingConstants.CENTER);
         dayLabel.setFont(new Font("Times New Roman",Font.BOLD,17));
 
-        JTextField dayTextField = new JTextField();
+        JComboBox dayComboBox = new JComboBox(SystemManagement.getValidDays(0));
 
 
         JLabel foodLabel = new JLabel("Enter the name of the food you want to reserve : ");
@@ -417,7 +515,7 @@ public class StudentProfile {
         JTextField foodTextField = new JTextField();
 
         foodChooserPanel.add(dayLabel);
-        foodChooserPanel.add(dayTextField);
+        foodChooserPanel.add(dayComboBox);
         foodChooserPanel.add(foodLabel);
         foodChooserPanel.add(foodTextField);
 
@@ -426,9 +524,8 @@ public class StudentProfile {
         reservingFoodButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if(SystemManagement.reservingFood(registeredStudent,SystemManagement.searchFood(foodTextField.getText(),dayTextField.getText()))){
+                if(SystemManagement.reservingFood(registeredStudent,SystemManagement.searchFood(foodTextField.getText(),dayComboBox.getItemAt(dayComboBox.getSelectedIndex()).toString()))){
                     balance.setText(registeredStudent.getBalance() + " Tomans");
-                    dayTextField.setText("");
                     foodTextField.setText("");
                     paintingReservedFoods(foodTable,registeredStudent.getReservedFoods());
                 }
@@ -474,7 +571,7 @@ public class StudentProfile {
     public void paintingReservedFoods(JLabel[] table, ArrayList<Food> reserveFoods){
         for(Food fd : reserveFoods){
             for(int i = 7 ; i < 18 ; i++ ){
-                if(fd.getName().equals(table[i].getText().split("\\s+")[0]) && table[i%6].getText().equals(fd.getDistributionDay())){
+                if(fd.getName().equals(table[i].getText().split("\\s+")[0]) && table[i%6].getText().substring(0,3).equals(fd.getDistributionDay())){
                     table[i].setBackground(Color.GREEN);
                 }
             }
@@ -569,7 +666,7 @@ public class StudentProfile {
         }
         for(Class cl : registeredStudent.getClasses()){
             for(JCheckBox jcb : checkboxes){
-                if(cl.toString().equals(jcb.getText())){
+                if(cl.toString().equals(jcb.getText()) || cl.getName().equals(jcb.getText().split("\\s+")[0])){
                     jcb.setBackground(Color.pink);
                     break;
                 }
@@ -601,6 +698,7 @@ public class StudentProfile {
                             if(SystemManagement.checkEnrollment(registeredStudent,temp)){
                                 registeredStudent.setClasses(temp);
                                 temp.addStudent(registeredStudent);
+                                SystemManagement.updateTeacherList(temp);
                                 jcb.setText(temp.toString());
                                 jcb.setSelected(false);
                                 jcb.setBackground(Color.pink);

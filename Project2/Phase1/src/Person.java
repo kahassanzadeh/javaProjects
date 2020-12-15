@@ -45,4 +45,12 @@ public class Person implements Serializable {
     public ArrayList<Food> getReservedFoods() {
         return reservedFoods;
     }
+
+    public void changeUserID(String newUserID){
+        this.userName = newUserID;
+    }
+
+    public void changePass(String newPass) {
+        this.password = newPass;
+    }
 }

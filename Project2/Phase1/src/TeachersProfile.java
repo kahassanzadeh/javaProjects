@@ -9,7 +9,7 @@ import java.text.Normalizer;
 import java.util.ArrayList;
 import java.util.Set;
 
-public class TeachersProfile {
+public class TeachersProfile extends GUI {
 
     private JFrame frame;
     private JPanel teacherProfile;
@@ -18,6 +18,7 @@ public class TeachersProfile {
     private JLabel[][] labelsOfClassTable;
     private JPanel teacherClasses;
     private JPanel openingNewClass;
+    private JPanel scoreManaging;
 
     public TeachersProfile(Teacher registeredTeacher){
         frame = new JFrame("Teacher Profile");
@@ -33,8 +34,53 @@ public class TeachersProfile {
 
         setClassManaging(registeredTeacher);
         setClassTime(registeredTeacher);
+        scoreTab(registeredTeacher);
 
-        JPanel scoreManaging = new JPanel(new BorderLayout());
+        JMenuBar menuBar = new JMenuBar();
+        menuBar.setToolTipText("Menu");
+        JMenu menu = new JMenu("Score and exit");
+        JMenuItem exit = new JMenuItem("Exit");
+
+
+        exit.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                System.exit(0);
+            }
+        });
+
+        JMenuItem changingUserID = new JMenuItem("changing Id");
+        changingUserID.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                changingID(registeredTeacher);
+            }
+        });
+
+        JMenuItem changingPass = new JMenuItem("changing pass");
+        changingPass.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                changePass(registeredTeacher);
+            }
+        });
+        menu.add(changingUserID);
+        menu.add(changingPass);
+        menu.add(exit);
+        menuBar.add(menu);
+        frame.setJMenuBar(menuBar);
+
+
+
+        frame.add(teacherProfile);
+        JTabbedPane tabs = new JTabbedPane();
+        tabs.addTab("Class Managing",teacherProfile);
+        tabs.addTab("Class Opening",openingNewClass);
+        tabs.addTab("Scoring Operations",scoreManaging);
+        frame.setContentPane(tabs);
+    }
+    public void scoreTab(Teacher registeredTeacher){
+        scoreManaging = new JPanel(new BorderLayout());
         JPanel teacherInfo = new JPanel(new GridLayout(3,1,5,5));
         teacherInfo.setSize(600,800);
         teacherInfo.setOpaque(true);
@@ -156,6 +202,8 @@ public class TeachersProfile {
                 try{
                     Student st = SystemManagement.searchStudent(studentId.getText());
                     SystemManagement.setScore(st,""+ classes.getItemAt(classes.getSelectedIndex()),Double.parseDouble(score.getText()));
+                    SystemManagement.updateClassList(st,classes.getItemAt(classes.getSelectedIndex()) + "");
+                    SystemManagement.updateTeacherList(st,st.searchClass(classes.getItemAt(classes.getSelectedIndex()) + ""));
                     renewScoreList(studentInfo,classes,registeredTeacher);
                 }
                 catch (Exception exception){
@@ -185,20 +233,12 @@ public class TeachersProfile {
 
         scoreManaging.add(studentInfoAndScoring);
 
-
-
-        frame.add(teacherProfile);
-        JTabbedPane tabs = new JTabbedPane();
-        tabs.addTab("Class Managing",teacherProfile);
-        tabs.addTab("Class Opening",openingNewClass);
-        tabs.addTab("Scoring Operations",scoreManaging);
-        frame.setContentPane(tabs);
     }
     private void renewScoreList(JTextArea textArea,JComboBox classes,Teacher registeredTeacher) throws Exception {
         textArea.setText("");
-        textArea.append("Student Name" + "                     "+ " Students ID" + "          " + "Average" + "         " + "Current Credits \n");
+        textArea.append("Student Name" + "                     "+ " Students ID" + "          " + "Score" + " \n");
         for(Student st : SystemManagement.searchClassStudents("" + classes.getItemAt(classes.getSelectedIndex()),registeredTeacher)){
-            textArea.append(st.fullInfo() + " \n");
+            textArea.append(st.fullInfo() + st.getEducationalReport().get("" + classes.getItemAt(classes.getSelectedIndex())) + " \n");
         }
     }
     public void setClassTime(Teacher registeredTeacher){
@@ -284,10 +324,14 @@ public class TeachersProfile {
         capacity.setHorizontalAlignment(SwingConstants.CENTER);
         JTextField capacityText = new JTextField();
 
-        JLabel day = new JLabel("Class Day1: ");
+        JPanel dayPanel = new JPanel(new GridLayout(1,2,5,5));
+        JLabel day = new JLabel("Class Days: ");
         day.setFont(new Font("Times New Roman",Font.BOLD,16));
         day.setHorizontalAlignment(SwingConstants.CENTER);
-        JTextField classDay1 = new JTextField();
+        JComboBox day1 = new JComboBox(SystemManagement.getValidDays(0));
+        JComboBox day2 = new JComboBox(SystemManagement.getValidDays(1));
+        dayPanel.add(day1);
+        dayPanel.add(day2);
 
         /*JLabel day2 = new JLabel("Class Day1: ");
         day2.setFont(new Font("Times New Roman",Font.BOLD,16));
@@ -295,18 +339,19 @@ public class TeachersProfile {
         JTextField classDay2 = new JTextField();*/
 
 
-        JLabel time = new JLabel("Class Time: ");
-        time.setFont(new Font("Times New Roman",Font.BOLD,16));
-        time.setHorizontalAlignment(SwingConstants.CENTER);
-        JTextField classTime = new JTextField();
+        JLabel timeLb = new JLabel("Class Time: ");
+        timeLb.setFont(new Font("Times New Roman",Font.BOLD,16));
+        timeLb.setHorizontalAlignment(SwingConstants.CENTER);
+        JComboBox time = new JComboBox(SystemManagement.getValidTime());
+
 
         JButton openClass = new JButton("Open a new Class");
         openClass.setFont(new Font("Times New Roman",Font.BOLD,17));
         openClass.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                String dayTime1 = classDay1.getText().substring(0,1).toUpperCase() + classDay1.getText().substring(1,3).toLowerCase();
-                switch (classTime.getText()) {
+                String dayTime1 = day1.getItemAt(day1.getSelectedIndex()).toString();
+                switch (time.getItemAt(time.getSelectedIndex()).toString()) {
                     case "8 to 10":
                         dayTime1 += "1";
                         break;
@@ -318,8 +363,8 @@ public class TeachersProfile {
                         break;
                 }
                 String dayTime2 = "";
-                if(classDay1.getText().length() > 3){
-                    dayTime2 = classDay1.getText().substring(4,5).toUpperCase() + classDay1.getText().substring(5).toLowerCase();
+                if(!day2.getItemAt(day2.getSelectedIndex()).toString().equals("---")){
+                    dayTime2 = day2.getItemAt(day2.getSelectedIndex()).toString();
                     dayTime2 += dayTime1.charAt(3);
                 }
                 Class temp;
@@ -330,22 +375,17 @@ public class TeachersProfile {
                     else{
                         temp = new Class(className.getText(),Integer.parseInt(capacityText.getText()),Integer.parseInt(classCredits.getText()),dayTime1,dayTime2,registeredTeacher);
                     }
-                    SystemManagement.addClass(temp);
                     updatingClassTable(registeredTeacher,labelsOfClassTable,teacherClasses);
                     renewClasses(list,scrollPane,registeredTeacher);
                     className.setText("");
                     classCredits.setText("");
                     capacityText.setText("");
-                    classDay1.setText("");
-                    classTime.setText("");
                 }
                 catch(Exception exception){
                     JOptionPane.showMessageDialog(frame,exception.getMessage(),"Error",JOptionPane.ERROR_MESSAGE);
                     className.setText("");
                     classCredits.setText("");
                     capacityText.setText("");
-                    classDay1.setText("");
-                    classTime.setText("");
                 }
             }
         });
@@ -357,9 +397,9 @@ public class TeachersProfile {
         tempt.add(capacity);
         tempt.add(capacityText);
         tempt.add(day);
-        tempt.add(classDay1);
+        tempt.add(dayPanel);
+        tempt.add(timeLb);
         tempt.add(time);
-        tempt.add(classTime);
         tempt.setPreferredSize(new Dimension(50,200));
 
         addingClass.add(classTitle,BorderLayout.NORTH);
@@ -565,15 +605,20 @@ public class TeachersProfile {
         nameLb.setHorizontalAlignment(SwingConstants.CENTER);
         JTextField className = new JTextField();
 
+        JPanel dayPanel = new JPanel(new GridLayout(1,2,5,5));
         JLabel dayLb = new JLabel("Day of the class: ");
         dayLb.setFont(new Font("Times New Roman",Font.PLAIN,15));
         dayLb.setHorizontalAlignment(SwingConstants.CENTER);
-        JTextField classDayTime = new JTextField();
+        JComboBox day1 = new JComboBox(SystemManagement.getValidDays(0));
+        JComboBox day2 = new JComboBox(SystemManagement.getValidDays(1));
+        dayPanel.add(day1);
+        dayPanel.add(day2);
+
 
         JLabel timeLb = new JLabel("Time of the class: ");
         timeLb.setFont(new Font("Times New Roman",Font.PLAIN,15));
         timeLb.setHorizontalAlignment(SwingConstants.CENTER);
-        JTextField classTime = new JTextField();
+        JComboBox time = new JComboBox(SystemManagement.getValidTime());
 
 
         JLabel passLb = new JLabel("Teacher's pass to confirm : ");
@@ -584,9 +629,9 @@ public class TeachersProfile {
         temp.add(nameLb);
         temp.add(className);
         temp.add(dayLb);
-        temp.add(classDayTime);
+        temp.add(dayPanel);
         temp.add(timeLb);
-        temp.add(classTime);
+        temp.add(time);
         temp.add(passLb);
         temp.add(teacherPass);
         temp.setPreferredSize(new Dimension(50,300));
@@ -599,8 +644,8 @@ public class TeachersProfile {
             public void actionPerformed(ActionEvent e) {
                 try{
                     SystemManagement.checkPassword(registeredTeacher, new String(teacherPass.getPassword()));
-                    String dayTime1 = classDayTime.getText().substring(0,1).toUpperCase() +  classDayTime.getText().substring(1,3).toLowerCase();
-                    switch (classTime.getText()) {
+                    String dayTime1 = day1.getItemAt(day1.getSelectedIndex()).toString();
+                    switch (time.getItemAt(time.getSelectedIndex()).toString()) {
                         case "8 to 10":
                             dayTime1 += "1";
                             break;
@@ -612,18 +657,17 @@ public class TeachersProfile {
                             break;
                     }
                     String dayTime2 = "";
-                    if(classDayTime.getText().length() > 3){
-                        dayTime2 = classDayTime.getText().substring(4,5).toUpperCase() + classDayTime.getText().substring(5).toLowerCase();
+                    if(!day2.getItemAt(day2.getSelectedIndex()).toString().equals("---")){
+                        dayTime2 = day2.getItemAt(day2.getSelectedIndex()).toString();
                         dayTime2 += dayTime1.charAt(3);
                     }
                     Class temp = SystemManagement.searchClass(className.getText(),dayTime1,dayTime2);
                     temp.setStatus(false);
                     registeredTeacher.removeClass(temp);
+                    temp.removeClassFromStudentList();
                     renewClasses(list,scrollPane,registeredTeacher);
                     updatingClassTable(registeredTeacher,labelsOfClassTable,teacherClasses);
-                    classTime.setText("");
                     className.setText("");
-                    classDayTime.setText("");
                     teacherPass.setText("");
                 }
                 catch (Exception exception) {
