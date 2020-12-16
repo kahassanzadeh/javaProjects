@@ -5,14 +5,33 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+/**
+ * this class is created for making and managing the files that had been written or id we want
+ * to write our objects to the files
+ *
+ * @author Mohammadreza Hassanzadeh
+ * @since Dec 16 2020
+ * @version 1.0
+ */
 public class FileManager {
-
+    //teacher file address
     private final String TEACHER_FILE_ADDRESS = "E:\\university\\5th term\\AP\\Projects\\Project2\\textFiles\\Teacher.ser";
+    //student file address
     private final String STUDENT_FILE_ADDRESS = "E:\\university\\5th term\\AP\\Projects\\Project2\\textFiles\\Student.ser";
+    //admin file address
     private final String ADMIN_FILE_ADDRESS = "E:\\university\\5th term\\AP\\Projects\\Project2\\textFiles\\Admin.ser";
+    //class file address
     private final String CLASS_FILE_ADDRESS = "E:\\university\\5th term\\AP\\Projects\\Project2\\textFiles\\Class.ser";
+    //food file address
     private final String FOOD_FILE_ADDRESS = "E:\\university\\5th term\\AP\\Projects\\Project2\\textFiles\\Food.ser";
 
+    /**
+     * this method will read whole systemList in the file. Admin,Teacher and Student will be added to a HashMap
+     * keys are "Student" "Teacher" "Admin"
+     *
+     * @return HashMap of the systemList
+     * @throws IOException if reading is corrupted
+     */
     public HashMap<String, ArrayList<Person>> totalPersonInfoReading() throws IOException {
         HashMap<String, ArrayList<Person>> temp = new HashMap<>();
         ArrayList<Person> students = new ArrayList<>();
@@ -87,6 +106,10 @@ public class FileManager {
 
     }
 
+    /**
+     * this method will read all the foods that have been added to the list
+     * @return Array list of foods
+     */
     public ArrayList<Food> readFoods(){
         ArrayList<Food> foods = new ArrayList<>();
 
@@ -113,6 +136,11 @@ public class FileManager {
         return foods;
     }
 
+    /**
+     * this method will read whole classes that have been added to the class list
+     *
+     * @return Array list of the Class
+     */
     public ArrayList<Class> readClass(){
         ArrayList<Class> classes = new ArrayList<>();
 
@@ -140,87 +168,46 @@ public class FileManager {
     }
 
 
-    /*public void totalPersonInfoWriting(HashMap<String , ArrayList<Person>> systemPersonInfo){
-
-        WriteObjectToFile writeTeacher = null;
-        WriteObjectToFile writeAdmin = null;
-
-
-        ArrayList<Person> teachers = systemPersonInfo.get("Teacher");
-        ArrayList<Person> admins = systemPersonInfo.get("Admin");
-
-
-        try{
-            writeTeacher = new WriteObjectToFile(TEACHER_FILE_ADDRESS);
-            for(Person pr : teachers){
-                writeTeacher.writeToFile(pr);
-            }
-            writeTeacher.closeConnection();
-
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }catch(NullPointerException e2){
-
-        }
-
-        try{
-            writeAdmin = new WriteObjectToFile(ADMIN_FILE_ADDRESS);
-            for(Person pr : admins){
-                writeAdmin.writeToFile(pr);
-            }
-            writeAdmin.closeConnection();
-
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }catch(NullPointerException e2){
-            return;
-        }
-    }*/
-
+    /**
+     * this method will write students to their specific file
+     * @param systemPersonInfo hashMap of systemList
+     */
     public void studentWritingToFile(HashMap<String , ArrayList<Person>> systemPersonInfo){
         File studentsFile = new File(STUDENT_FILE_ADDRESS);
-        /*WriteObjectToFile writeStudents = null;
-        ArrayList<Person> students = systemPersonInfo.get("Student");
 
-        if(studentsFile.exists()){
-            studentsFile.delete();
-        }
-        try{
-            writeStudents = new WriteObjectToFile(STUDENT_FILE_ADDRESS);
-            for(Person pr : students){
-                writeStudents.writeToFile(pr);
-            }
-            writeStudents.closeConnection();
-
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }catch(NullPointerException e2){
-
-        }*/
         writeToFile(systemPersonInfo.get("Student"),studentsFile);
 
     }
+    /**
+     * this method will write teachers to their specific file
+     * @param systemPersonInfo hashMap of systemList
+     */
     public void teacherWriteToFile(HashMap<String , ArrayList<Person>> systemPersonInfo){
         File teacherFile = new File(TEACHER_FILE_ADDRESS);
         writeToFile(systemPersonInfo.get("Teacher"),teacherFile);
     }
+    /**
+     * this method will write admins to their specific file
+     * @param systemPersonInfo hashMap of systemList
+     */
     public void adminWriteToFile(HashMap<String , ArrayList<Person>> systemPersonInfo){
         File adminFile = new File(ADMIN_FILE_ADDRESS);
         writeToFile(systemPersonInfo.get("Admin"),adminFile);
     }
-    public void writeToFile(ArrayList<Person> students, File fileAddress){
+
+    /**
+     * this method will write Person Objects to the File address given to the method
+     *
+     * @param person Array list of people that have been added to the system list
+     * @param fileAddress file address of specific group of people
+     */
+    public void writeToFile(ArrayList<Person> person, File fileAddress){
         if(fileAddress.exists()){
             fileAddress.delete();
         }
         try{
             WriteObjectToFile write = new WriteObjectToFile(fileAddress.getAbsolutePath());
-            for(Person pr : students){
+            for(Person pr : person){
                 write.writeToFile(pr);
             }
             write.closeConnection();
@@ -229,9 +216,14 @@ public class FileManager {
         } catch (IOException e) {
             e.printStackTrace();
         }catch(NullPointerException e2){
-
+            e2.printStackTrace();
         }
     }
+
+    /**
+     * this method will write foods to its specific file
+     * @param food array list of foods
+     */
     public void writeFoods(ArrayList<Food> food){
         WriteObjectToFile foodWriter = null;
         File foodFl = new File(FOOD_FILE_ADDRESS);
@@ -255,6 +247,10 @@ public class FileManager {
 
     }
 
+    /**
+     * this method will write classes into its file address
+     * @param classes array list of the classes
+     */
     public void writeClass(ArrayList<Class> classes){
         WriteObjectToFile classWriter = null;
         File classFl = new File(CLASS_FILE_ADDRESS);

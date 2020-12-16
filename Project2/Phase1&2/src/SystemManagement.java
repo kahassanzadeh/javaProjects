@@ -3,19 +3,37 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 
+/**
+ * this class created for managing the whole system and managing the saving and reading
+ *
+ * @author Mohammadreza Hassanzadeh
+ * @since Dec 16 2020
+ * @version 1.0
+ *
+ */
 public class SystemManagement {
-
+    //hash map of the whole person in the System
     private static HashMap<String, ArrayList<Person>> systemList = new HashMap<>();
+    //food of the whole system
     private static ArrayList<Food> foodsSchedules = new ArrayList<>();
+    //classes of the whole system
     private static ArrayList<Class> classes = new ArrayList<>();
 
-
+    /**
+     * this method will read and renew all the fields of this class from file
+     * @throws IOException if reading is corrupted
+     */
     public static void renew() throws IOException {
         FileManager flManager = new FileManager();
         systemList = flManager.totalPersonInfoReading();
         foodsSchedules = flManager.readFoods();
         classes = flManager.readClass();
     }
+
+    /**
+     * this method will save all the things that have been added to the whole system
+     *
+     */
     public static void save(){
         FileManager flManager = new FileManager();
         flManager.adminWriteToFile(systemList);
@@ -24,15 +42,30 @@ public class SystemManagement {
         flManager.writeClass(classes);
         flManager.writeFoods(foodsSchedules);
     }
+
+    /**
+     * this method will write admin to the file
+     */
     public static void saveAdmin(){
         FileManager flManager = new FileManager();
         flManager.adminWriteToFile(systemList);
     }
 
-
+    /**
+     * this method will add classes to the systemList
+     * @param cl class that we want to add
+     */
     public static void addClass(Class cl){
         classes.add(cl);
     }
+
+    /**
+     * this method will search a person for login and if it couldn't find, it will return null
+     *
+     * @param userName user name of the person
+     * @param password password of the person
+     * @return the person that has found
+     */
     public static Person searchPersonForLogin(String userName,String password){
         for(String st : systemList.keySet()){
             for(Person ps : systemList.get(st)){
@@ -45,11 +78,25 @@ public class SystemManagement {
 
     }
 
+    /**
+     * this method will check if a person's password is matched to the password that have been written
+     *
+     * @param person person that writes the password
+     * @param password password of the person
+     * @throws Exception if there is a problem with matching the passwords
+     */
     public static void checkPassword(Person person,String password) throws Exception {
         if(!person.getPassword().equals(password)){
             throw new Exception("Incorrect Password");
         }
     }
+
+    /**
+     * this method will check if the login has successful or not
+     * @param userName user name of the person
+     * @param password password of the person
+     * @return true if iy can login successfully
+     */
     public static boolean checkLogin(String userName,String password){
 
         for(String st : systemList.keySet()){
