@@ -227,15 +227,20 @@ public class Student extends Person implements Commons , Serializable {
         }
     }
 
+
     /**
      * this method will set the passed credit
      */
-    public void setPassedCredits(){
+    public void setPassedCredits() throws Exception {
         this.passedCredits = 0;
-        for(String st : educationalReport.keySet()){
-            if(educationalReport.get(st) > 10.0){
-                this.passedCredits += searchClass(st).getCREDITS();
+        try{
+            for(String st : educationalReport.keySet()){
+                if(educationalReport.get(st) > 10.0){
+                    this.passedCredits += SystemManagement.searchClass(st,this.getName()).getCREDITS();
+                }
             }
+        }catch(NullPointerException e){
+
         }
     }
 }

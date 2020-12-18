@@ -56,6 +56,7 @@ public class AdminProfile extends GUI{
         exit.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                SystemManagement.save();
                 System.exit(0);
             }
         });
@@ -582,7 +583,7 @@ public class AdminProfile extends GUI{
                             table[9].setText(fd.toString());
                         }
                         break;
-                    case "Tues":
+                    case "Tue":
                         if (!table[10].getText().equals("")) {
                             table[16].setText(fd.toString());
                         } else {

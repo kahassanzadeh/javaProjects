@@ -221,7 +221,7 @@ public class SystemManagement {
      * @return true if the day is valid
      */
     private static boolean validDay(String day){
-        return day.equals("Sun") || day.equals("Mon") || day.equals("Tues") || day.equals("Wed") || day.equals("Sat");
+        return day.equals("Sun") || day.equals("Mon") || day.equals("Tue") || day.equals("Wed") || day.equals("Sat");
     }
 
     /**
@@ -298,6 +298,24 @@ public class SystemManagement {
     }
 
     /**
+     * overloaded method for getting a class
+     *
+     * @param st name of the class
+     * @param name name of the student
+     * @return Class
+     * @throws Exception if the class doesn't exist
+     */
+    public static Class searchClass(String st, String name) throws Exception {
+        for(Class cl : classes){
+            if(cl.getName().equals(st) && checkStudentInClass(cl,name))
+            {
+                return cl;
+            }
+        }
+        throw new Exception("class is not exists");
+    }
+
+    /**
      * this method will search students in a teacher's class list
      *
      * @param className name of the classes
@@ -343,6 +361,9 @@ public class SystemManagement {
         }
         if(registeredStudent.getCurrentCredits() + temp.getCREDITS() > 20 && registeredStudent.getAverage() < 17){
             throw new Exception("Can't get the course");
+        }
+        if(temp.getCapacity() == 0){
+            throw new Exception("full capacity");
         }
         if(registeredStudent.getEducationalReport().containsKey(temp.getName())){
             throw new Exception("You have passed this course");
@@ -672,5 +693,20 @@ public class SystemManagement {
         if(temp.getPassword().length() < 8){
             throw new Exception("Password Must Have At Least 8 Characters");
         }
+    }
+
+    /**
+     * this method will check if a student belongs to a class
+     * @param cl class
+     * @param name name of the student
+     * @return true if the student belongs to the class
+     */
+    public static boolean checkStudentInClass(Class cl,String name){
+        for(Student st : cl.getStudents()){
+            if(st.getName().equals(name)){
+                return true;
+            }
+        }
+        return false;
     }
 }

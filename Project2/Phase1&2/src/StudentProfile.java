@@ -41,7 +41,7 @@ public class StudentProfile extends GUI {
      * @param registeredStudent registered Student
      * @throws IOException if there is any problem for opening the panel
      */
-    public StudentProfile(Student registeredStudent) throws IOException {
+    public StudentProfile(Student registeredStudent) throws Exception {
 
 
         frame = new JFrame("Student Profile");
@@ -193,7 +193,7 @@ public class StudentProfile extends GUI {
      * setting the schedules for the student
      * @param registeredStudent registered student
      */
-    public void settingStudentProfileInfo(Student registeredStudent){
+    public void settingStudentProfileInfo(Student registeredStudent) throws Exception {
 
         studentProfile = new JPanel(new BorderLayout());
         JPanel studentInfo = new JPanel(new GridLayout(3,1,5,5));
@@ -506,7 +506,7 @@ public class StudentProfile extends GUI {
                             foodTable[9].setText(fd.toString());
                         }
                         break;
-                    case "Tues":
+                    case "Tue":
                         if (!foodTable[10].getText().equals("")) {
                             foodTable[16].setText(fd.toString());
                         } else {
@@ -641,7 +641,7 @@ public class StudentProfile extends GUI {
         studentInfo.setSize(400,300);
         studentInfo.setOpaque(true);
 
-        ImagePanel image = new ImagePanel("E:\\university\\5th term\\AP\\Projects\\Project2\\Phase1\\Student.png",50,10,100,100);
+        ImagePanel image = new ImagePanel("E:\\university\\5th term\\AP\\Projects\\Project2\\Phase1&2\\Student.png",50,10,100,100);
         JLabel firstName = new JLabel(registeredStudent.getName().split("\\s+")[0]);
         firstName.setHorizontalAlignment(SwingConstants.CENTER);
         firstName.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(EtchedBorder.LOWERED),"First name"));
@@ -698,7 +698,6 @@ public class StudentProfile extends GUI {
         JPanel courses = new JPanel(new BorderLayout());
 
         JPanel courseListMenu = new JPanel(new GridLayout(SystemManagement.getClassNumbers() + 1,1));
-        //ArrayList<JCheckBox>  courseList = new ArrayList<>();
         String infoTemp = "Class Name";
         String teacherInfo = "Teachers Name";
         JLabel info = new JLabel(String.format("%-40s",infoTemp) + String.format("%-20s",teacherInfo)+ "        " +"Credits" + "        " + "Day of the class" + "     " + "Time of the class" + "       " + "Capacity");

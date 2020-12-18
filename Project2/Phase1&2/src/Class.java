@@ -47,8 +47,8 @@ public class Class implements Serializable {
         this.TIME_OF_THE_CLASS2 = null;
         this.students = new ArrayList<>();
         this.teacher = teacher;
-        SystemManagement.addClass(this);
         teacher.addClass(this);
+        SystemManagement.addClass(this);
         status = true;
     }
 
@@ -230,5 +230,13 @@ public class Class implements Serializable {
             st.getClasses().remove(this);
         }
         this.status = false;
+    }
+
+    /**
+     * getting the capacity of the class
+     * @return int number of capacity
+     */
+    public int getCapacity() {
+        return capacity;
     }
 }

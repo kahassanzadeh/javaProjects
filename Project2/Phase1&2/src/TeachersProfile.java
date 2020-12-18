@@ -361,10 +361,6 @@ public class TeachersProfile extends GUI {
         dayPanel.add(day1);
         dayPanel.add(day2);
 
-        /*JLabel day2 = new JLabel("Class Day1: ");
-        day2.setFont(new Font("Times New Roman",Font.BOLD,16));
-        day2.setHorizontalAlignment(SwingConstants.CENTER);
-        JTextField classDay2 = new JTextField();*/
 
 
         JLabel timeLb = new JLabel("Class Time: ");

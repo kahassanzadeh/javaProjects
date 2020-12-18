@@ -47,6 +47,7 @@ public class LoginForm {
 
         ButtonHandler buttonHandler = new ButtonHandler();
         MouseHandler mouseHandler = new MouseHandler();
+        KeyBoardHandler keyHandler = new KeyBoardHandler();
 
         JLabel userNameLabel = new JLabel("User Name : ");
         userNameField = new JTextField("Enter your User Name...");
@@ -68,7 +69,7 @@ public class LoginForm {
 
         loginButton = new JButton("Login");
         loginButton.addActionListener(buttonHandler);
-        loginButton.addKeyListener(new KeyBoardHandler());
+        loginButton.addKeyListener(keyHandler);
 
 
         panel.add(label,BorderLayout.NORTH);
@@ -131,6 +132,8 @@ public class LoginForm {
                             }
                         } catch (IOException ioException) {
                             ioException.printStackTrace();
+                        } catch (Exception exception) {
+                            exception.printStackTrace();
                         }
                         if( profileS != null){
                             profileS.showingStudentsProfile();
