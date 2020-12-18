@@ -12,16 +12,35 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 
+/**
+ * this class created for the student profile GUI
+ *
+ * @author Mohammadreza Hassanzadeh
+ * @since Dec 16 2020
+ * @version 1.0
+ *
+ */
 public class StudentProfile extends GUI {
-
+    //main frame of the profile
     private JFrame frame;
-    private BufferedImage image;
+    //image of the student
+    private ImagePanel image;
+    //panel for the student profile
     private JPanel studentProfile ;
+    //panel for student operations
     private JPanel studentOperations;
+    //label for student balance
     private JLabel balance;
+    //panel for the selecting course
     private JPanel courseSelection;
+    //button for updating info
     private JButton updateInfo;
 
+    /**
+     * constructor for the student profile
+     * @param registeredStudent registered Student
+     * @throws IOException if there is any problem for opening the panel
+     */
     public StudentProfile(Student registeredStudent) throws IOException {
 
 
@@ -109,11 +128,19 @@ public class StudentProfile extends GUI {
         frame.setContentPane(tabs);
 
     }
+
+    /**
+     * showing the panel
+     */
     public void showingStudentsProfile(){
         frame.pack();
         frame.setVisible(true);
     }
 
+    /**
+     * this method will make the score list panel
+     * @param wholeEducationalReport report of the student
+     */
     public void setScoreList(HashMap<String,Double> wholeEducationalReport){
         JFrame scoreList = new JFrame("Score List");
         scoreList.setLocation(100,100);
@@ -135,6 +162,12 @@ public class StudentProfile extends GUI {
         scoreList.setVisible(true);
     }
 
+    /**
+     * this method will set the semester scores
+     *
+     * @param classes classes f the semester
+     * @param wholeEducationalReport whole report of the student
+     */
     public void setThisTermScoreList(ArrayList<Class> classes,HashMap<String,Double> wholeEducationalReport){
         JFrame scoreList = new JFrame("Score List");
         scoreList.setLocation(100,100);
@@ -155,6 +188,11 @@ public class StudentProfile extends GUI {
         scoreList.add(scrollPane);
         scoreList.setVisible(true);
     }
+
+    /**
+     * setting the schedules for the student
+     * @param registeredStudent registered student
+     */
     public void settingStudentProfileInfo(Student registeredStudent){
 
         studentProfile = new JPanel(new BorderLayout());
@@ -162,7 +200,7 @@ public class StudentProfile extends GUI {
         studentInfo.setSize(400,300);
         studentInfo.setOpaque(true);
 
-        ImagePanel image = new ImagePanel("E:\\university\\5th term\\AP\\Projects\\Project2\\Phase1\\Student.png",50,10,100,100);
+        image = new ImagePanel("E:\\university\\5th term\\AP\\Projects\\Project2\\Phase1&2\\Student.png",50,10,100,100);
         JLabel firstName = new JLabel(registeredStudent.getName().split("\\s+")[0]);
         firstName.setHorizontalAlignment(SwingConstants.CENTER);
         firstName.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(EtchedBorder.LOWERED),"First name"));
@@ -278,6 +316,9 @@ public class StudentProfile extends GUI {
 
     }
 
+    /**
+     * panel for managing the balance and adding to balance
+     */
     private class IncreasingBalanceForm{
 
         private JFrame form;
@@ -355,13 +396,17 @@ public class StudentProfile extends GUI {
 
     }
 
+    /**
+     * setting the reserving food panel
+     * @param registeredStudent registered student
+     */
     private void setReservingForm(Student registeredStudent){
 
         JPanel studentInfo = new JPanel(new GridLayout(3,1,5,5));
         studentInfo.setSize(400,300);
         studentInfo.setOpaque(true);
 
-        ImagePanel image = new ImagePanel("E:\\university\\5th term\\AP\\Projects\\Project2\\Phase1\\Student.png",50,10,100,100);
+        image = new ImagePanel("E:\\university\\5th term\\AP\\Projects\\Project2\\Phase1\\Student.png",50,10,100,100);
         JLabel firstName = new JLabel(registeredStudent.getName().split("\\s+")[0]);
         firstName.setHorizontalAlignment(SwingConstants.CENTER);
         firstName.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(EtchedBorder.LOWERED),"First name"));
@@ -568,6 +613,11 @@ public class StudentProfile extends GUI {
 
     }
 
+    /**
+     * panting the reserved foods
+     * @param table JLabels of the foods
+     * @param reserveFoods array list of reserved foods
+     */
     public void paintingReservedFoods(JLabel[] table, ArrayList<Food> reserveFoods){
         for(Food fd : reserveFoods){
             for(int i = 7 ; i < 18 ; i++ ){
@@ -579,6 +629,11 @@ public class StudentProfile extends GUI {
         }
     }
 
+    /**
+     * this method will create the course selecting panel
+     *
+     * @param registeredStudent registered student
+     */
     public void setCourseSelection(Student registeredStudent){
         courseSelection = new JPanel(new BorderLayout());
 
@@ -721,6 +776,12 @@ public class StudentProfile extends GUI {
         courseSelection.add(courses,BorderLayout.CENTER);
     }
 
+    /**
+     * this method will update the class schedules
+     * @param registeredStudent registered student
+     * @param labelsOfClassTable label of the classes
+     * @param studentClasses panel student class
+     */
     public void updatingClassTable(Student registeredStudent,JLabel[][] labelsOfClassTable,JPanel studentClasses){
         ArrayList<Class> classes = registeredStudent.getClasses();
         int i = 0;

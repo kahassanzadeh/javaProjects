@@ -7,13 +7,29 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.util.ArrayList;
 
+/**
+ * this class created for admin panel GUI
+ * this class extends GUI class
+ *
+ * @author Mohammadreza Hassanzadeh
+ * @since 17 Dec 2020
+ * @version 1.0
+ */
+
 public class AdminProfile extends GUI{
 
+    //mainframe
     private JFrame frame;
+    //admin profile panel
     private JPanel adminProfile ;
+    //admin system managing panel
     private JPanel adminSystemManaging;
 
-
+    /**
+     * creating the admin profile panel
+     *
+     * @param admin registered admin
+     */
     public AdminProfile(Admin admin){
         frame = new JFrame("Student Profile");
         frame.setLocation(100,100);
@@ -70,12 +86,19 @@ public class AdminProfile extends GUI{
         tabs.addTab("System Managing",adminSystemManaging);
         frame.setContentPane(tabs);
     }
+
+    /**
+     * this method will create the system managing of student and teachers
+     * admin can student and teachers
+     *
+     * @param admin registered admin
+     */
     public void setAdminSystemManagingMenu(Admin admin){
         adminSystemManaging = new JPanel(new BorderLayout());
         JPanel adminInfo = new JPanel(new GridLayout(5,1,5,5));
         adminInfo.setSize(400,300);
 
-        ImagePanel image = new ImagePanel("E:\\university\\5th term\\AP\\Projects\\Project2\\Phase1\\Admin.png",50,10,100,100);
+        ImagePanel image = new ImagePanel("E:\\university\\5th term\\AP\\Projects\\Project2\\Phase1&2\\Admin.png",50,10,100,100);
         JLabel firstName = new JLabel(admin.getName().split("\\s+")[0]);
         firstName.setHorizontalAlignment(SwingConstants.CENTER);
         firstName.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(EtchedBorder.LOWERED),"First name"));
@@ -276,10 +299,22 @@ public class AdminProfile extends GUI{
         information.add(toolsPanel,BorderLayout.SOUTH);
 
     }
+
+    /**
+     * this method created for showing the admin profile
+     *
+     */
     public void showingAdminProfile() {
         frame.pack();
         frame.setVisible(true);
     }
+
+    /**
+     * this method will update the teachers and students list
+     *
+     * @param list JTextArea consists of students info and teachers info
+     * @param scrollPane scroll pane for JTextArea
+     */
     private void setNewStudentOrTeacher(JTextArea list,JScrollPane scrollPane){
         list.setText("");
         list.append("Admins \n");
@@ -308,6 +343,12 @@ public class AdminProfile extends GUI{
         list.setFont(new Font("Times New Roman",Font.PLAIN,15));
         scrollPane.setPreferredSize(new Dimension(100,300));
     }
+
+    /**
+     * this method will create the Panel for adding foods
+     *
+     * @param admin registered admin
+     */
     public void setAdminFoodSchedule(Admin admin){
         JPanel foodPanel = new JPanel(new BorderLayout(10,10));
 
@@ -425,7 +466,7 @@ public class AdminProfile extends GUI{
             public void actionPerformed(ActionEvent e) {
                 try{
                     SystemManagement.addingFood(nameOfTheFoodTextfield.getText(),costOfTheFoodTextfield.getText(),distributionDayOfTheFoodTextfield.getItemAt(distributionDayOfTheFoodTextfield.getSelectedIndex()).toString());
-                    renewReservedFoods(foodTable,SystemManagement.getFoodsSchedules(),foodStatus);
+                    renewReservedFoods(foodTable,foodStatus);
                     nameOfTheFoodTextfield.setText("");
                     costOfTheFoodTextfield.setText("");
                 }
@@ -483,7 +524,14 @@ public class AdminProfile extends GUI{
         foodPanel.add(foodReservingMenu,BorderLayout.SOUTH);
         adminProfile.add(foodPanel);
     }
-    public void renewReservedFoods(JLabel[] table, ArrayList<Food> reserveFoods,JPanel foodStatus){
+
+    /**
+     * this method will update the food list
+     *
+     * @param table JLabel of food schedules list
+     * @param foodStatus panel for showing food reservations
+     */
+    public void renewReservedFoods(JLabel[] table,JPanel foodStatus){
         foodStatus.removeAll();
         for(int i = 0; i < 18 ; i++){
             table[i] = new JLabel();
@@ -557,13 +605,17 @@ public class AdminProfile extends GUI{
         }
     }
 
+    /**
+     * this method will add admin's info to the frame
+     * @param admin registered admin
+     */
     private void setAdminProfile(Admin admin){
         adminProfile = new JPanel(new BorderLayout());
         JPanel adminInfo = new JPanel(new GridLayout(5,1,5,5));
         adminInfo.setSize(400,300);
         adminInfo.setOpaque(true);
 
-        ImagePanel image = new ImagePanel("E:\\university\\5th term\\AP\\Projects\\Project2\\Phase1\\Admin.png",50,10,100,100);
+        ImagePanel image = new ImagePanel("E:\\university\\5th term\\AP\\Projects\\Project2\\Phase1&2\\Admin.png",50,10,100,100);
         JLabel firstName = new JLabel(admin.getName().split("\\s+")[0]);
         firstName.setHorizontalAlignment(SwingConstants.CENTER);
         firstName.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(EtchedBorder.LOWERED),"First name"));

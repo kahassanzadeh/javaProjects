@@ -5,21 +5,33 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.text.Normalizer;
 import java.util.ArrayList;
-import java.util.Set;
 
+/**
+ * this class created for the teacher profile
+ */
 public class TeachersProfile extends GUI {
-
+    //main frame
     private JFrame frame;
+    //teacher profile frame
     private JPanel teacherProfile;
+    //list of classes
     private JTextArea list;
+    //scroll panel
     private JScrollPane scrollPane;
+    //labels of classes
     private JLabel[][] labelsOfClassTable;
+    //class of teacher
     private JPanel teacherClasses;
+    // opening a new class
     private JPanel openingNewClass;
+    // managing score panel
     private JPanel scoreManaging;
 
+    /**
+     * constructor for this class making a panel
+     * @param registeredTeacher registered teacher
+     */
     public TeachersProfile(Teacher registeredTeacher){
         frame = new JFrame("Teacher Profile");
         frame.setLocation(100,100);
@@ -79,6 +91,11 @@ public class TeachersProfile extends GUI {
         tabs.addTab("Scoring Operations",scoreManaging);
         frame.setContentPane(tabs);
     }
+
+    /**
+     * setting score tab
+     * @param registeredTeacher registered teacher
+     */
     public void scoreTab(Teacher registeredTeacher){
         scoreManaging = new JPanel(new BorderLayout());
         JPanel teacherInfo = new JPanel(new GridLayout(3,1,5,5));
@@ -234,6 +251,14 @@ public class TeachersProfile extends GUI {
         scoreManaging.add(studentInfoAndScoring);
 
     }
+
+    /**
+     * this method will renew the score list
+     * @param textArea list of students
+     * @param classes classes
+     * @param registeredTeacher registered teacher
+     * @throws Exception if there is any problem
+     */
     private void renewScoreList(JTextArea textArea,JComboBox classes,Teacher registeredTeacher) throws Exception {
         textArea.setText("");
         textArea.append("Student Name" + "                     "+ " Students ID" + "          " + "Score" + " \n");
@@ -241,6 +266,9 @@ public class TeachersProfile extends GUI {
             textArea.append(st.fullInfo() + st.getEducationalReport().get("" + classes.getItemAt(classes.getSelectedIndex())) + " \n");
         }
     }
+    /**
+     * setting a new class
+     */
     public void setClassTime(Teacher registeredTeacher){
         openingNewClass = new JPanel(new BorderLayout());
 
@@ -420,6 +448,13 @@ public class TeachersProfile extends GUI {
         classSchedule.add(addingClass,BorderLayout.SOUTH);
         openingNewClass.add(classSchedule,BorderLayout.CENTER);
     }
+
+    /**
+     * updating the class labels
+     * @param registeredTeacher teacher
+     * @param labelsOfClassTable labels of the class
+     * @param teacherClass panel for managing class
+     */
     public void updatingClassTable(Teacher registeredTeacher,JLabel[][] labelsOfClassTable,JPanel teacherClass){
         teacherClass.removeAll();
         tableSetter();
@@ -464,6 +499,9 @@ public class TeachersProfile extends GUI {
         }
     }
 
+    /**
+     * setting tanel lables
+     */
     public void tableSetter(){
         for(int i = 0;  i < 4 ; i++){
             for(int j = 0;  j < 6 ; j++){
@@ -498,6 +536,12 @@ public class TeachersProfile extends GUI {
 
     }
 
+    /**
+     * renew the classes
+     * @param textArea list
+     * @param scrollPane scorll pane
+     * @param registeredTeacher teacher
+     */
     private void renewClasses(JTextArea textArea,JScrollPane scrollPane,Teacher registeredTeacher){
         textArea.setText("");
 
@@ -513,6 +557,10 @@ public class TeachersProfile extends GUI {
         scrollPane.setPreferredSize(new Dimension(100,300));
     }
 
+    /**
+     * setting the class closing panel
+     * @param registeredTeacher teacher
+     */
     public void setClassManaging(Teacher registeredTeacher){
         teacherProfile = new JPanel(new BorderLayout());
         JPanel teacherInfo = new JPanel(new GridLayout(3,1,5,5));
@@ -691,6 +739,10 @@ public class TeachersProfile extends GUI {
         teacherProfile.add(classManagement);
 
     }
+
+    /**
+     * showing the panel
+     */
     public void showTeacherProfile(){
         frame.pack();
         frame.setVisible(true);

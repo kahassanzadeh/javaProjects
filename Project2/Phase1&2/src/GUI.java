@@ -5,7 +5,19 @@ import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
+/**
+ * this class created for managing the IDChanger and PassChanger
+ *
+ * @author Mohammadreza hassanzadeh
+ * @since 17 Dec 200
+ * @version 1.0
+ */
 public class GUI {
+    /**
+     * this method will make the IDChanger panel
+     *
+     * @param registeredPerson registered person
+     */
     public void changingID(Person registeredPerson){
         JFrame fr = new JFrame("changing ID");
         fr.setLocation(200,200);
@@ -64,6 +76,11 @@ public class GUI {
 
 
     }
+
+    /**
+     * this method will create the PassChanger panel
+     * @param registeredPerson registered person
+     */
     public void changePass(Person registeredPerson){
 
         JFrame fr = new JFrame("changing PASS");

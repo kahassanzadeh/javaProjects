@@ -109,6 +109,12 @@ public class SystemManagement {
         return false;
     }
 
+    /**
+     * getter for food schedules
+     *
+     * @return array list of food objects
+     * @throws Exception if there isn't any food added to the food schedules
+     */
     public static ArrayList<Food> getFoodsSchedules() throws Exception {
         if(foodsSchedules == null){
             throw new Exception("food not created");
@@ -116,15 +122,32 @@ public class SystemManagement {
         return foodsSchedules;
     }
 
+    /**
+     * this method will remove a class from teacher's list
+     *
+     * @param cl class that we want to remove
+     * @param teacher teacher that we want to remove its class
+     */
     public static void removeClassFromTeachersList(Class cl,Teacher teacher){
         teacher.removeClass(cl);
 
     }
 
+    /**
+     * this method will add foods to the foods schedules
+     * @param foodsSchedule food that we want to add
+     */
     public static void setFoodsSchedules(Food foodsSchedule) {
         SystemManagement.foodsSchedules.add(foodsSchedule);
     }
 
+    /**
+     * this method will search the food by its name and distribution day
+     *
+     * @param name String name of the food
+     * @param day String day of thr food
+     * @return the food that founded
+     */
     public static Food searchFood(String name,String day){
         for(Food fd : foodsSchedules){
             if(fd.getName().equals(name) && fd.getDistributionDay().equals(day)){
@@ -134,6 +157,13 @@ public class SystemManagement {
         return null;
     }
 
+    /**
+     * this method will manage food reserving
+     *
+     * @param person person that we want to reser ve food for
+     * @param reservingFood the food that we want to reserve
+     * @return true if it can reserve successfully
+     */
     public static boolean reservingFood(Person person,Food reservingFood){
         if(reservingFood == null){
             return  false;
@@ -153,6 +183,14 @@ public class SystemManagement {
         return true;
     }
 
+    /**
+     * this method will add food by its name, cost and day of distribution
+     *
+     * @param name name of the food
+     * @param costString cost of the food
+     * @param dayOfDistribution day of the food
+     * @throws Exception if it can't answer the needs
+     */
     public static void addingFood(String name,String costString,String dayOfDistribution) throws Exception {
         if(!costString.matches("[0-9]+")){
             throw new Exception("invalid cost");
@@ -175,9 +213,22 @@ public class SystemManagement {
         }
         foodsSchedules.add(temp);
     }
+
+    /**
+     * this method will check if the day is valid
+     *
+     * @param day day that we have entered
+     * @return true if the day is valid
+     */
     private static boolean validDay(String day){
         return day.equals("Sun") || day.equals("Mon") || day.equals("Tues") || day.equals("Wed") || day.equals("Sat");
     }
+
+    /**
+     * this method will count the food in a day
+     * @param day day that we want to count foods
+     * @return number of foods that have been added
+     */
     private static int countingFoodsInOneDay(String day){
         int counter = 0;
         for(Food fd : foodsSchedules){
@@ -188,6 +239,11 @@ public class SystemManagement {
         return counter;
     }
 
+    /**
+     * getting the number of classes
+     *
+     * @return number of classes
+     */
     public static int getClassNumbers() {
         if(classes.size() < 25){
             return 25;
@@ -195,12 +251,20 @@ public class SystemManagement {
         return classes.size();
     }
 
-
+    /**
+     * getting the classes array list
+     * @return array list of classes
+     */
     public static ArrayList<Class> getClasses() {
         return classes;
     }
 
-
+    /**
+     * searching a class by toString method
+     *
+     * @param classInfo String of the class
+     * @return founded class
+     */
     public static Class searchingClassString(String classInfo){
         for(Class cl  : classes){
             if(cl.toString().equals(classInfo)){
@@ -210,6 +274,14 @@ public class SystemManagement {
         return null;
     }
 
+    /**
+     * this method searches a class by its name and time
+     * @param name name of the class
+     * @param timeOfTheClass first time of the class
+     * @param dayTime2 second time of the class
+     * @return the class founded
+     * @throws Exception if there isn't a class with this info
+     */
     public static Class searchClass(String name,String timeOfTheClass,String dayTime2) throws Exception {
         for(Class cl : classes){
             if(cl.getName().equals(name) && cl.getTIME_OF_THE_CLASS1().toString().equals(timeOfTheClass) )
@@ -225,6 +297,14 @@ public class SystemManagement {
         throw new Exception("class is not exists");
     }
 
+    /**
+     * this method will search students in a teacher's class list
+     *
+     * @param className name of the classes
+     * @param registeredTeacher Teacher
+     * @return array list of the students that belongs to the class
+     * @throws Exception if there isn't any classes with that info
+     */
     public static ArrayList<Student> searchClassStudents(String className,Teacher registeredTeacher) throws Exception {
         for(Class cl : registeredTeacher.getClasses()){
             if(cl.getName().equals(className)){
@@ -233,6 +313,15 @@ public class SystemManagement {
         }
         return null;
     }
+
+    /**
+     * this method will check if the student can enroll the class
+     *
+     * @param registeredStudent registered student
+     * @param temp class that student wants to enroll
+     * @return true if there isn't any problem
+     * @throws Exception if the student can't enroll
+     */
     public static boolean checkEnrollment(Student registeredStudent, Class temp) throws Exception {
 
         for(Class cl : registeredStudent.getClasses()){
@@ -261,13 +350,24 @@ public class SystemManagement {
         return true;
     }
 
+    /**
+     * getting the whole system list of the people
+     * @return hashmap
+     */
     public static HashMap<String, ArrayList<Person>> getSystemList() {
         return systemList;
     }
-    public static Person searchPerson(String userName,String name){
+
+    /**
+     * searching a person by its username
+     *
+     * @param userName user name of the person
+     * @return Person object
+     */
+    public static Person searchPerson(String userName){
         for(String st : SystemManagement.systemList.keySet()){
             for(Person pr : SystemManagement.systemList.get(st)){
-                if(pr.getName().equals(name) && pr.getUserName().equals(userName)){
+                if(pr.getUserName().equals(userName)){
                     return pr;
                 }
             }
@@ -275,6 +375,12 @@ public class SystemManagement {
         return null;
     }
 
+    /**
+     * searching a student by its user name
+     * @param userName user name of the student
+     * @return Student
+     * @throws Exception if it can't find the student
+     */
     public static Student searchStudent(String userName) throws Exception {
         for(Person st : SystemManagement.systemList.get("Student")){
             if(st.getUserName().equals(userName)){
@@ -284,8 +390,13 @@ public class SystemManagement {
         throw new Exception("Student Id is Incorrect");
     }
 
+    /**
+     * adding a student to the student's systemList
+     * @param temp Student
+     * @throws Exception if the user had been added
+     */
     public static void addStudent(Student temp) throws Exception {
-        if(searchPerson(temp.getUserName(),temp.getName()) != null){
+        if(searchPerson(temp.getUserName()) != null){
             throw new Exception("this user has been added");
         }
         else{
@@ -293,6 +404,12 @@ public class SystemManagement {
         }
     }
 
+    /**
+     * searching a teacher
+     * @param userName user name of the teacher
+     * @param name name of the teacher
+     * @return Teacher
+     */
     public static Teacher searchTeacher(String userName,String name){
         for(Person st : SystemManagement.systemList.get("Teacher")){
             if(st.getName().equals(name) && st.getUserName().equals(userName)){
@@ -302,23 +419,43 @@ public class SystemManagement {
         return null;
     }
 
+    /**
+     * adding a teacher to the teacher SystemList
+     * @param temp teacher
+     * @throws Exception if the user had been added
+     */
     public static void addTeacher(Teacher temp) throws Exception {
-        if(searchPerson(temp.getUserName(),temp.getName()) != null){
+        if(searchPerson(temp.getUserName()) != null){
             throw new Exception("this user has been added");
         }
         systemList.get("Teacher").add(temp);
     }
 
 
-
+    /**
+     * this method will student to the class
+     * @param student student
+     * @param temp class
+     */
     public static void addStudentToClass(Student student, Class temp) {
         temp.addStudent(student);
     }
 
+    /**
+     * getting the students of a class
+     * @param cla class
+     * @return array list of the class
+     */
     public static ArrayList<Student> getClassList(Class cla) {
         return cla.getStudents();
     }
 
+    /**
+     * setting the score for an student
+     * @param st student
+     * @param clName name of the lass
+     * @param score score of that class
+     */
     public static void setScore(Student st, String clName,Double score) {
         for(Class cl : st.getClasses()){
             if(cl.getName().equals(clName)){
@@ -328,6 +465,10 @@ public class SystemManagement {
         }
     }
 
+    /**
+     * this method will update the teacher's class lists
+     * @param temp class
+     */
     public static void updateTeacherList(Class temp) {
         Teacher t = searchTeacher(temp.getTeacher().getUserName(), temp.getTeacher().getName());
         int counter = 0;
@@ -339,8 +480,12 @@ public class SystemManagement {
         }
     }
 
-    //public static void updateStudentList()
-
+    /**
+     * this method will update the students of a class
+     *
+     * @param st student
+     * @param s class name
+     */
     public static void updateClassList(Student st, String s) {
         Class temp = st.searchClass(s);
         int counter = 0;
@@ -357,6 +502,11 @@ public class SystemManagement {
         }
     }
 
+    /**
+     * this method will update the teacher list
+     * @param st student
+     * @param temp class
+     */
     public static void updateTeacherList(Student st, Class temp) {
         Teacher t = searchTeacher(temp.getTeacher().getUserName(), temp.getTeacher().getName());
         int counter = 0;
@@ -367,20 +517,12 @@ public class SystemManagement {
             }
             counter++;
         }
-        /*for (Class cl : t.getClasses()) {
-            if (cl.equals(temp)) {
-                for(Student student : cl.getStudents()){
-                    if(student.getUserName().equals(st.getUserName()))
-                    {
-                        cl.getStudents().set(counter,st);
-                        return;
-                    }
-                }
-                counter++;
-            }
-        }*/
     }
 
+    /**
+     * this method will update the students class list
+     * @param registeredStudent registered student
+     */
     public static void updateStudentClassList(Student registeredStudent) {
         int counter = 0;
         for(Class cl : registeredStudent.getClasses()){
@@ -393,6 +535,11 @@ public class SystemManagement {
         }
     }
 
+    /**
+     * this method will generate String for the combo box days
+     * @param n if n == 0 then it won't returns the --- option
+     * @return string array
+     */
     public static String[] getValidDays(int n) {
         String[] temp = new String[5];
         if(n == 0){
@@ -414,6 +561,10 @@ public class SystemManagement {
         return temp;
     }
 
+    /**
+     * getting the valid times
+     * @return String of vlaid times
+     */
     public static String[] getValidTime() {
         String[] temp = new String[3];
         temp[0] = "8 to 10";
@@ -423,6 +574,15 @@ public class SystemManagement {
 
     }
 
+    /**
+     * this method wil change ID
+     *
+     * @param oldUserID old user name
+     * @param newUserID new user name
+     * @param password password
+     * @param registeredPerson registered person
+     * @throws Exception if there is any problem for changing the ID
+     */
     public static void changeID(String oldUserID, String newUserID, char[] password, Person registeredPerson) throws Exception {
         if(!registeredPerson.getUserName().equals(oldUserID)){
             throw new Exception("your old User ID is Wrong");
@@ -445,6 +605,15 @@ public class SystemManagement {
 
     }
 
+    /**
+     * changing the password
+     * @param userID user name
+     * @param oldPass old password
+     * @param newPass new password
+     * @param newPassConfirm new password to confirm
+     * @param person registered person
+     * @throws Exception if there is any problem for changing the pass
+     */
     public static void changePass(String userID, char[] oldPass, char[] newPass, char[] newPassConfirm, Person person) throws Exception {
         String tempOldPass = "";
         String tempNewPass = "";
@@ -475,12 +644,23 @@ public class SystemManagement {
 
     }
 
+    /**
+     * this method will renew students in a class
+     * @param st student
+     * @param aClass class
+     * @throws Exception if there is any problem
+     */
     public static void renewStudentClassList(ArrayList<Student> st, Class aClass) throws Exception {
         for(Student student : st){
             searchStudent(student.getUserName()).removeClass(aClass);
         }
     }
 
+    /**
+     * this method will check if the ID had been entered or not and it will check the password
+     * @param temp new person that we want to add
+     * @throws Exception if there is any problem for adding
+     */
     public static void checkIDAndPass(Person temp) throws Exception {
         for(String st : systemList.keySet()){
             for(Person pr : systemList.get(st)){

@@ -4,17 +4,31 @@ import java.awt.event.*;
 import java.io.IOException;
 import java.util.ArrayList;
 
+/**
+ * this method will creates the login panel
+ *
+ * @author Mohammadreza hassanzadeh
+ * @since 17 Dec 200
+ * @version 1.0
+ */
 public class LoginForm {
 
-
+    //main frame of the panel
     private JFrame loginForm;
+    //login button
     private JButton loginButton;
-    //private JButton changingPassword;
+    //username text field
     private JTextField userNameField;
+    //password
     private JPasswordField passwordField;
-
+    //registered person
     private Person registeredPerson;
 
+    /**+
+     * constructor for making the login form
+     * @param title title of the form
+     * @throws IOException if it cant read from files
+     */
     public LoginForm(String title) throws IOException {
         loginForm = new JFrame(title);
         loginForm.setLocation(500,300);
@@ -52,16 +66,10 @@ public class LoginForm {
         fields.add(passwordLabel);
         fields.add(passwordField);
 
-        //JPanel buttons = new JPanel(new GridLayout(1,2,5,5));
-
         loginButton = new JButton("Login");
         loginButton.addActionListener(buttonHandler);
+        loginButton.addKeyListener(new KeyBoardHandler());
 
-        //changingPassword = new JButton("Changing password");
-        //ChangingPasswordHandler changePasswordHandler = new ChangingPasswordHandler();
-        //changingPassword.addActionListener(changePasswordHandler);
-        //buttons.add(loginButton);
-        //buttons.add(changingPassword);
 
         panel.add(label,BorderLayout.NORTH);
         panel.add(fields,BorderLayout.CENTER);
@@ -69,17 +77,19 @@ public class LoginForm {
 
 
     }
+
+    /**
+     * showing the login form
+     */
     public void showLoginForm(){
         loginForm.pack();
         loginForm.setVisible(true);
     }
 
-    /*public void setLoginStatus(boolean loginStatus) {
-        this.loginStatus = loginStatus;
-    }
-    public boolean getLoginStatus(){
-        return loginStatus;
-    }*/
+    /**
+     * setting the registered person
+     * @param person registered person
+     */
     public void setRegisteredPerson(Person person){
         this.registeredPerson = person;
     }
@@ -88,6 +98,9 @@ public class LoginForm {
         return registeredPerson;
     }
 
+    /**
+     * inner class for handling the button
+     */
     private class ButtonHandler implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
@@ -139,14 +152,10 @@ public class LoginForm {
             }
         }
     }
-    private class ChangingPasswordHandler implements ActionListener{
 
-        @Override
-        public void actionPerformed(ActionEvent e) {
-
-
-        }
-    }
+    /**
+     * inner class for handling the mouse adapter
+     */
     private class MouseHandler extends MouseAdapter {
 
         @Override
@@ -157,12 +166,17 @@ public class LoginForm {
             }
         }
 
-        /*@Override
-        public void mouseExited(MouseEvent e) {
-            if(e.getSource().equals(userNameField)){
-                userNameField.setText("Enter your User Name...");
-                userNameField.setForeground(Color.lightGray);
+    }
+
+    /**
+     * inner class for handling the pressed keys
+     */
+    private  class KeyBoardHandler extends KeyAdapter{
+        @Override
+        public void keyPressed(KeyEvent e) {
+            if(e.getKeyCode() == KeyEvent.VK_ENTER){
+                loginButton.doClick();
             }
-        }*/
+        }
     }
 }
